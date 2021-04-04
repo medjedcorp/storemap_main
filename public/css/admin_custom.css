@@ -1,0 +1,221 @@
+html{
+    font-size: 15px;
+}
+body {
+    font-family: Helvetica, 'Helvetica Neue', 'Mplus 1p', 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', Meiryo, メイリオ, Osaka, 'MS PGothic' !important;
+  }
+.custom-select-sm {
+    font-size: 90%;
+}
+
+.inline_form {
+    display: inline-block;
+}
+.custom-file-label::after{
+    content: "参照する";
+}
+.table thead tr th a {
+    color: #000;
+}
+
+.table thead tr th a:hover {
+    color: #007bff;
+}
+
+.table thead tr th .fa-sort-alpha-up {
+    color: #007bff;
+}
+
+.table thead tr th .fa-sort-alpha-down {
+    color: #007bff;
+}
+
+.modal.fade .modal-dialog.modal-work {
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+}
+
+.select2-has-error .select2-container--default .select2-selection--single {
+    border-color: #dc3545;
+}
+
+.cal-primary {
+    background-color: #007bff;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.cal-primary:hover,
+.cal-primary:focus,
+.cal-primary:active {
+    background: linear-gradient(#000000, #000000);
+    background-color: #007bff;
+     !important;
+    /* for IE */
+    color: #ffffff !important;
+    opacity: .65;
+}
+
+.cal-primary:checked {
+    background: linear-gradient(#d6d6d6, #d6d6d6);
+    background-color: #007bff !important;
+    /* for IE */
+    color: #ffffff !important;
+}
+
+.cal-success {
+    background-color: #28a745;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.cal-success:hover,
+.cal-success:focus,
+.cal-success:active {
+    background: linear-gradient(#000000, #000000);
+    background-color: #28a745;
+     !important;
+    /* for IE */
+    color: #ffffff !important;
+    opacity: .65;
+}
+
+.cal-success:checked {
+    background: linear-gradient(#d6d6d6, #d6d6d6);
+    background-color: #28a745 !important;
+    /* for IE */
+    color: #ffffff !important;
+}
+
+.cal-warning {
+    background-color: #ffc107;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.cal-warning:hover {
+    background-color: #ffc107;
+    opacity: .65;
+}
+
+.cal-danger {
+    background-color: #dc3545;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.cal-danger:hover {
+    background-color: #dc3545;
+    opacity: .65;
+}
+
+.cal-info {
+    background-color: #17a2b8;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.cal-info:hover {
+    background-color: #17a2b8;
+    opacity: .65;
+}
+
+.cal-secondary {
+    background-color: #6c757d;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.cal-secondary:hover {
+    background-color: #6c757d;
+    opacity: .65;
+}
+
+ul#color-chooser li input[type=radio] {
+    display: none;
+    /* ラジオボタンを非表示にする */
+}
+
+ul#color-chooser li input+label {
+    transform: rotate(0deg);
+    transition: transform linear .3s, -webkit-transform linear .3s;
+}
+
+ul#color-chooser li input+label a .fas:hover {
+    transform: rotate(0deg);
+    transition: transform linear .3s, -webkit-transform linear .3s;
+}
+
+ul#color-chooser li input:checked+label {
+    transform: rotate(30deg);
+    transition: transform linear .3s, -webkit-transform linear .3s;
+}
+
+#external-events-list .fc-event {
+    border: none;
+}
+
+ul#fast-color-chooser li input[type=radio] {
+    display: none;
+    /* ラジオボタンを非表示にする */
+}
+
+ul#fast-color-chooser li input+label {
+    transform: rotate(0deg);
+    transition: transform linear .3s, -webkit-transform linear .3s;
+}
+
+ul#fast-color-chooser li input+label a .fas:hover {
+    transform: rotate(0deg);
+    transition: transform linear .3s, -webkit-transform linear .3s;
+}
+
+ul#fast-color-chooser li input:checked+label {
+    transform: rotate(30deg);
+    transition: transform linear .3s, -webkit-transform linear .3s;
+}
+
+/* 画像 */
+.albumImg {
+    max-width: 100px;
+    max-height: 100px;
+}
+
+.table-striped-2span tbody tr:nth-of-type(4n+1), .table-striped-2span tbody tr:nth-of-type(4n+2) {
+    background-color: #ecf0f1;
+}
+
+.albumBox {
+    height: 120px;
+    width: 120px;
+    text-align: left;
+}
+
+.albumBox img {
+    margin: 10px;
+}
+
+.itemImg {
+    max-width: 400px;
+}
+
+.itemShowImg {
+    max-width: 350px;
+}
+
+.pagination {
+    justify-content: center;
+}
+
+#imgIndexTable thead {
+    border-bottom: 2px solid #dee2e6;
+}
+
+#select-course{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#payment_plan .bc_checked{
+    background-color: #17a2b8;
+    color: #fff;
+}

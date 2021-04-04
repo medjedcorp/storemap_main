@@ -1,0 +1,56 @@
+<div class="modal fade" id="modalFastEvent" tabindex="-1" role="dialog" aria-labelledby="titleModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="titleModal">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="message"></div>
+        <form id="formFastEvent">
+          <div class="form-group row">
+            <label for="title" class="col-sm-4 col-form-label">@lang('common.title')</label>
+            <div class="col-sm-8">
+              <input type="text" name="title" class="form-control">
+              <input type="hidden" name="id">
+              <input type="hidden" name="sid" value="{{$sid}}">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="start" class="col-sm-4 col-form-label">@lang('calendar.start_time')</label>
+            <div class="col-sm-8">
+              <input type="text" name="start" class="form-control time" placeholder="00:00:00">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="end" class="col-sm-4 col-form-label">@lang('calendar.end_time')</label>
+            <div class="col-sm-8">
+              <input type="text" name="end" class="form-control time" placeholder="23:59:59">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="color" class="col-sm-4 col-form-label">@lang('calendar.event_color')</label>
+            <div class="col-sm-8">
+              <div class="btn-group" style="width: 100%; margin-bottom: 10px;">
+                <ul class="fc-color-picker" id="fast-color-chooser">
+                  <li><input type="radio" name="color" value="#007bff" id="fast-color-primary"><label for="fast-color-primary"><a class="text-primary"><i class="fas fa-square"></i></a></label></li>
+                  <li><input type="radio" name="color" value="#ffc107" id="fast-color-warning"><label for="fast-color-warning"><a class="text-warning"><i class="fas fa-square"></i></a></label></li>
+                  <li><input type="radio" name="color" value="#28a745" id="fast-color-success"><label for="fast-color-success"><a class="text-success"><i class="fas fa-square"></i></a></label></li>
+                  <li><input type="radio" name="color" value="#dc3545" id="fast-color-danger"><label for="fast-color-danger"><a class="text-danger"><i class="fas fa-square"></i></a></label></li>
+                  <li><input type="radio" name="color" value="#6c757d" id="fast-color-muted"><label for="fast-color-muted"><a class="text-muted"><i class="fas fa-square"></i></a></label></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">@lang('common.close')</button>
+        <button type="button" class="btn btn-danger deleteFastEvent">@lang('common.delete')</button>
+        <button type="button" class="btn btn-primary saveFastEvent">@lang('common.save')</button>
+      </div>
+    </div>
+  </div>
+</div>

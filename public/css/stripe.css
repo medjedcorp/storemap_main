@@ -1,0 +1,21 @@
+#new-card, #update-card {
+  border: 1px solid #ccc;
+  padding: 8px;
+}
+
+.overlay-wrapper{
+  position: relative;
+}
+.overlay-wrapper>.overlay{
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  margin-top: -1.25rem;
+  margin-left: -1.25rem;
+  height: calc(100% + 2 * 1.25rem);
+  width: calc(100% + 2 * 1.25rem);
+}
+.overlay-wrapper>.overlay.dark{
+  color:#fff;
+}

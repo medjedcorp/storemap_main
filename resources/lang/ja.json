@@ -1,0 +1,17 @@
+{
+    "Register":"登録",
+    "Login":"ログイン",
+    "Name":"ユーザー名",
+    "E-Mail Address":"メールアドレス",
+    "Password":"パスワード",
+    "Confirm Password":"パスワード(確認用)",
+    "Logout":"ログアウト",
+    "Verify Email Address": "メールアドレスを認証する[Storemap]",
+    "Please click the button below to verify your email address.": "下のボタンをクリックして認証してください。",
+    "If you did not create an account, no further action is required.": "このメールにお心当たりがない場合は、恐れ入りますが、このメールを削除してください。",
+    "Reset Password":"パスワード(リセット)",
+    "You are receiving this email because we received a password reset request for your account.": "パスワード再発行のリクエストを受け付けました。",
+    "If you did not request a password reset, no further action is required.": "このメールに心当たりがない場合は、このまま削除してください。",
+    "Reset Password Notification": "メールアドレスをリセットする[Storemap]",
+    "This password reset link will expire in :count minutes.": "このパスワードリセットリンクの有効期限は :count 分です。"
+}

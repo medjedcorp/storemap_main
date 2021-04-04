@@ -1,0 +1,389 @@
+body {
+    background-color: #ffffff;
+    font-size: 0.85rem;
+}
+
+header {
+    border-top: 3px solid #17a2b8;
+    border-bottom: 1px solid #17a2b8;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #fff;
+    border-left: solid 1px #ececec;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+    box-shadow: inset 0 0 0 2px #fff;
+}
+
+.header-border {
+    /* border-bottom:  1px solid #17a2b8; */
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+img {
+    max-width: 100%;
+    border: 0;
+}
+
+.h3 {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.btn-search {
+    color: #fff;
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+    border-radius: 0 0.25rem 0.25rem 0 / 0 0.25rem 0.25rem 0;
+}
+
+.btn-search:hover {
+    color: #fff;
+    background-color: #69c3d1;
+    border-color: #69c3d1;
+}
+
+.search-bg {
+    background-color: #f8f9fa;
+}
+
+.title-bg {
+    background-color: #17a2b8;
+}
+
+#pre-area,
+#smc-area {
+    margin-bottom: 4%;
+}
+
+#pre-area .bd-highlight,
+#smc-area .bd-highlight {
+    background-color: #fff;
+    border: 1px solid #e8e9ea;
+    margin-bottom: -1px;
+    margin-right: -1px;
+}
+
+#pre-area .bd-highlight img {
+    opacity: 0.6;
+    width: 50px;
+    margin-right: 5px;
+}
+
+#pre-area .bd-highlight div,
+#smc-area .bd-highlight div {
+    display: inline-block;
+}
+
+#pre-area .bd-highlight p,
+#smc-area .bd-highlight p {
+    display: inline-block;
+}
+
+#smc-area a {
+    color: #000 !important;
+    cursor: pointer;
+}
+
+#smc-area a i {
+    color: #aaa !important;
+}
+
+.header_logo img {
+    max-width: 200px;
+}
+
+#target {
+    width: 100%;
+    height: 75vh !important;
+}
+#leftbox{
+    position: relative;
+    height: 75vh !important;
+    overflow: auto;
+}
+#sidebox {
+    position: relative;
+    height: 75vh !important;
+}
+
+#sidebar {
+    height: 75vh !important;
+}
+
+#sidebar .h5 {
+    font-size: 0.85rem;
+}
+
+#sidebar .card-body {
+    padding: 0.5rem;
+}
+
+#sidebox .loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#sidebox .none {
+    visibility: hidden;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -ms-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+    opacity: 0;
+}
+
+#sidebar .price {
+    font-weight: bolder;
+}
+
+#sidebar .distance {
+    font-weight: bolder;
+}
+
+#sidebar .result {
+    visibility: visible;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -ms-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+    opacity: 1;
+}
+
+#sidebar .lazyitem img {
+    opacity: 1;
+    -webkit-transition: opacity 1s;
+    transition: opacity 1s;
+}
+
+#sidebar .lazyitem img.lazyload {
+    opacity: 0;
+}
+
+#sidebar .scrollarea::-webkit-scrollbar {
+    width: 7px;
+}
+
+#sidebar .scrollarea::-webkit-scrollbar-thumb {
+    background: linear-gradient(0deg, #69c3d1, #17a2b8);
+    border-radius: 3px;
+}
+
+#sidebar .scrollarea::-webkit-scrollbar-track {
+    /* background: rgba(100,100,100, .5); */
+    background: #a0a6ab;
+}
+
+.store_thum {
+    display: flex;
+    align-items: center;
+}
+
+.list_title {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+    font-weight: bolder;
+    padding: 0.75rem 0;
+}
+
+.input-group.md-form.form-sm.form-2 input {
+    border: 1px solid #bdbdbd;
+    border-top-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+}
+
+.price {
+    font-size: 1rem;
+    /* font-weight: bolder; */
+}
+
+/* 都道府県別 */
+
+#prefbox {
+    position: relative;
+    height: 75vh !important;
+}
+
+#pref_area {
+    height: 75vh !important;
+}
+
+#pref_area #headingZero {
+    background-color: #17a2b8;
+}
+
+#pref_area #headingZero .h5 {
+    color: #fff;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.7875rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+    margin-bottom: 0;
+}
+
+#pref_area .card-header {
+    background-color: #fff;
+    padding: 0.5rem 0.5rem;
+}
+
+#pref_area .card-body {
+    padding: 0.5rem 0.2rem 0.5rem 1.5rem;
+}
+
+#pref_area .ward {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    margin-bottom: -1px;
+}
+
+/***** Footer *****/
+
+.footer-top {
+    padding: 60px 0;
+    background: #f4f6f9;
+    text-align: left;
+    color: #333;
+}
+
+.footer-top h3 {
+    padding-bottom: 10px;
+    color: #000;
+}
+
+.footer-about img.logo-footer {
+    max-width: 100%;
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.footer-about p a {
+    border: 0;
+    color: #17a2b8;
+}
+
+.footer-about p a:hover,
+.footer-about p a:focus {
+    border: 0;
+}
+
+.footer-contact p {
+    word-wrap: break-word;
+}
+
+.footer-contact i {
+    padding-right: 10px;
+    font-size: 18px;
+    color: #666;
+}
+
+.footer-contact p a {
+    border: 0;
+    color: #17a2b8;
+}
+
+.footer-contact p a:hover,
+.footer-contact p a:focus {
+    border: 0;
+}
+
+.footer-links a {
+    color: #333;
+    border: 0;
+}
+
+.footer-links a:hover,
+.footer-links a:focus {
+    color: #ffc107;
+}
+
+.footer-bottom {
+    padding: 15px 0 17px 0;
+    background: #17a2b8;
+    text-align: left;
+    color: #fff;
+}
+
+.footer-social {
+    padding-top: 3px;
+    text-align: right;
+}
+
+.footer-social a {
+    margin-left: 20px;
+    color: #fff;
+    border: 0;
+}
+
+.footer-social a:hover,
+.footer-social a:focus {
+    color: #ffc107;
+    border: 0;
+}
+
+.footer-social i {
+    font-size: 24px;
+    vertical-align: middle;
+}
+
+.footer-copyright {
+    padding-top: 5px;
+}
+
+.footer-copyright a {
+    color: #fff;
+    border: 0;
+}
+
+.footer-copyright a:hover,
+.footer-copyright a:focus {
+    color: #ffc107;
+    border: 0;
+}
+
+.fc-day-number {
+    font-size: 12px;
+}
+
+@media (min-width: 576px) {
+    .fc-day-number {
+        font-size: 14px;
+    }
+}
+
+@media (min-width: 768px) {
+    .fc-day-number {
+        font-size: 16px;
+    }
+}
+
+@media (min-width: 992px) {
+    .fc-day-number {
+        font-size: 18px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .fc-day-number {
+        font-size: 20px;
+    }
+}
