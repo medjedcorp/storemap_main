@@ -24,6 +24,7 @@
           <div class="card-body">
             <div class="tab-content">
               <div class="tab-pane active" id="topics">
+                @isset($topics)
                 <ul class="nav flex-column">
                   @foreach ($topics as $topic)
                   <li class="nav-item">
@@ -56,9 +57,11 @@
                   @endforeach
                 </ul>
                 {{ $topics->links() }}
+                @endisset
               </div>
               <!-- /.tab-pane -->
               <div class="tab-pane" id="feature">
+                @isset($features)
                 <ul class="nav flex-column">
                   @foreach ($features as $feature)
                   <li class="nav-item">
@@ -69,9 +72,11 @@
                   </li>
                   @endforeach
                 </ul>
+                @endisset
               </div>
               <!-- /.tab-pane -->
               <div class="tab-pane" id="promotion">
+                @isset($promotions)
                 <ul class="nav flex-column">
                   @foreach ($promotions as $promotion)
                   <li class="nav-item">
@@ -82,9 +87,11 @@
                   </li>
                   @endforeach
                 </ul>
+                @endisset
               </div>
               <!-- /.tab-pane -->
               <div class="tab-pane" id="maintenance">
+                @isset($maintenances)
                 <ul class="nav flex-column">
                   @foreach ($maintenances as $maintenance)
                   <li class="nav-item">
@@ -104,10 +111,12 @@
                   </li>
                   @endforeach
                 </ul>
+                @endisset
               </div>
               <!-- /.tab-pane -->
               <!-- /.tab-pane -->
               <div class="tab-pane" id="other">
+                @isset($others)
                 <ul class="nav flex-column">
                   @foreach ($others as $other)
                   <li class="nav-item">
@@ -127,6 +136,7 @@
                   </li>
                   @endforeach
                 </ul>
+                @endisset
               </div>
               <!-- /.tab-pane -->
             </div>
@@ -148,17 +158,17 @@
 @stop
 
 @section('right-sidebar')
-    <div class="os-padding text-sm">
-        <div class="os-viewport os-viewport-native-scrollbars-invisible" style="overflow-y: scroll;">
-            <div class="os-content" style="padding: 16px; height: 100%; width: 100%;">
-                <h5>マニュアル/ヘルプ</h5>
-                <hr class="mb-2">
-                <p class="mb-5">この画面にはヘルプが表示されます。</p>
-                <h6>お知らせ</h6>
-                <p class="mb-5">ストアマップからのお知らせや、機能情報、販促情報、メンテナンス、障害情報などは表示されます。</p>
-            </div>
-        </div>
+<div class="os-padding text-sm">
+  <div class="os-viewport os-viewport-native-scrollbars-invisible" style="overflow-y: scroll;">
+    <div class="os-content" style="padding: 16px; height: 100%; width: 100%;">
+      <h5>マニュアル/ヘルプ</h5>
+      <hr class="mb-2">
+      <p class="mb-5">この画面にはヘルプが表示されます。</p>
+      <h6>お知らせ</h6>
+      <p class="mb-5">ストアマップからのお知らせや、機能情報、販促情報、メンテナンス、障害情報などは表示されます。</p>
     </div>
+  </div>
+</div>
 @stop
 
 @section('footer')

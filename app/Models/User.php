@@ -21,7 +21,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public $sortable = ['name', 'email', 'role']; // 追加
     protected $fillable = [
-        'name', 'email', 'password', 'role'
+        'name', 'email', 'password', 'role',
     ];
 
     /**

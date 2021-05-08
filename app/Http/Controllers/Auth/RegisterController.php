@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered; // 追加登録のメール送信
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Session;
 
 class RegisterController extends Controller
 {
@@ -60,6 +62,8 @@ class RegisterController extends Controller
 
     protected function create(array $data)
     {
+
+        // dd($data);
         $data_value = $data['role'];
         $user_value = 'user';
         $seller_value = 'seller';
@@ -76,13 +80,13 @@ class RegisterController extends Controller
     }
 
     // 追加
-    public function showRegistrationForm()
+    public function showUserRegistrationForm()
     {
         if (property_exists($this, 'registerView')) {
             return view($this->registerView);
         }
-        // セラー用のログイン画面へ飛ばす
-        return view('vendor.adminlte.auth.seller-register');
+        // 一般用のログイン画面へ飛ばす
+        return view('vendor.adminlte.auth.user-register');
     }
     // 追加
     public function showSellerRegistrationForm()

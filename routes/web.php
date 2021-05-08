@@ -69,10 +69,11 @@ Route::get('calendar/load-events/{sid}', 'EventController@loadEvents')->name('ro
 // 追記
 Route::get('seller-register', 'Auth\RegisterController@showSellerRegistrationForm')->name('seller.register.show');
 // 既存のregisterをseller-registerへ
-Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
+Route::get('user-register', 'Auth\RegisterController@showUserRegistrationForm')->name('user.register.show');
 
 // Auth::routes();
-Auth::routes(['verify' => true, 'register' => false]);
+Auth::routes(['verify' => true]);
+// Auth::routes(['verify' => true, 'register' => false]);
 // Auth::routes([
 //   'verify'   => true, // メール確認機能（※5.7系以上のみ）
 //   'register' => false, // デフォルトの登録機能OFF
