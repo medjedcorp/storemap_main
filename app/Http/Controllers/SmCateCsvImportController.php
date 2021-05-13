@@ -45,7 +45,7 @@ class SmCateCsvImportController extends Controller
 
     // ファイルをフォルダに保存
     $csv_path = $file->storeAs(
-          'csv/system/import/', $filename
+          'csv/system/import', $filename
           // 'public/'.$cid.'/csv/import/', $filename
     );
 
