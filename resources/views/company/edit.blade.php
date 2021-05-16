@@ -182,9 +182,9 @@
                 <label class="col-sm-2 col-form-label">@lang('company.edit.img_flag_title') <i type="button" class="fas fa-question-circle text-warning" data-toggle="tooltip" data-placement="right" title="" data-original-title="メーカーの場合、他社が画像の利用を許可するか、許可しないかと選択できます。許可の場合、他社がカタログ機能を利用した場合に画像がコピーされます"></i></label>
                 <div class="col-sm-10">
                   <div class="form-group clearfix">
-                    <input name="img_flag" type="hidden" value="0">
+                    <input id="img_flag0" name="img_flag" type="hidden" value="0">
                     <div class="icheck-info d-inline">
-                      <input id="img_flag1" name="img_flag" type="checkbox" value="1" {{ old( 'img_flag' , $company->img_flag) == '1' ? 'checked' : '' }}>
+                      <input id="img_flag1" name="img_flag" type="checkbox" value="1" {{ old( 'img_flag' , $company->img_flag) == '1' ? 'checked' : 'disabled' }}>
                       <label for="img_flag1" class="form-check-label">@lang('company.edit.img_flag')</label>
                       @if($errors->has('img_flag'))
                       <div class="small text-danger">{{$errors->first('img_flag')}}</div>
@@ -326,10 +326,13 @@
   }
 
   function img_flagb() {
-    for (const element of document.getElementsByName('img_flag')) {
-      element.checked = false;
-      element.disabled = true;
-    }
+    // for (const element of document.getElementsByName('img_flag')) {
+    //   element.checked = false;
+    //   element.disabled = true;
+    // }
+    document.getElementById("img_flag0").checked = false;
+    document.getElementById("img_flag1").disabled = true;
+    document.getElementById("img_flag1").checked = false;
   }
 </script>
 <script>

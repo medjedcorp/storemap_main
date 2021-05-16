@@ -46,12 +46,12 @@
                 @endif
               </div>
               <div class="form-group">
-                <label for="inputTitle">@lang('common.title')</label>
-                @if($errors->has('title'))
-                <input type="text" class="form-control is-invalid" name="title" id="inputTitle" placeholder="タイトルを入力してください" value="{{old('title')}}" aria-describedby="title_code-error" aria-invalid="true">
-                <span id="title_code-error" class="error invalid-feedback">{{$errors->first('title')}}</span>
+                <label for="inputName">@lang('common.name')</label>
+                @if($errors->has('name'))
+                <input type="text" class="form-control is-invalid" name="name" id="inputName" placeholder="お名前を入力してください" value="{{old('name')}}" aria-describedby="name_code-error" aria-invalid="true">
+                <span id="name_code-error" class="error invalid-feedback">{{$errors->first('name')}}</span>
                 @else
-                <input type="text" class="form-control" id="inputTitle" placeholder="タイトルを入力してください" name="title" value="{{ old('title') }}">
+                <input type="text" class="form-control" id="inputName" placeholder="お名前を入力してください" name="name" value="{{ old('name') }}">
                 @endif
               </div>
               <div class="form-group">
