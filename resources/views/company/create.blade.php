@@ -185,10 +185,10 @@
                 </div>
               </div>
               <div class="form-group row">
-                <label class="col-sm-2 col-form-label">@lang('company.edit.img_flag_title') <i type="button" class="fas fa-question-circle text-warning" data-toggle="tooltip" data-placement="right" title="" data-original-title="メーカーの場合、他社が商品画像を利用することを「許可する」か、「許可しない」かを選択できます。チェックを入れた場合、他社がカタログ機能を利用したときに、画像もコピーされます。"></i></label>
+                <label class="col-sm-2 col-form-label">@lang('company.edit.img_flag_title') <i type="button" class="fas fa-question-circle text-warning" data-toggle="tooltip" data-placement="right" title="" data-original-title="メーカーの場合、他社が御社の商品画像を利用することを「許可する」か、「許可しない」かを選択できます。チェックを入れた場合、他社がカタログ機能を利用して御社の商品情報をコピーしたときに、商品画像もコピーされます。"></i></label>
                 <div class="col-sm-10">
                   <div class="form-group clearfix">
-                    <input name="img_flag" type="hidden" value="0">
+                    <input id="img_flag0" name="img_flag" type="hidden" value="0">
                     <div class="icheck-info d-inline">
                       <input id="img_flag1" name="img_flag" type="checkbox" value="1" {{ old( 'img_flag' ,  old('img_flag')) == '1' ? 'checked' : '' }}>
                       <label for="img_flag1" class="form-check-label">@lang('company.edit.img_flag')</label>
@@ -275,7 +275,7 @@
                   <dt>メーカー設定</dt>
                   <dd>会社がGS1事業者コード(JANコード)を取得しているメーカーの場合は、「メーカー」を選んでください。</dd>
                   <dt>他社画像利用</dt>
-                  <dd>メーカーの場合、他社が商品画像を利用することを「許可する」か、「許可しない」かを選択できます。チェックを入れた場合、他社がカタログ機能を利用したときに、画像もコピーされます。</dd>
+                  <dd>メーカーの場合、他社が御社の商品画像を利用することを「許可する」か、「許可しない」かを選択できます。チェックを入れた場合、他社がカタログ機能を利用して商品情報をコピーしたときに、商品画像もコピーされます。</dd>
                   <dt>GS1事業者コード</dt>
                   <dd>JANコードの前7桁または9桁の値です。メーカー設定を選択している場合は必須項目となりまｓ。</dd>
                   <dt>会社証明</dt>
@@ -330,13 +330,17 @@
     for (const element of document.getElementsByName('img_flag')) {
       element.disabled = false;
     }
+    // document.getElementById("img_flag0").element.disabled = false;
   }
 
   function img_flagb() {
-    for (const element of document.getElementsByName('img_flag')) {
-      element.checked = false;
-      element.disabled = true;
-    }
+    // for (const element of document.getElementsByName('img_flag')) {
+    //   element.checked = false;
+    //   element.disabled = true;
+    // }
+    document.getElementById("img_flag0").checked = false;
+    document.getElementById("img_flag1").disabled = true;
+    document.getElementById("img_flag1").checked = false;
   }
 </script>
 <script>

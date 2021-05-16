@@ -12,7 +12,7 @@ class ContactSendMail extends Mailable
     use Queueable, SerializesModels;
 
     protected $email;
-    protected $title;
+    protected $name;
     protected $body;
     /**
      * Create a new message instance.
@@ -25,7 +25,7 @@ class ContactSendMail extends Mailable
         // $this->title = $inputs->title;
         // $this->body  = $inputs->body;
         $this->email = $inputs['email'];
-        $this->title = $inputs['title'];
+        $this->name = $inputs['name'];
         $this->body  = $inputs['body'];
     }
 
@@ -42,7 +42,7 @@ class ContactSendMail extends Mailable
             ->view('contact.mail')
             ->with([
                 'email' => $this->email,
-                'title' => $this->title,
+                'name' => $this->name,
                 'body'  => $this->body,
             ]);
     }

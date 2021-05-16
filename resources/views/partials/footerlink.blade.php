@@ -1,4 +1,4 @@
-<div class="card card-warning card-outline">
+<div class="card card-secondary card-outline">
   <div class="card-body text-center text-sm">
     <a href="/" class="card-link"><i class="fas fa-home"></i> HOME</a>
     <a href="/publish" class="card-link"><i class="fas fa-map-marked-alt"></i> 掲載について</a>

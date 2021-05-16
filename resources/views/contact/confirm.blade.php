@@ -39,8 +39,8 @@
               <dl class="row">
                 <dt class="col-sm-3"><label for="inputEmail">@lang('common.email')</label></dt>
                 <dd class="col-sm-9">{{ $inputs['email'] }}<input name="email" value="{{ $inputs['email'] }}" type="hidden" id="inputEmail"></dd>
-                <dt class="col-sm-3"><label for="inputTitle">@lang('common.title')</label></dt>
-                <dd class="col-sm-9">{{ $inputs['title'] }}<input name="title" value="{{ $inputs['title'] }}" type="hidden" id="inputTitle"></dd>
+                <dt class="col-sm-3"><label for="inputName">@lang('common.name')</label></dt>
+                <dd class="col-sm-9">{{ $inputs['name'] }}<input name="name" value="{{ $inputs['name'] }}" type="hidden" id="inputName"></dd>
                 <dt class="col-sm-3"><label for="inputBody">@lang('common.mailbody')</label></dt>
                 <dd class="col-sm-9">{{ $inputs['body'] }}<input name="body" value="{{ $inputs['body'] }}" type="hidden" id="inputBody"></dd>
               </dl>

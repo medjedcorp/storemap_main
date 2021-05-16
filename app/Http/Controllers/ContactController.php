@@ -20,13 +20,13 @@ class ContactController extends Controller
         //バリデーションを実行（結果に問題があれば処理を中断してエラーを返す）
         $messages = [
             'email.required' => 'メールアドレスを入力してください',
-            'title.required' => 'タイトルを入力してください',
+            'name.required' => 'お名前を入力してください',
             'body.required' => 'お問い合わせ内容を入力してください',
         ];
         
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
-            'title' => 'required',
+            'name' => 'required',
             'body'  => 'required'
         ],$messages);
 
@@ -51,13 +51,13 @@ class ContactController extends Controller
 
         $messages = [
             'email.required' => 'メールアドレスを入力してください',
-            'title.required' => 'タイトルを入力してください',
+            'name.required' => 'お名前を入力してください',
             'body.required' => 'お問い合わせ内容を入力してください',
         ];
  
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
-            'title' => 'required',
+            'name' => 'required',
             'body'  => 'required'
         ],$messages);
 
@@ -74,6 +74,7 @@ class ContactController extends Controller
 
         //フォームから受け取ったactionを除いたinputの値を取得
         $inputs = $request->except('action');
+
         //actionの値で分岐
         if ($action !== 'submit') {
             return redirect()
