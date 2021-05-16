@@ -43,7 +43,7 @@ class SubscriptionController extends Controller
         $company->status = 1;
         $company->save();
 
-        \Slack::channel('work')->send($company->company_name.' さんが課金してくれたよ！');
+        \Slack::channel('billing')->send('あっ、「'.$company->company_name.'(comapny_id:'.$company->id.')」さんが課金してくれたよ！');
 
         return $this->status();
 
@@ -59,6 +59,9 @@ class SubscriptionController extends Controller
         // $company->subscription('main')->cancelNow();
         $company->status = 0;
         $company->save();
+
+        \Slack::channel('cancel')->send('あー！「'.$company->company_name.'(comapny_id:'.$company->id.')」さんが課金をキャンセルしちゃったよ。');
+
         return $this->status();
     }
 
@@ -69,6 +72,8 @@ class SubscriptionController extends Controller
         $company = Company::where('id', $user->company_id)->first();
         // $company->subscription('main')->trialDays(1)->resume();
         $company->subscription('main')->resume();
+
+        \Slack::channel('recharge')->send('あっ、「'.$company->company_name.'(comapny_id:'.$company->id.')」さんが再課金してくれたよ。');
 
         return $this->status();
     }
@@ -87,6 +92,8 @@ class SubscriptionController extends Controller
             $stores_id => ['quantity' => $stores_num],
             $plan
         ]);
+
+        \Slack::channel('change')->send('「'.$company->company_name.'(comapny_id:'.$company->id.')」さんが課金内容を変更したよ。');
 
         return $this->status();
     }
