@@ -270,14 +270,15 @@ class ItemImportCsvJob implements ShouldQueue
         if ($max_item <= $now_item) {
           $fname = $cid . '/csv/error/' . 'items_' . date('YmdHis') . '.txt';
           Storage::disk('public')->put($fname, "");
-          $path = url('public/' . $fname);
+          $path = url('storage/' . $fname);
           $txt_list = '登録可能商品数の上限を超えたため、登録に失敗しました。現在の登録可能件数：' . $max_item . '件';
           Storage::disk('public')->append($fname, $txt_list);
           // エラーメール送信処理
           Mail::to($to)->send(new CsvErrorMail($name, $path, $this->upload_filename));
           // 3日後にファイル削除
-          $csv_path = '/public/' . $fname;
-          CsvFileDeleteJob::dispatch($csv_path)->delay(now()->addDays(3));
+          // $csv_path = '/public/' . $fname;
+          // CsvFileDeleteJob::dispatch($csv_path)->delay(now()->addDays(3));
+          CsvFileDeleteJob::dispatch($path)->delay(now()->addDays(3));
           break;
         }
         // dd($gid,$cateid);
