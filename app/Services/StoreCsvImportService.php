@@ -12,7 +12,12 @@ final class StoreCsvImportService
     public function validationRules()
     {
         return [
+            // 'store_code' => 'array',
+            
             'store_code' => 'required|regex:/^[a-zA-Z0-9]+$/|max:20',
+            // 'store_code' => 'required|regex:/^[a-zA-Z0-9]+$/|max:20|distinct',
+            // 'store_code.*' => 'required|regex:/^[a-zA-Z0-9]+$/|max:20|distinct',
+            // 'store_code.*' => 'distinct',
             'store_name' => 'required|string|max:85',
             'store_kana' => 'nullable|string|kana|max:85',
             'store_postcode' => 'required|jpzip|max:8',
@@ -25,7 +30,7 @@ final class StoreCsvImportService
             'store_email' => 'nullable|email|max:255',
             'pause_flag' => 'required|boolean',
             'store_info' => 'nullable|string|max:1000',
-            'industry_id' => 'required|integer',
+            'industry_id' => 'required|integer|between:0,32',
             'store_url' => 'nullable|url',
             'flyer_url' => 'nullable|url',
             'floor_guide' => 'nullable|url',
@@ -47,9 +52,15 @@ final class StoreCsvImportService
     public function validationMessages()
     {
         return [
+            // 'store_code.*.required' => '(store_code)店舗コードを入力してください',
+            // 'store_code.*.regex' => '(store_code)店舗コードは半角英数字のみ使用可能です',
+            // 'store_code.*.max' => '(store_code)店舗コードは２０文字以内で入力してください',
+            
             'store_code.required' => '(store_code)店舗コードを入力してください',
             'store_code.regex' => '(store_code)店舗コードは半角英数字のみ使用可能です',
             'store_code.max' => '(store_code)店舗コードは２０文字以内で入力してください',
+            // 'store_code.*.distinct' => '(store_code)店舗コードが重複しています',
+            // 'store_code.distinct' => '(store_code)店舗コードが重複しています',
             'store_name.required' => '(store_name)店舗名を入力してください',
             'store_name.max' => '(store_name)店舗名は８５文字以内で入力してください',
             'store_kana.kana' => '(store_kana)店舗かなはひらがなで入力してください',
@@ -75,6 +86,7 @@ final class StoreCsvImportService
             'pause_flag.required' => '(pause_flag)店舗状態は、0:非公開、1:公開のどちらかを入力してください',
             'store_info.max' => '(store_info)お知らせは１０００文字以内で入力してください',
             'industry_id.required' => '(industry_id)業種設定を入力してください',
+            'industry_id.between' => '(industry_id)は0から32の整数で入力してください',
             'store_url.url' => '(store_url)URL形式で入力してください',
             'flyer_url.url' => '(flyer_url)URL形式で入力してください',
             'floor_guide.url' => '(floor_guide)URL形式で入力してください',

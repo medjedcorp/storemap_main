@@ -66,6 +66,7 @@
             <div class="form-group row">
               <label class="col-sm-2 col-form-label">@lang('common.catalog') <i type="button" class="fas fa-question-circle text-warning" data-toggle="tooltip" data-placement="right" title="" data-original-title="登録することで商品情報を小売店が参照可能になり販路拡大に繋がります"></i> @include('partials.required') </label>
               <div class="col-sm-10">
+                @if($errors->has('global_flag'))
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                   <label class="btn btn-outline-info">
                     <input form="item_form" type="radio" name="global_flag" id="global_flag1" value="1" {{ old( 'global_flag', old('global_flag')) == '1' ? 'checked' : '' }}>@lang('item.yes')
@@ -74,8 +75,25 @@
                     <input form="item_form" type="radio" name="global_flag" id="global_flag0" value="0" {{ old( 'global_flag', old('global_flag')) == '1' ? 'checked' : '' }}>@lang('item.no')
                   </label>
                 </div>
-                @if($errors->has('global_flag'))
                 <div class="small text-danger">{{$errors->first('global_flag')}}</div>
+                @elseif(count($errors) > 0)
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline-info">
+                    <input form="item_form" type="radio" name="global_flag" id="global_flag1" value="1" {{ old( 'global_flag', old('global_flag')) == '1' ? 'checked' : '' }}>@lang('item.yes')
+                  </label>
+                  <label class="btn btn-outline-info">
+                    <input form="item_form" type="radio" name="global_flag" id="global_flag0" value="0" {{ old( 'global_flag', old('global_flag')) == '1' ? 'checked' : '' }}>@lang('item.no')
+                  </label>
+                </div>
+                @else
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline-info">
+                    <input form="item_form" type="radio" name="global_flag" id="global_flag1" value="1" checked>@lang('item.yes')
+                  </label>
+                  <label class="btn btn-outline-info">
+                    <input form="item_form" type="radio" name="global_flag" id="global_flag0" value="0">@lang('item.no')
+                  </label>
+                </div>
                 @endif
               </div>
             </div>
@@ -108,19 +126,6 @@
                   @endif
                   @endforeach
                 </select>
-
-                @if(isset($category) == true)
-                <option value=""></option>
-                @foreach($category as $value)
-                @if( old('category_id') == $value->id)
-                <option value="{{$value->id}}" selected>{{$value->category_name}}</option>
-                @else
-                <option value="{{$value->id}}">{{$value->category_name}}</option>
-                @endif
-                @endforeach
-                @else
-                <option value=""></option>
-                @endif
               </div>
             </div>
             <div class="form-group row">
@@ -148,6 +153,7 @@
             <div class="form-group row">
               <label class="col-sm-2 col-form-label">@lang('item.display_flag') @include('partials.required')</label>
               <div class="col-sm-10">
+                @if($errors->has('display_flag'))
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                   <label class="btn btn-outline-info">
                     <input form="item_form" type="radio" name="display_flag" id="display_flag1" value="1" {{ old( 'display_flag', old('display_flag')) == '1' ? 'checked' : '' }}>@lang('item.show')
@@ -156,14 +162,32 @@
                     <input form="item_form" type="radio" name="display_flag" id="display_flag0" value="0" {{ old( 'display_flag', old('display_flag')) == '0' ? 'checked' : '' }}>@lang('item.hide')
                   </label>
                 </div>
-                @if($errors->has('display_flag'))
                 <div class="small text-danger">{{$errors->first('display_flag')}}</div>
+                @elseif(count($errors) > 0)
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline-info">
+                    <input form="item_form" type="radio" name="display_flag" id="display_flag1" value="1" {{ old( 'display_flag', old('display_flag')) == '1' ? 'checked' : '' }}>@lang('item.show')
+                  </label>
+                  <label class="btn btn-outline-info">
+                    <input form="item_form" type="radio" name="display_flag" id="display_flag0" value="0" {{ old( 'display_flag', old('display_flag')) == '0' ? 'checked' : '' }}>@lang('item.hide')
+                  </label>
+                </div>
+                @else
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline-info">
+                    <input form="item_form" type="radio" name="display_flag" id="display_flag1" value="1" checked>@lang('item.show')
+                  </label>
+                  <label class="btn btn-outline-info">
+                    <input form="item_form" type="radio" name="display_flag" id="display_flag0" value="0">@lang('item.hide')
+                  </label>
+                </div>
                 @endif
               </div>
             </div>
             <div class="form-group row">
               <label class="col-sm-2 col-form-label">@lang('item.item_status') @include('partials.required')</label>
               <div class="col-sm-10">
+                @if($errors->has('item_status'))
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                   <label class="btn btn-outline-info">
                     <input form="item_form" type="radio" name="item_status" id="item_status1" value="1" {{ old( 'item_status', old('item_status')) == '1' ? 'checked' : '' }}>@lang('common.new')
@@ -172,8 +196,25 @@
                     <input form="item_form" type="radio" name="item_status" id="item_status0" value="0" {{ old( 'item_status', old('item_status')) == '0' ? 'checked' : '' }}>@lang('common.used')
                   </label>
                 </div>
-                @if($errors->has('item_status'))
                 <div class="small text-danger">{{$errors->first('item_status')}}</div>
+                @elseif(count($errors) > 0)
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline-info">
+                    <input form="item_form" type="radio" name="item_status" id="item_status1" value="1" {{ old( 'item_status', old('item_status')) == '1' ? 'checked' : '' }}>@lang('common.new')
+                  </label>
+                  <label class="btn btn-outline-info">
+                    <input form="item_form" type="radio" name="item_status" id="item_status0" value="0" {{ old( 'item_status', old('item_status')) == '0' ? 'checked' : '' }}>@lang('common.used')
+                  </label>
+                </div>
+                @else
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline-info">
+                    <input form="item_form" type="radio" name="item_status" id="item_status1" value="1" checked>@lang('common.new')
+                  </label>
+                  <label class="btn btn-outline-info">
+                    <input form="item_form" type="radio" name="item_status" id="item_status0" value="0">@lang('common.used')
+                  </label>
+                </div>
                 @endif
               </div>
             </div>
