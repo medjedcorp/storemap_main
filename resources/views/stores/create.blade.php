@@ -190,6 +190,7 @@
             <div class="form-group row">
               <label class="col-sm-2 col-form-label">@lang('store.pause_flag') @include('partials.required') </label>
               <div class="col-sm-10">
+                @if($errors->has('pause_flag'))
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                   <label class="btn btn-outline-info">
                     <input form="store_form" type="radio" name="pause_flag" id="pause_flag1" value="1" {{ old('pause_flag' , old('pause_flag')) == '1' ? 'checked' : '' }}>@lang('store.show')
@@ -198,8 +199,25 @@
                     <input form="store_form" type="radio" name="pause_flag" id="pause_flag0" value="0" {{ old('pause_flag' , old('pause_flag')) == '0' ? 'checked' : '' }}>@lang('store.hide')
                   </label>
                 </div>
-                @if($errors->has('pause_flag'))
                 <div class="small text-danger">{{$errors->first('pause_flag')}}</div>
+                @elseif(count($errors) > 0)
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline-info">
+                    <input form="store_form" type="radio" name="pause_flag" id="pause_flag1" value="1" {{ old('pause_flag' , old('pause_flag')) == '1' ? 'checked' : '' }}>@lang('store.show')
+                  </label>
+                  <label class="btn btn-outline-info">
+                    <input form="store_form" type="radio" name="pause_flag" id="pause_flag0" value="0" {{ old('pause_flag' , old('pause_flag')) == '0' ? 'checked' : '' }}>@lang('store.hide')
+                  </label>
+                </div>
+                @else
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline-info">
+                    <input form="store_form" type="radio" name="pause_flag" id="pause_flag1" value="1" checked>@lang('store.show')
+                  </label>
+                  <label class="btn btn-outline-info">
+                    <input form="store_form" type="radio" name="pause_flag" id="pause_flag0" value="0">@lang('store.hide')
+                  </label>
+                </div>
                 @endif
               </div>
             </div>

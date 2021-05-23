@@ -47,6 +47,7 @@
             <div class="form-group row">
               <label class="col-sm-2 col-form-label">@lang('category.register.display_flag') @include('partials.required') </label>
               <div class="col-sm-10">
+                @if($errors->has('display_flag'))
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                   <label class="btn btn-outline-info">
                     <input form="category_form" type="radio" name="display_flag" id="display_flag1" value="1" {{ old('display_flag' , old('display_flag')) == '1' ? 'checked' : '' }}>@lang('category.register.show')
@@ -55,8 +56,25 @@
                     <input form="category_form" type="radio" name="display_flag" id="display_flag0" value="0" {{ old('display_flag' , old('display_flag')) == '0' ? 'checked' : '' }}>@lang('category.register.hide')
                   </label>
                 </div>
-                @if($errors->has('display_flag'))
                 <div class="small text-danger">{{$errors->first('display_flag')}}</div>
+                @elseif(count($errors) > 0)
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline-info">
+                    <input form="category_form" type="radio" name="display_flag" id="display_flag1" value="1" {{ old('display_flag' , old('display_flag')) == '1' ? 'checked' : '' }}>@lang('category.register.show')
+                  </label>
+                  <label class="btn btn-outline-info">
+                    <input form="category_form" type="radio" name="display_flag" id="display_flag0" value="0" {{ old('display_flag' , old('display_flag')) == '0' ? 'checked' : '' }}>@lang('category.register.hide')
+                  </label>
+                </div>
+                @else
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline-info">
+                    <input form="category_form" type="radio" name="display_flag" id="display_flag1" value="1" checked>@lang('category.register.show')
+                  </label>
+                  <label class="btn btn-outline-info">
+                    <input form="category_form" type="radio" name="display_flag" id="display_flag0" value="0">@lang('category.register.hide')
+                  </label>
+                </div>
                 @endif
               </div>
             </div>

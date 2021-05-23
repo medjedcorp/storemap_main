@@ -30,7 +30,7 @@ return [
         'string'  => ':attributeは:min?:max文字にしてください。',
         'array'   => ':attributeは:min?:max個までにしてください。',
     ],
-    'boolean'              => ':attributeはtrueかfalseにしてください。',
+    'boolean'              => ':attributeは 0 か 1 にしてください。',
     'confirmed'            => ':attributeは確認用項目と一致していません。',
     'date'                 => ':attributeは正しい日付ではありません。',
     'date_equals' => 'The :attribute must be a date equal to :date.',
