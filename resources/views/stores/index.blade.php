@@ -72,12 +72,12 @@
                                             <i class="far fa-calendar-alt"></i>
                                             @lang('common.calendar')</button>
                                     </td>
-                                    @can('isSeller')
                                     <td class="text-nowrap">
                                         <button class="btn btn-block btn-info btn-sm" onclick="location.href='{{ route('stores.show' , $store->id ) }}'">
                                             <i class="fas fa-info-circle"></i>
                                             @lang('common.info')</button>
                                     </td>
+                                    @can('isSeller')
                                     <td class="text-nowrap">
                                         <form method="POST" action="{{ route('stores.destroy' , $store->id ) }}" class="h-adr">
                                             @method('DELETE')

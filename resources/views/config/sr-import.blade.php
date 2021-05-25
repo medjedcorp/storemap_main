@@ -11,7 +11,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-6">
-        <div class="card">
+        <div class="card card-outline card-primary">
           <div class="card-header ui-sortable-handle" style="cursor: move;">
             <h3 class="card-title">
               <i class="fas fa-handshake mr-1"></i>
@@ -103,7 +103,7 @@
         </div>
       </div>
       <div class="col-md-6">
-        <div class="card">
+        <div class="card card-outline card-primary">
           <div class="card-header ui-sortable-handle" style="cursor: move;">
             <h3 class="card-title">
               <i class="fas fa-handshake mr-1"></i>
@@ -193,7 +193,7 @@
       <!-- /.card -->
     </div>
     <div class="col-lg-6">
-      <div class="card card-outline card-info">
+      <div class="card card-outline card-warning">
         <div class="card-header">
           <h3 class="card-title"><i class="fa fa-download"></i> 登録用テンプレートファイル</h3>
         </div>
