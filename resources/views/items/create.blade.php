@@ -72,7 +72,7 @@
                     <input form="item_form" type="radio" name="global_flag" id="global_flag1" value="1" {{ old( 'global_flag', old('global_flag')) == '1' ? 'checked' : '' }}>@lang('item.yes')
                   </label>
                   <label class="btn btn-outline-info">
-                    <input form="item_form" type="radio" name="global_flag" id="global_flag0" value="0" {{ old( 'global_flag', old('global_flag')) == '1' ? 'checked' : '' }}>@lang('item.no')
+                    <input form="item_form" type="radio" name="global_flag" id="global_flag0" value="0" {{ old( 'global_flag', old('global_flag')) == '0' ? 'checked' : '' }}>@lang('item.no')
                   </label>
                 </div>
                 <div class="small text-danger">{{$errors->first('global_flag')}}</div>
@@ -82,7 +82,7 @@
                     <input form="item_form" type="radio" name="global_flag" id="global_flag1" value="1" {{ old( 'global_flag', old('global_flag')) == '1' ? 'checked' : '' }}>@lang('item.yes')
                   </label>
                   <label class="btn btn-outline-info">
-                    <input form="item_form" type="radio" name="global_flag" id="global_flag0" value="0" {{ old( 'global_flag', old('global_flag')) == '1' ? 'checked' : '' }}>@lang('item.no')
+                    <input form="item_form" type="radio" name="global_flag" id="global_flag0" value="0" {{ old( 'global_flag', old('global_flag')) == '0' ? 'checked' : '' }}>@lang('item.no')
                   </label>
                 </div>
                 @else
