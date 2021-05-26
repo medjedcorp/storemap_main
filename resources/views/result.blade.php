@@ -16,6 +16,8 @@
       現在テスト中です。商品の登録を行っても予告なく削除されます。本運用までお待ちください。
     </div>
 
+    @include('partials.warning')
+    
     <div class="row">
       <!-- left column -->
       <div class="col-xl-7 col-12">
