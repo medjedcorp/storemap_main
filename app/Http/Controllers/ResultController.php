@@ -30,6 +30,12 @@ class ResultController extends Controller
     $req_city = $request->city;
     $req_ward = $request->ward;
 
+    if(!$lat or !$lng){
+      return redirect("/result")->with([
+        'warning' => '※位置情報の取得に失敗しました。位置情報を許可して、再度ページを読み込んでください。',
+      ]);
+    }
+
     // SMカテ作成
     if ($smid) {
       $smids = StoremapCategory::orWhereDescendantOf($smid)->pluck('id');
