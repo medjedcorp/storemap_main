@@ -115,7 +115,7 @@
                                     <div class="text-bold pt-2">Loading...</div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-12 col-md-6">
                                         <div class="card mb-4">
                                             <div class="card-body bg-light">
                                                 <div v-if="!isSubscribed">
@@ -209,7 +209,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-6">
+                                    <div class="col-12 col-md-6">
                                         @if($company->stripe_id)
                                         <p id="firstdate" class="lead">現在のご請求金額</p>
                                         <div class="table-responsive">
