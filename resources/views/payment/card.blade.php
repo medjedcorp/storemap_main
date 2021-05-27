@@ -128,7 +128,7 @@
                                                         </select>
                                                     </div>
                                                     <div class="form-group">
-                                                        <h6>店舗数を選択:</h6>
+                                                        <h6>店舗数を選択：</h6>
                                                         <select class="form-control" v-model.number="storeNum" @change="changeStore">
                                                             <option disabled value="">選択してください</option>
                                                             @for ($i = 0; $i < 100; $i++) <option value="{{ $i }}">
@@ -137,9 +137,11 @@
                                                         </select>
                                                     </div>
                                                     <div class="form-group">
+                                                        <h6>カード名義人名：</h6>
                                                         <input type="text" class="form-control" v-model="cardHolderName" placeholder="名義人（半角ローマ字）">
                                                     </div>
                                                     <div class="form-group">
+                                                        <h6>カード番号・有効期限・セキュリティコード：</h6>
                                                         <div id="new-card" class="bg-white"></div>
                                                     </div>
                                                     <div class="form-group text-right">
@@ -156,9 +158,6 @@
                                                     <!-- 課金中 -->
                                                     <div v-else>
                                                         <h4>契約内容の変更</h4>
-                                                        <div class="mb-3">現在、課金中です。</div>
-                                                        <button class="btn btn-warning" type="button" @click="cancel"><i class="far fa-times-circle"></i> キャンセル</button>
-                                                        <hr>
                                                         <div class="form-group">
                                                             契約中のプラン： <span v-text="details.plan"></span>
                                                         </div>
@@ -182,10 +181,16 @@
                                                         <hr>
                                                         <h4>お支払いカード情報の変更</h4>
                                                         <div class="form-group">
-                                                            カード情報（下４桁）： <span v-text="details.card_last_four"></span>
+                                                            現在のカード情報(下４桁)： <b><span v-text="details.card_last_four"></span></b>
+                                                        </div>
+                                                        <div class="form-group">
+                                                        <h6>カード名義人名：</h6>
                                                         </div>
                                                         <div class="form-group">
                                                             <input type="text" class="form-control" v-model="cardHolderName" placeholder="名義人（半角ローマ字）">
+                                                        </div>
+                                                        <div class="form-group">
+                                                        <h6>カード番号・有効期限・セキュリティコード：</h6>
                                                         </div>
                                                         <div class="form-group">
                                                             <div id="update-card" class="bg-white"></div><br>
@@ -193,6 +198,10 @@
                                                                 <i class="far fa-credit-card"></i> クレジットカードを変更する
                                                             </button>
                                                         </div>
+                                                        <hr>
+                                                        <h4>契約のキャンセル</h4>
+                                                        <div class="mb-3">現在、課金中です。</div>
+                                                        <button class="btn btn-warning" type="button" @click="cancel"><i class="far fa-times-circle"></i> キャンセルする</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -210,7 +219,8 @@
                                     </div>
 
                                     <div class="col-12 col-md-6">
-                                        @if($company->stripe_id)
+                                        {{-- @if($company->stripe_id) --}}
+                                        @if($company->hasDefaultPaymentMethod())
                                         <p id="firstdate" class="lead">現在のご請求金額</p>
                                         <div class="table-responsive">
                                             <table class="table">
@@ -469,8 +479,9 @@
               this.$toasted.show('ありがとうございます。画面が更新されるまでお待ちください。', successOptions);
             }).catch(error=>{
                 //失敗した時の処理
-                this.$toasted.show(error.message, options);
-                console.log(error);
+                this.$toasted.show('処理に失敗しました。入力内容をご確認下さい。', options);
+                // this.$toasted.show(error.message, options);
+                // console.log(error);
             })
             .finally(() => {
                 this.loading = false;  // 最終的に必ず実行
@@ -485,8 +496,9 @@
                 .then(this.setStatus)
                 .catch(error=>{
                 //失敗した時の処理
-                    this.$toasted.show(error.message, options);
-                    console.log(error);
+                    // this.$toasted.show(error.message, options);
+                    this.$toasted.show('処理に失敗しました。入力内容をご確認下さい。', options);
+                    // console.log(error);
                 })
                 .finally(() => {
                     this.loading = false;  // 最終的に必ず実行
@@ -499,8 +511,9 @@
                 .then(this.setStatus)
                 .catch(error=>{
                 //失敗した時の処理
-                    this.$toasted.show(error.message, options);
-                    console.log(error);
+                    // this.$toasted.show(error.message, options);
+                    this.$toasted.show('処理に失敗しました。入力内容をご確認下さい。', options);
+                    // console.log(error);
                 })
                 .finally(() => {
                     this.loading = false;  // 最終的に必ず実行
@@ -512,7 +525,7 @@
                 plan: this.plan,
                 storeNum: this.storeNum
             };
-            console.log(this.plan);
+            // console.log(this.plan);
             this.loading = true;  // 最終的に必ず実行
 
             axios.post(url, params)
@@ -523,8 +536,9 @@
                 })
                 .catch(error=>{
                 //失敗した時の処理
-                    this.$toasted.show(error.message, options);
-                    console.log(error);
+                    this.$toasted.show('処理に失敗しました。入力内容をご確認下さい。', options);
+                    // this.$toasted.show(error.message, options);
+                    // console.log(error);
                 })
                 .finally(() => {
                     this.loading = false;  // 最終的に必ず実行
@@ -546,8 +560,9 @@
                     location.reload();
                 }).catch(error=>{
                 //失敗した時の処理
-                this.$toasted.show(error.message, options);
-                    console.log(error);
+                this.$toasted.show('処理に失敗しました。入力内容をご確認下さい。', options);
+                // this.$toasted.show(error.message, options);
+                    // console.log(error);
                 })
                 .finally(() => {
                     this.loading = false;  // 最終的に必ず実行
@@ -575,8 +590,9 @@
             );
 
             if (error) {
-                this.$toasted.show(error.message, options);
-                console.log(error);
+                // this.$toasted.show(error.message, options);
+                // this.$toasted.show('処理に失敗しました。入力内容をご確認下さい。', options);
+                // console.log(error);
             } else {
                 return setupIntent.payment_method;
             }
@@ -649,8 +665,9 @@
             .then(this.setStatus)
             .catch(error=>{
                 //失敗した時の処理
-                this.$toasted.show(error.message, options);
-                console.log(error);
+                // this.$toasted.show(error.message, options);
+                this.$toasted.show('処理に失敗しました。入力内容をご確認下さい。', options);
+                // console.log(error);
             })
             .finally(() => {
                 this.loading = false;  // 最終的に必ず実行
