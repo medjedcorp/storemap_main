@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Support\Facades\Auth;
 use App\Models\Company;
-// use Laravel\Cashier\Cashier;
+use Laravel\Cashier\Cashier;
 use Closure;
 
 class CompanyCheck
@@ -28,6 +28,10 @@ class CompanyCheck
         } elseif ($company->stripe_id === null) {
             return redirect(route('payment.card'))->with('warning', '※不正利用防止の観点から、最初にお支払い情報の登録をお願い致します。');
         } elseif (!$company->subscribed('main')) {
+            return redirect('payment/card');
+        }
+
+        if (!$company->hasDefaultPaymentMethod()) {
             return redirect('payment/card');
         }
 

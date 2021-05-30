@@ -20,10 +20,10 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/', function () {
-  \Cache::store('redis')->put('Laradock', 'Awesome', 100);
-  return view('welcome');
-});
+// Route::get('/', function () {
+//   \Cache::store('redis')->put('Laradock', 'Awesome', 100);
+//   return view('welcome');
+// });
 
 Route::get('/', 'SiteTopController@index');
 Route::get('/corporate', 'ViewOnlyController@corporate');
@@ -45,7 +45,7 @@ Route::post('contact/confirm', 'ContactController@confirm')->name('contact.confi
 Route::post('contact/thanks', 'ContactController@send')->name('contact.send');
 
 Route::get('/result', 'ResultController@show');
-Route::get('/result/{pref}', 'ResultController@show');
+// Route::get('/result/{pref}', 'ResultController@pref');
 
 Route::get('ajax/smcate', 'Ajax\AjaxSmcateController@index');
 Route::get('ajax/itemlist/{id}/{keyword}', 'Ajax\AjaxItemListController@index');
@@ -59,7 +59,7 @@ Route::get('item/{sid}/{icode}', 'SkuController@index')->name('item.index');
 Route::get('smcate', 'SmCateShowController@show')->name('sm.cateShow');
 
 // stripe
-Route::post('stripe/webhook', 'StripeController@handleWebhook');
+Route::post('stripe/webhook', 'WebhookController@handleWebhook');
 
 //カレンダー見せる
 Route::get('calendar/{sid}', 'CalendarController@index')->name('calendar.index');
@@ -70,6 +70,9 @@ Route::get('calendar/load-events/{sid}', 'EventController@loadEvents')->name('ro
 Route::get('seller-register', 'Auth\RegisterController@showSellerRegistrationForm')->name('seller.register.show');
 // 既存のregisterをseller-registerへ
 Route::get('user-register', 'Auth\RegisterController@showUserRegistrationForm')->name('user.register.show');
+
+// // stripeのwebhook設定
+// Route::post('stripe/webhook', 'WebhookController@handleWebhook');
 
 // Auth::routes();
 Auth::routes(['verify' => true]);
@@ -87,11 +90,9 @@ Route::middleware('verified')->group(function () {
     Route::resource('company', 'CompanyController', ['only' => ['edit', 'update', 'show']]);
     Route::get('/company/download', 'CompanyController@download'); //会社証明ダウンロード用
 
-    // stripeのwebhook設定
-    Route::post('stripe/webhook', 'WebhookController@handleWebhook');
+
 
     Route::middleware('PaymentCheck')->group(function () {
-
       // 会社情報がなければ、会社登録へ
       // お支払い情報設定
       Route::get('/payment/card', 'SubscriptionController@index')->name('payment.card');
@@ -102,6 +103,7 @@ Route::middleware('verified')->group(function () {
       Route::post('/payment/ajax/change_plan', 'Ajax\SubscriptionController@change_plan');
       Route::post('/payment/ajax/update_card', 'Ajax\SubscriptionController@update_card');
     });
+
     Route::middleware('CompanyCheck')->group(function () {
 
       // ストア一括編集
@@ -256,7 +258,7 @@ Route::middleware('verified')->group(function () {
         // });
         Route::get('/system/prefecture', 'ViewOnlyController@prefecture');
         Route::post('/system/prefecture', 'PrefectureCsvImportController@importPrefectureCSV')->name('system.importPrefCsv');
-        Route::get('/system/prefecture/download', 'prefectureCsvExportController@download');
+        Route::get('/system/prefecture/download', 'PrefectureCsvExportController@download');
       });
     });
   });

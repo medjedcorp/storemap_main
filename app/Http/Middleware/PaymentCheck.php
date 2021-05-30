@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use Illuminate\Support\Facades\Auth;
 use App\Models\Company;
-
 use Closure;
 
 class PaymentCheck
@@ -25,6 +24,7 @@ class PaymentCheck
     if ($user->role === 'seller' && empty($user->company_id))  {
       return redirect(route('company.create'))->with('warning', '※最初に会社情報を登録してください');
     }
+
     return $next($request);
   }
 }

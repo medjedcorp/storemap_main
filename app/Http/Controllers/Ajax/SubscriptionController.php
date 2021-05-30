@@ -20,14 +20,20 @@ class SubscriptionController extends Controller
         $user = $request->user();
         $company = Company::where('id', $user->company_id)->first();
 
-        if (!$company->subscribed('main')) {
+        if (!$company->subscribed('main') and !$company->hasDefaultPaymentMethod()) {
 
             $payment_method = $request->payment_method;
             $plan = $request->plan;
             $stores_num = $request->storeNum;
 
+            if(!$plan or !$stores_num or !$payment_method){
+                // return $this->status();
+                abort(404);
+                // return response()->json([
+                //     'message' => 'Down for maintenance',
+                // ], 503);
+            }
             // $company->createAsStripeCustomer();
-            
             
             // $company->newSubscription('main', [$plan, $stores_id])->quantity($stores_num, $stores_id)->create($payment_method, [
             // トライアルあり
@@ -40,6 +46,7 @@ class SubscriptionController extends Controller
             ]);
             $company->load('subscriptions');
         }
+
         $company->status = 1;
         $company->save();
 

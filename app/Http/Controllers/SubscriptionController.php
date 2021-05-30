@@ -35,6 +35,15 @@ class SubscriptionController extends Controller
         if ($company->stripe_id) {
             // 決済情報がある場合
             $payinfo = $company->subscription('main');
+
+            if (!$company->hasDefaultPaymentMethod()) {
+                // 登録はあるけど、支払い方法を持っていない場合。
+                $time = new Carbon(Carbon::now());
+                $trialtime = $time->addDay($trial_date);
+                $trial = $trialtime->format('Y年m月d日');
+                return view('payment.card', compact('company', 'intent', 'trial', 'trial_date', 'price_list'));
+            }
+
             if ($company->subscription('main')->cancelled()) {
                 // サブスクキャンセル状態の場合
                 // 決済中の場合
@@ -137,7 +146,7 @@ class SubscriptionController extends Controller
     // {
     //     $user = Auth::user();
     //     $company = Company::where('id', $user->company_id)->first();
-        
+
     //     return $company->downloadInvoice($id, [
     //         'header' => '毎度ありがとうございます',
     //         'receipt' => '領収書',
