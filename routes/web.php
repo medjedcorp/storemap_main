@@ -20,10 +20,10 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/', function () {
-  \Cache::store('redis')->put('Laradock', 'Awesome', 100);
-  return view('welcome');
-});
+// Route::get('/', function () {
+//   \Cache::store('redis')->put('Laradock', 'Awesome', 100);
+//   return view('welcome');
+// });
 
 Route::get('/', 'SiteTopController@index');
 Route::get('/corporate', 'ViewOnlyController@corporate');
@@ -45,7 +45,7 @@ Route::post('contact/confirm', 'ContactController@confirm')->name('contact.confi
 Route::post('contact/thanks', 'ContactController@send')->name('contact.send');
 
 Route::get('/result', 'ResultController@show');
-Route::get('/result/{pref}', 'ResultController@show');
+// Route::get('/result/{pref}', 'ResultController@pref');
 
 Route::get('ajax/smcate', 'Ajax\AjaxSmcateController@index');
 Route::get('ajax/itemlist/{id}/{keyword}', 'Ajax\AjaxItemListController@index');

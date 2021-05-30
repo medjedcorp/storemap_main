@@ -22,6 +22,7 @@ class ResultController extends Controller
   public function show(Request $request)
   {
     // IDをurlから取得
+    // dd($request);
     $smid = $request->id;
     $keyword = $request->keyword;
     $lat = $request->lat;
@@ -30,11 +31,14 @@ class ResultController extends Controller
     $req_city = $request->city;
     $req_ward = $request->ward;
 
-    if(!$lat or !$lng){
-      return redirect("/result")->with([
-        'warning' => '※位置情報の取得に失敗しました。位置情報を許可して、再度ページを読み込んでください。',
-      ]);
+    if(!$req_pref){
+      if(!$lat or !$lng){
+        return redirect("/result")->with([
+          'warning' => '※位置情報の取得に失敗しました。位置情報を許可して、再度ページを読み込んでください。',
+        ]);
+      }
     }
+    // dd($req_pref);
 
     // SMカテ作成
     if ($smid) {
@@ -179,4 +183,5 @@ class ResultController extends Controller
     return view('result', compact('store_items', 'low_cates', 'keyword', 'smid', 'lat', 'lng', 'sm_name', 'psmid', 'prefectures', 'req_pref', 'req_city', 'req_ward'));
 
   }
+
 }
