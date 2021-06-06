@@ -479,9 +479,8 @@
               this.$toasted.show('ありがとうございます。画面が更新されるまでお待ちください。', successOptions);
             }).catch(error=>{
                 //失敗した時の処理
-                this.$toasted.show('処理に失敗しました。入力内容をご確認下さい。', options);
-                // this.$toasted.show(error.message, options);
-                // console.log(error);
+                // this.$toasted.show('処理に失敗しました。入力内容をご確認下さい。', options);
+                this.$toasted.show(error.response.data.message, options);
             })
             .finally(() => {
                 this.loading = false;  // 最終的に必ず実行
@@ -536,8 +535,8 @@
                 })
                 .catch(error=>{
                 //失敗した時の処理
-                    this.$toasted.show('処理に失敗しました。入力内容をご確認下さい。', options);
-                    // this.$toasted.show(error.message, options);
+                    // this.$toasted.show('処理に失敗しました。入力内容をご確認下さい。', options);
+                    this.$toasted.show(error.response.data.message, options);
                     // console.log(error);
                 })
                 .finally(() => {

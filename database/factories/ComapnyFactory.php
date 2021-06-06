@@ -19,6 +19,7 @@ $factory->define(App\Models\Company::class, function (Faker $faker) {
       'company_apart'  =>  $faker->secondaryAddress,
       'company_phone_number' =>  $faker->phoneNumber,
       'company_fax_number'      =>  $faker->phoneNumber,
+      'company_email' => $faker->unique()->safeEmail,
       'manager_name'      =>  $faker->name,
       'site_url'      =>  $faker->url,
       'maker_flag'      =>  $faker->boolean(80),

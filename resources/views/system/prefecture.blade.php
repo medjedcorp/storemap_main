@@ -19,7 +19,7 @@
           <!-- /.card-header -->
           <div class="card-body">
             <p>@lang('system.pref.download_title')</p>
-            <form method="get" action="{{ action('prefectureCsvExportController@download') }}" class="h-adr" enctype="multipart/form-data">
+            <form method="get" action="{{ action('PrefectureCsvExportController@download') }}" class="h-adr" enctype="multipart/form-data">
               @csrf
               @method('get')
               <button type="submit" class="btn btn-block btn-info btn-lg"><i class="fa fa-download"></i> @lang('csv.download')</button>

@@ -60,7 +60,10 @@ Route::get('smcate', 'SmCateShowController@show')->name('sm.cateShow');
 
 // stripe
 Route::post('stripe/webhook', 'WebhookController@handleWebhook');
-
+// Route::post(
+//   'stripe/webhook',
+//   '\App\Http\Controllers\WebhookController@handleWebhook'
+// );
 //カレンダー見せる
 Route::get('calendar/{sid}', 'CalendarController@index')->name('calendar.index');
 //カレンダーのajax

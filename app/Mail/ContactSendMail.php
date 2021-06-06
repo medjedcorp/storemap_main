@@ -38,7 +38,7 @@ class ContactSendMail extends Mailable
     {
         return $this
             ->from('system@storemap.jp')
-            ->subject('お問い合わせありがとうございます：ストアマップ')
+            ->subject('お問い合わせありがとうございます[Storemap]')
             ->view('contact.mail')
             ->with([
                 'email' => $this->email,

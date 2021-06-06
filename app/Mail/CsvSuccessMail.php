@@ -36,9 +36,9 @@ class CsvSuccessMail extends Mailable
     {
       return $this->view('emails.csv_success')
                   ->text('emails.csv_success_plain')
-                  ->subject($this->title)
+                  // ->subject($this->title)
                   ->from('system@storemap.jp')
-                  ->subject('※CSV更新処理、成功のお知らせ【Storemap】')
+                  ->subject('※CSV更新処理、成功のお知らせ[Storemap]')
                   ->with([
                         'name' => $this->name,
                         'up_fname' => $this->up_fname,

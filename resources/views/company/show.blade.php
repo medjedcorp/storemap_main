@@ -51,6 +51,9 @@
                 <dt class="col-sm-2 h6">@lang('company.show.company_f_number')</dt>
                 <dd class="col-sm-10 h6">{{ isset($company->company_fax_number) ? $company->company_fax_number : '' }}</dd>
 
+                <dt class="col-sm-2 h6">@lang('company.register.company_email')</dt>
+                <dd class="col-sm-10 h6">{{ isset($company->company_email) ? $company->company_email : '' }}</dd>
+                
                 <dt class="col-sm-2 h6">@lang('company.register.manager_name')</dt>
                 <dd class="col-sm-10 h6">{{ isset($company->manager_name) ? $company->manager_name : '※代表者名を設定してください'}}</dd>
 
