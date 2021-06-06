@@ -13,6 +13,7 @@ return [
         'company_apart'     => 'ビル、マンション名',
         'company_phone_number'     => '電話番号(ハイフンあり)',
         'company_fax_number'     => 'FAX番号(ハイフンあり)',
+        'company_email'     => '連絡用メールアドレス',
         'manager_name'     => '管理責任者名',
         'site_url'     => 'サイトURL',
         'maker_flag'     => 'メーカー設定',

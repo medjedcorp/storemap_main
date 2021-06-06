@@ -133,6 +133,18 @@
                 </div>
               </div>
               <div class="form-group row">
+                <label for="company_email" class="col-sm-2 col-form-label">@lang('company.register.company_email')
+                  @include('partials.required')</label>
+                <div class="col-sm-10">
+                  @if($errors->has('company_email'))
+                  <input type="email" class="form-control is-invalid" name="company_email" id="company_email" value="{{old('company_email')}}" aria-describedby="company_email-error" aria-invalid="true">
+                  <span id="company_email-error" class="error invalid-feedback">{{$errors->first('company_email')}}</span>
+                  @else
+                  <input type="email" class="form-control" id="company_email" name="company_email" value="{{old('company_email')}}">
+                  @endif
+                </div>
+              </div>
+              <div class="form-group row">
                 <label for="manager_name" class="col-sm-2 col-form-label">@lang('company.register.manager_name')
                   @include('partials.required')</label>
                 <div class="col-sm-10">

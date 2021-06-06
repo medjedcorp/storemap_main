@@ -61,6 +61,7 @@ class CompanyController extends Controller
     $company->company_apart = $request->company_apart;
     $company->company_phone_number = $request->company_phone_number;
     $company->company_fax_number = $request->company_fax_number;
+    $company->company_email = $request->company_email;
     $company->manager_name = $request->manager_name;
     $company->manager_kana = $request->manager_kana;
     $company->site_url = $request->site_url;
@@ -149,6 +150,7 @@ class CompanyController extends Controller
     $company->company_apart = $request->company_apart;
     $company->company_phone_number = $request->company_phone_number;
     $company->company_fax_number = $request->company_fax_number;
+    $company->company_email = $request->company_email;
     $company->manager_name = $request->manager_name;
     $company->manager_kana = $request->manager_kana;
     $company->site_url = $request->site_url;

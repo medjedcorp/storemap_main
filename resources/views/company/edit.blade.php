@@ -112,7 +112,7 @@
                   <input type="tel" class="form-control is-invalid" name="company_phone_number" id="company_phone_number" value="{{old('company_phone_number', isset($company->company_phone_number) ? $company->company_phone_number: '') }}" aria-describedby="company_phone_number-error" aria-invalid="true">
                   <span id="company_phone_number-error" class="error invalid-feedback">{{$errors->first('company_phone_number')}}</span>
                   @else
-                  <input type="text" class="form-control" id="company_phone_number" name="company_phone_number" value="{{old('company_phone_number', isset($company->company_phone_number) ? $company->company_phone_number: '') }}">
+                  <input type="tel" class="form-control" id="company_phone_number" name="company_phone_number" value="{{old('company_phone_number', isset($company->company_phone_number) ? $company->company_phone_number: '') }}">
                   @endif
                 </div>
               </div>
@@ -123,7 +123,18 @@
                   <input type="tel" class="form-control is-invalid" name="company_fax_number" id="company_fax_number" value="{{old('company_fax_number', isset($company->company_fax_number) ? $company->company_fax_number: '') }}" aria-describedby="company_fax_number-error" aria-invalid="true">
                   <span id="company_fax_number-error" class="error invalid-feedback">{{$errors->first('company_fax_number')}}</span>
                   @else
-                  <input type="text" class="form-control" id="company_fax_number" name="company_fax_number" value="{{old('company_fax_number', isset($company->company_fax_number) ? $company->company_fax_number: '') }}">
+                  <input type="tel" class="form-control" id="company_fax_number" name="company_fax_number" value="{{old('company_fax_number', isset($company->company_fax_number) ? $company->company_fax_number: '') }}">
+                  @endif
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="company_email" class="col-sm-2 col-form-label">@lang('company.register.company_email') @include('partials.required')</label>
+                <div class="col-sm-10">
+                  @if($errors->has('company_email'))
+                  <input type="email" class="form-control is-invalid" name="company_email" id="company_email" value="{{old('company_email', isset($company->company_email) ? $company->company_email: '') }}" aria-describedby="company_email-error" aria-invalid="true">
+                  <span id="company_email-error" class="error invalid-feedback">{{$errors->first('company_email')}}</span>
+                  @else
+                  <input type="email" class="form-control" id="company_email" name="company_email" value="{{old('company_email', isset($company->company_email) ? $company->company_email: '') }}">
                   @endif
                 </div>
               </div>
@@ -235,49 +246,49 @@
 @stop
 
 @section('right-sidebar')
-    <div class="os-padding text-sm">
-        <div class="os-viewport os-viewport-native-scrollbars-invisible" style="overflow-y: scroll;">
-            <div class="os-content" style="padding: 16px; height: 100%; width: 100%;">
-                <h5>会社情報の編集</h5>
-                <hr class="mb-2">
-                <p>会社情報の編集が可能です。</p>
-                <dl>
-                  <dt>会社名</dt>
-                  <dd>会社名を入力してください。</dd>
-                  <dt>会社名かな</dt>
-                  <dd>会社名をひらがなで入力してください。</dd>
-                  <dt>郵便番号</dt>
-                  <dd>会社所在地の郵便番号をハイフンありで入力してください。</dd>
-                  <dt>都道府県</dt>
-                  <dd>会社所在地の都道府県名を入力してください。</dd>
-                  <dt>市区町村</dt>
-                  <dd>会社所在地の市区町村を入力してください。</dd>
-                  <dt>町名・番地</dt>
-                  <dd>会社所在地の町名・番地を入力してください。</dd>
-                  <dt>ビル、マンション名</dt>
-                  <dd>会社所在地のビル、マンション名を入力してください。</dd>
-                  <dt>電話番号</dt>
-                  <dd>担当者へ連絡のつく電話番号を入力してください。</dd>
-                  <dt>FAX番号</dt>
-                  <dd>担当者へ連絡のつくFAX番号を入力してください。</dd>
-                  <dt>管理責任者名</dt>
-                  <dd>サイトを管理する責任者名を入力してください。</dd>
-                  <dt>管理責任者名かな</dt>
-                  <dd>サイトを管理する責任者名の読み仮名を入力してください</dd>
-                  <dt>サイトURL</dt>
-                  <dd>会社のサイトURLがあれば入力してください。</dd>
-                  <dt>メーカー設定</dt>
-                  <dd>会社がGS1事業者コード(JANコード)を取得しているメーカーの場合は、「メーカー」を選んでください。</dd>
-                  <dt>他社画像利用</dt>
-                  <dd>メーカーの場合、他社が商品画像を利用することを「許可する」か、「許可しない」かを選択できます。チェックを入れた場合、他社がカタログ機能を利用したときに、画像もコピーされます。</dd>
-                  <dt>GS1事業者コード</dt>
-                  <dd>JANコードの前7桁または9桁の値です。メーカー設定を選択している場合は必須項目となりまｓ。</dd>
-                  <dt>会社証明</dt>
-                  <dd>トラブルがあった場合、会社証明をアップロードしていると、素早く問題解決に結びつくことがあります。</dd>
-                </dl>
-            </div>
-        </div>
+<div class="os-padding text-sm">
+  <div class="os-viewport os-viewport-native-scrollbars-invisible" style="overflow-y: scroll;">
+    <div class="os-content" style="padding: 16px; height: 100%; width: 100%;">
+      <h5>会社情報の編集</h5>
+      <hr class="mb-2">
+      <p>会社情報の編集が可能です。</p>
+      <dl>
+        <dt>会社名</dt>
+        <dd>会社名を入力してください。</dd>
+        <dt>会社名かな</dt>
+        <dd>会社名をひらがなで入力してください。</dd>
+        <dt>郵便番号</dt>
+        <dd>会社所在地の郵便番号をハイフンありで入力してください。</dd>
+        <dt>都道府県</dt>
+        <dd>会社所在地の都道府県名を入力してください。</dd>
+        <dt>市区町村</dt>
+        <dd>会社所在地の市区町村を入力してください。</dd>
+        <dt>町名・番地</dt>
+        <dd>会社所在地の町名・番地を入力してください。</dd>
+        <dt>ビル、マンション名</dt>
+        <dd>会社所在地のビル、マンション名を入力してください。</dd>
+        <dt>電話番号</dt>
+        <dd>担当者へ連絡のつく電話番号を入力してください。</dd>
+        <dt>FAX番号</dt>
+        <dd>担当者へ連絡のつくFAX番号を入力してください。</dd>
+        <dt>管理責任者名</dt>
+        <dd>サイトを管理する責任者名を入力してください。</dd>
+        <dt>管理責任者名かな</dt>
+        <dd>サイトを管理する責任者名の読み仮名を入力してください</dd>
+        <dt>サイトURL</dt>
+        <dd>会社のサイトURLがあれば入力してください。</dd>
+        <dt>メーカー設定</dt>
+        <dd>会社がGS1事業者コード(JANコード)を取得しているメーカーの場合は、「メーカー」を選んでください。</dd>
+        <dt>他社画像利用</dt>
+        <dd>メーカーの場合、他社が商品画像を利用することを「許可する」か、「許可しない」かを選択できます。チェックを入れた場合、他社がカタログ機能を利用したときに、画像もコピーされます。</dd>
+        <dt>GS1事業者コード</dt>
+        <dd>JANコードの前7桁または9桁の値です。メーカー設定を選択している場合は必須項目となりまｓ。</dd>
+        <dt>会社証明</dt>
+        <dd>トラブルがあった場合、会社証明をアップロードしていると、素早く問題解決に結びつくことがあります。</dd>
+      </dl>
     </div>
+  </div>
+</div>
 @stop
 
 @section('footer')

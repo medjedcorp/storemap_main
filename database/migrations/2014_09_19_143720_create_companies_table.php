@@ -27,6 +27,7 @@ class CreateCompaniesTable extends Migration
             $table->string('company_apart',100)->nullable();
             $table->string('company_phone_number',20);
             $table->string('company_fax_number',20)->nullable();
+            $table->string('company_email');
             $table->string('manager_name',85);
             $table->string('manager_kana',85)->nullable();
             $table->string('site_url',255)->nullable();

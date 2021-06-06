@@ -28,9 +28,9 @@ class CsvErrorMail extends Mailable
     {
       return $this->view('emails.csv_erros')
                   ->text('emails.csv_erros_plain')
-                  ->subject($this->title)
+                  // ->subject($this->title)
                   ->from('system@storemap.jp')
-                  ->subject('※CSV更新処理エラーのお知らせ【Storemap】')
+                  ->subject('※CSV更新処理エラーのお知らせ[Storemap]')
                   ->with([
                         'downloadLink' => $this->path,
                         'name' => $this->name,

@@ -26,12 +26,22 @@ class SubscriptionController extends Controller
             $plan = $request->plan;
             $stores_num = $request->storeNum;
 
-            if(!$plan or !$stores_num or !$payment_method){
-                // return $this->status();
-                abort(404);
-                // return response()->json([
-                //     'message' => 'Down for maintenance',
-                // ], 503);
+            // if(!$plan or !$stores_num or !$payment_method){
+            //     abort(404); // 503
+            // }
+            
+            if(!$plan){                
+                return response()->json([
+                    'message' => 'プランを選択してください',
+                ], 404);
+            } elseif(!$stores_num) {
+                return response()->json([
+                    'message' => '店舗数を選択してください',
+                ], 404);
+            } elseif(!$payment_method) {
+                return response()->json([
+                    'message' => 'カード情報を入力してください',
+                ], 404);
             }
             // $company->createAsStripeCustomer();
             
@@ -50,7 +60,7 @@ class SubscriptionController extends Controller
         $company->status = 1;
         $company->save();
 
-        \Slack::channel('billing')->send('あっ、「'.$company->company_name.'(comapny_id:'.$company->id.')」さんが課金してくれたよ！');
+        // \Slack::channel('billing')->send('あっ、「'.$company->company_name.'(comapny_id:'.$company->id.')」さんが課金してくれたよ！');
 
         return $this->status();
 
@@ -67,7 +77,7 @@ class SubscriptionController extends Controller
         $company->status = 0;
         $company->save();
 
-        \Slack::channel('cancel')->send('あー！「'.$company->company_name.'(comapny_id:'.$company->id.')」さんが課金をキャンセルしちゃったよ。');
+        // \Slack::channel('cancel')->send('あー！「'.$company->company_name.'(comapny_id:'.$company->id.')」さんが課金をキャンセルしちゃったよ。');
 
         return $this->status();
     }
@@ -80,7 +90,7 @@ class SubscriptionController extends Controller
         // $company->subscription('main')->trialDays(1)->resume();
         $company->subscription('main')->resume();
 
-        \Slack::channel('recharge')->send('あっ、「'.$company->company_name.'(comapny_id:'.$company->id.')」さんが再課金してくれたよ。');
+        // \Slack::channel('recharge')->send('あっ、「'.$company->company_name.'(comapny_id:'.$company->id.')」さんが再課金してくれたよ。');
 
         return $this->status();
     }
@@ -95,12 +105,22 @@ class SubscriptionController extends Controller
         $company = Company::where('id', $user->company_id)->first();
         $stores_num = $request->storeNum;
 
+        if(!$plan){                
+            return response()->json([
+                'message' => 'プランを選択してください',
+            ], 404);
+        } elseif(!$stores_num) {
+            return response()->json([
+                'message' => '店舗数を選択してください',
+            ], 404);
+        }
+
         $company->subscription('main')->swap([
             $stores_id => ['quantity' => $stores_num],
             $plan
         ]);
 
-        \Slack::channel('change')->send('「'.$company->company_name.'(comapny_id:'.$company->id.')」さんが課金内容を変更したよ。');
+        // \Slack::channel('change')->send('「'.$company->company_name.'(comapny_id:'.$company->id.')」さんが課金内容を変更したよ。');
 
         return $this->status();
     }
