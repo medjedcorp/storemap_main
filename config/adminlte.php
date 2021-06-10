@@ -421,7 +421,7 @@ return [
                             'text' => 'sr_api_import',
                             'url'  => 'config/sr-import',
                             'icon' => 'nav-icon fas fa-angle-right fa-fw',
-                            'can' => 'isSeller',
+                            'can' => 'isSellerB',
                         ]
                     ],
                 ],

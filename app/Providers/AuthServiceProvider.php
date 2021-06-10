@@ -36,14 +36,20 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('isAdmin', function ($user) {
             return $user->role == 'admin';
         });
+        Gate::define('isSellerP', function ($user) {
+            return ($user->role == 'sellerp' or $user->role == 'admin');
+        });
+        Gate::define('isSellerB', function ($user) {
+            return ($user->role == 'sellerb' or $user->role == 'sellerp' or $user->role == 'admin');
+        });
         Gate::define('isSeller', function ($user) {
-            return ($user->role == 'seller' or $user->role == 'admin');
+            return ($user->role == 'seller' or $user->role == 'sellerb' or $user->role == 'sellerp' or $user->role == 'admin');
         });
         Gate::define('isStaff', function ($user) {
-            return ($user->role == 'staff' or $user->role == 'seller' or $user->role == 'admin');
+            return ($user->role == 'staff' or $user->role == 'seller' or $user->role == 'sellerb' or $user->role == 'sellerp' or $user->role == 'admin');
         });
         Gate::define('isUser', function ($user) {
-            return ($user->role == 'user' or $user->role == 'staff' or $user->role == 'seller' or $user->role == 'admin');
+            return ($user->role == 'user' or $user->role == 'staff' or $user->role == 'seller' or $user->role == 'sellerb' or $user->role == 'sellerp' or $user->role == 'admin');
         });
         Gate::define('guest', function () {
             return Auth::guest() == 'true';
