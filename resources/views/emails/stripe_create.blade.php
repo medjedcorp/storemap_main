@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{ asset('/css/mail.css') }}">
   </head>
 
-<body style="-webkit-text-size-adjust:100%; background-color: #efefef; margin:0; padding:0;">
+<body style="-webkit-text-size-adjust:100%; background-color: #edf2f7; margin:0; padding:2% 0;">
   <table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%; border:none; margin:2% auto; max-width: 600px;background-color: #ffffff; padding:0 2%;">
     <tr>
       <td style="padding-top:10px;">
