@@ -67,7 +67,7 @@ class AuthServiceProvider extends ServiceProvider
             // $subscriptionBool = $company->subscription('main')->exists();
 
             // Log::debug($subscriptionItem);
-            if (!is_null($company->subscription('main')->first())) {
+            if (!is_null($company->subscription('main')->get())) {
                 // Log::debug($company->subscription('main')->first());
                 // プラン名を取得
                 // ストア数プラン以外で、引っかかるプランを取得(店舗数)
@@ -98,7 +98,7 @@ class AuthServiceProvider extends ServiceProvider
             $company_id = $user->company_id;
             $company = Company::where('id', $company_id)->first();
 
-            if (!is_null($company->subscription('main')->first())) {
+            if (!is_null($company->subscription('main')->get())) {
                 // Log::debug($company->subscription('main')->first());
                 // プラン名を取得
                 // ストア数プラン以外で、引っかかるプランを取得(店舗数)
