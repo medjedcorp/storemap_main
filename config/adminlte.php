@@ -415,13 +415,13 @@ return [
                     'text' => 'api_config',
                     'url'  => 'config/api',
                     'icon' => 'nav-icon fas fa-cog fa-fw',
-                    'can' =>  'isSeller',
+                    'can' =>  'basic',
                     'submenu' => [
                         [
                             'text' => 'sr_api_import',
                             'url'  => 'config/sr-import',
                             'icon' => 'nav-icon fas fa-angle-right fa-fw',
-                            'can' => 'isSellerB',
+                            'can' => 'basic',
                         ]
                     ],
                 ],
