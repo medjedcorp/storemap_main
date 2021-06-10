@@ -6,6 +6,7 @@ use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvid
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Company;
+use Log;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -59,15 +60,24 @@ class AuthServiceProvider extends ServiceProvider
             $basic = config('services.stripe.basic');
             $premium = config('services.stripe.premium');
             $stores = config('services.stripe.stores');
-            
+
             $company_id = $user->company_id;
             $company = Company::where('id', $company_id)->first();
-            // ストア数プラン以外で、引っかかるプランを取得(店舗数)
-            $subscriptionItem = $company->subscription('main')->items->whereNotIn('stripe_plan', $stores)->first();
-            // プラン名を取得
-            $stripePlan = $subscriptionItem->stripe_plan;
 
-            return ($stripePlan === $basic or $stripePlan === $premium);
+            $subscriptionBool = $company->subscription('main')->exists();
+
+            // Log::debug($subscriptionItem);
+
+            if ($subscriptionBool) {
+                // プラン名を取得
+                $stripePlan = $company->subscription('main')->items->whereNotIn('stripe_plan', $stores)->pluck('stripe_plan')->first();
+                // $stripePlan = $subscriptionItem->stripe_plan;
+                // ストア数プラン以外で、引っかかるプランを取得(店舗数)
+
+                return ($stripePlan === $basic or $stripePlan === $premium);
+            }
+
+            return false;
         });
 
         Gate::define('premium', function ($user) {
@@ -76,16 +86,20 @@ class AuthServiceProvider extends ServiceProvider
             // $basic = config('services.stripe.basic');
             $premium = config('services.stripe.premium');
             $stores = config('services.stripe.stores');
-            
+
             $company_id = $user->company_id;
             $company = Company::where('id', $company_id)->first();
+            $subscriptionBool = $company->subscription('main')->exists();
 
-            // ストア数プラン以外で、引っかかるプランを取得(店舗数)
-            $subscriptionItem = $company->subscription('main')->items->whereNotIn('stripe_plan', $stores)->first();
-            // プラン名を取得
-            $stripePlan = $subscriptionItem->stripe_plan;
+            if ($subscriptionBool) {
+                // プラン名を取得
+                $stripePlan = $company->subscription('main')->items->whereNotIn('stripe_plan', $stores)->pluck('stripe_plan')->first();
+                // ストア数プラン以外で、引っかかるプランを取得(店舗数)
 
-            return ($stripePlan === $premium);
+                return ($stripePlan === $premium);
+            }
+
+            return false;
         });
     }
 }
