@@ -237,13 +237,15 @@ Route::middleware('verified')->group(function () {
       Route::put('/topics/{id}', 'TopicsController@update')->name('topics.update');
       Route::delete('/topics/{id}', 'TopicsController@destroy')->name('topics.destroy');
 
-      // スマレジAPI
-      Route::get('/config/sr-import', 'SmaregiController@show')->name('sr.product_ref');
-      Route::post('/config/sr-import/store', 'SmaregiController@store')->name('sr.tokensave');
-      Route::post('/config/sr-import/stores_id', 'SmaregiController@storesId')->name('sr.storeSave');
-      Route::post('/config/sr-import/data', 'SmarejiCsvImportController@importCSV')->name('sr.importCSV');
-      Route::get('/config/sr-import/stfdownload', 'SmaregiController@SmarejiTempFileDownload');
-      // Route::post('/config/sr-import/update', 'SmaregiController@update')->name('sr.product_update');
+      // ベーシックプラン以上利用可能
+      Route::group(['middleware' => ['auth', 'can:basic']], function () {
+        // スマレジAPI
+        Route::get('/config/sr-import', 'SmaregiController@show')->name('sr.product_ref');
+        Route::post('/config/sr-import/store', 'SmaregiController@store')->name('sr.tokensave');
+        Route::post('/config/sr-import/stores_id', 'SmaregiController@storesId')->name('sr.storeSave');
+        Route::post('/config/sr-import/data', 'SmarejiCsvImportController@importCSV')->name('sr.importCSV');
+        Route::get('/config/sr-import/stfdownload', 'SmaregiController@SmarejiTempFileDownload');
+      });
 
       // システム アドミンのみ
       Route::group(['middleware' => ['auth', 'can:isAdmin']], function () {

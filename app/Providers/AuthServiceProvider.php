@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Company;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -50,6 +51,41 @@ class AuthServiceProvider extends ServiceProvider
         });
         Gate::define('delete-user', function ($user, $company) {
             return $user->id === $company->id;
+        });
+
+        Gate::define('basic', function ($user) {
+            // プランを取得
+            // $light = config('services.stripe.light');
+            $basic = config('services.stripe.basic');
+            $premium = config('services.stripe.premium');
+            $stores = config('services.stripe.stores');
+            
+            $company_id = $user->company_id;
+            $company = Company::where('id', $company_id)->first();
+            // ストア数プラン以外で、引っかかるプランを取得(店舗数)
+            $subscriptionItem = $company->subscription('main')->items->whereNotIn('stripe_plan', $stores)->first();
+            // プラン名を取得
+            $stripePlan = $subscriptionItem->stripe_plan;
+
+            return ($stripePlan === $basic or $stripePlan === $premium);
+        });
+
+        Gate::define('premium', function ($user) {
+            // プランを取得
+            // $light = config('services.stripe.light');
+            // $basic = config('services.stripe.basic');
+            $premium = config('services.stripe.premium');
+            $stores = config('services.stripe.stores');
+            
+            $company_id = $user->company_id;
+            $company = Company::where('id', $company_id)->first();
+
+            // ストア数プラン以外で、引っかかるプランを取得(店舗数)
+            $subscriptionItem = $company->subscription('main')->items->whereNotIn('stripe_plan', $stores)->first();
+            // プラン名を取得
+            $stripePlan = $subscriptionItem->stripe_plan;
+
+            return ($stripePlan === $premium);
         });
     }
 }

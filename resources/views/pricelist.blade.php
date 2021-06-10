@@ -89,6 +89,7 @@
                         <li>画像容量10GByteまで利用可能</li>
                         <li>1店舗は追加課金なしで利用可能</li>
                         <li>{{config('services.stripe.trial')}}日の無料お試し期間</li>
+                        <li>API連携が利用可能</li>
                         <li>初期費用無料</li>
                     </ul>
                 </div>
@@ -109,6 +110,7 @@
                         <li>画像容量50GByteまで利用可能</li>
                         <li>1店舗は追加課金なしで利用可能</li>
                         <li>{{config('services.stripe.trial')}}日の無料お試し期間</li>
+                        <li>API連携が利用可能</li>
                         <li>初期費用無料</li>
                     </ul>
                 </div>
@@ -128,7 +130,7 @@
                     <ul>
                         <li>1店舗ごとに+{{number_format(config('services.stripe.add_store'))}}円/月</li>
                         <li>{{config('services.stripe.trial')}}日の無料お試し期間</li>
-                        <li>1店舗はプラン内の料金に含まれています</li>
+                        <li>最初の1店舗はプラン内の料金に含まれています。2店舗以上運用の場合、必要になります。</li>
                         <li>初期費用無料</li>
                     </ul>
                 </div>
