@@ -149,7 +149,7 @@ class StoreImportCsvJob implements ShouldQueue
       $store_img5 = 'store_img5';
       $store_info = 'store_info';
       $store_url = 'store_url';
-      $flyer_url = 'flyer_url';
+      $flyer_img = 'flyer_img';
       $floor_guide = 'floor_guide';
       $pay_info = 'pay_info';
       $access = 'access';
@@ -172,7 +172,7 @@ class StoreImportCsvJob implements ShouldQueue
         $img5_bool = in_array($store_img5, $v);
         $info_bool = in_array($store_info, $v);
         $store_bool = in_array($store_url, $v);
-        $flyer_bool = in_array($flyer_url, $v);
+        $flyer_bool = in_array($flyer_img, $v);
         $floor_bool = in_array($floor_guide, $v);
         $pay_info = in_array($pay_info, $v);
         $access = in_array($access, $v);
@@ -242,7 +242,7 @@ class StoreImportCsvJob implements ShouldQueue
               $geo->store_url = $v['store_url'];
             }
             if($flyer_bool){
-              $geo->flyer_url = $v['flyer_url'];
+              $geo->flyer_img = $v['flyer_img'];
             }
             if($floor_bool){
               $geo->floor_guide = $v['floor_guide'];
@@ -320,7 +320,7 @@ class StoreImportCsvJob implements ShouldQueue
               $geo->store_url = $v['store_url'];
             }
             if($flyer_bool){
-              $geo->flyer_url = $v['flyer_url'];
+              $geo->flyer_img = $v['flyer_img'];
             }
             if($floor_bool){
               $geo->floor_guide = $v['floor_guide'];
@@ -419,7 +419,7 @@ class StoreImportCsvJob implements ShouldQueue
             $store->store_url = $v['store_url'];
           }
           if($flyer_bool){
-            $store->flyer_url = $v['flyer_url'];
+            $store->flyer_img = $v['flyer_img'];
           }
           if($floor_bool){
             $store->floor_guide = $v['floor_guide'];

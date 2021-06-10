@@ -94,7 +94,7 @@ class StoreController extends Controller
         $store->store_info = $request->store_info;
         $store->industry_id = $request->industry_id;
         $store->store_url = $request->store_url;
-        $store->flyer_url = $request->flyer_url;
+        $store->flyer_img = $request->flyer_img;
         $store->floor_guide = $request->floor_guide;
         $store->pay_info = $request->pay_info;
         $store->access = $request->access;
@@ -290,7 +290,7 @@ class StoreController extends Controller
         $store->store_info = $request->store_info;
         $store->industry_id = $request->industry_id;
         $store->store_url = $request->store_url;
-        $store->flyer_url = $request->flyer_url;
+        $store->flyer_img = $request->flyer_img;
         $store->floor_guide = $request->floor_guide;
         $store->pay_info = $request->pay_info;
         $store->access = $request->access;

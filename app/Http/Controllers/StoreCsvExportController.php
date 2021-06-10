@@ -23,7 +23,7 @@ class StoreCsvExportController extends Controller
 
         // 取得する列を選択
         $stores = Store::where('company_id', '=', $cid)
-            ->select(['store_code', 'store_name', 'store_kana', 'store_postcode', 'prefecture', 'store_city', 'store_adnum', 'store_apart', 'store_phone_number', 'store_fax_number', 'store_email', 'pause_flag', 'store_img1', 'store_img2', 'store_img3', 'store_img4', 'store_img5', 'store_info', 'industry_id', 'store_url', 'flyer_url', 'floor_guide', 'pay_info', 'access', 'opening_hour', 'closed_day', 'parking'])->get();
+            ->select(['store_code', 'store_name', 'store_kana', 'store_postcode', 'prefecture', 'store_city', 'store_adnum', 'store_apart', 'store_phone_number', 'store_fax_number', 'store_email', 'pause_flag', 'store_img1', 'store_img2', 'store_img3', 'store_img4', 'store_img5', 'store_info', 'industry_id', 'store_url', 'flyer_img', 'floor_guide', 'pay_info', 'access', 'opening_hour', 'closed_day', 'parking'])->get();
 
         // $stores = Store::where('items.company_id', '=', $cid)
         // ->leftJoin('categories','categories.id','=','items.category_id')

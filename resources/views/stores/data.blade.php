@@ -222,8 +222,8 @@
                 </tr>
                 <tr>
                   <th>@lang('csv.store.flyer')</th>
-                  <td>@lang('csv.store.flyer_url')</td>
-                  <td>@lang('csv.store.flyer_url_exp')</td>
+                  <td>@lang('csv.store.flyer_img')</td>
+                  <td>@lang('csv.store.flyer_img_exp')</td>
                   <td>@lang('csv.url')</td>
                   <td></td>
                 </tr>

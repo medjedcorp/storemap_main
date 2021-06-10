@@ -182,7 +182,7 @@
                   class="fas fa-map-marker-alt mr-1"></i>お店の場所</a></li>
             <li class="nav-item"><a class="nav-link" href="#calendar" data-toggle="tab"><i
                   class="far fa-calendar-alt mr-1"></i>カレンダー</a></li>
-            @isset($store_info->flyer_url)
+            @isset($store_info->flyer_img)
             <li class="nav-item"><a class="nav-link" href="#flyer" data-toggle="tab"><i
                   class="fas fa-file-invoice-dollar mr-1"></i>チラシ</a></li>
             @endisset
@@ -264,11 +264,11 @@
               </div>
             </div>
 
-            @isset($store_info->flyer_url)
+            @isset($store_info->flyer_img)
             <div class="tab-pane" id="flyer">
               <div class="card">
                 <div class="card-body">
-                  <img src="{{$store_info->flyer_url}}">
+                  <img src="/storage/{{$store_info->company_id}}/stores/{{$store_info->flyer_img}}" loading="lazy">
                 </div>
               </div>
             </div>
@@ -278,7 +278,7 @@
             <div class="tab-pane" id="floor">
               <div class="card">
                 <div class="card-body">
-                  <img src="{{$store_info->floor_guide}}">
+                  <img src="/storage/{{$store_info->company_id}}/stores/{{$store_info->floor_guide}}" loading="lazy">
                 </div>
               </div>
             </div>

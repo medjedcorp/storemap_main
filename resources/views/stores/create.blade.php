@@ -161,18 +161,18 @@
                 <input form="store_form" type="url" class="form-control is-invalid" name="store_url" id="store_url" value="{{old('store_url')}}" aria-describedby="store_url-error" aria-invalid="true">
                 <span id="store_url-error" class="error invalid-feedback">{{$errors->first('store_url')}}</span>
                 @else
-                <input form="store_form" type="text" class="form-control" id="store_url" name="store_url" value="{{old('store_url')}}">
+                <input form="store_form" type="url" class="form-control" id="store_url" name="store_url" value="{{old('store_url')}}">
                 @endif
               </div>
             </div>
             <div class="form-group row">
-              <label for="flyer_url" class="col-sm-2 col-form-label">@lang('store.flyer')</label>
+              <label for="flyer_img" class="col-sm-2 col-form-label">@lang('store.flyer')</label>
               <div class="col-sm-10">
-                @if($errors->has('flyer_url'))
-                <input form="store_form" type="url" class="form-control is-invalid" name="flyer_url" id="flyer_url" value="{{old('flyer_url')}}" aria-describedby="flyer_url-error" aria-invalid="true">
-                <span id="flyer_url-error" class="error invalid-feedback">{{$errors->first('flyer_url')}}</span>
+                @if($errors->has('flyer_img'))
+                <input form="store_form" type="text" class="form-control is-invalid" name="flyer_img" id="flyer_img" value="{{old('flyer_img')}}" aria-describedby="flyer_img-error" aria-invalid="true">
+                <span id="flyer_img-error" class="error invalid-feedback">{{$errors->first('flyer_img')}}</span>
                 @else
-                <input form="store_form" type="text" class="form-control" id="flyer_url" name="flyer_url" value="{{old('flyer_url')}}">
+                <input form="store_form" type="text" class="form-control" id="flyer_img" name="flyer_img" value="{{old('flyer_img')}}">
                 @endif
               </div>
             </div>
@@ -180,7 +180,7 @@
               <label for="floor_guide" class="col-sm-2 col-form-label">@lang('store.floor')</label>
               <div class="col-sm-10">
                 @if($errors->has('floor_guide'))
-                <input form="store_form" type="url" class="form-control is-invalid" name="floor_guide" id="floor_guide" value="{{old('floor_guide')}}" aria-describedby="floor_guide-error" aria-invalid="true">
+                <input form="store_form" type="text" class="form-control is-invalid" name="floor_guide" id="floor_guide" value="{{old('floor_guide')}}" aria-describedby="floor_guide-error" aria-invalid="true">
                 <span id="floor_guide-error" class="error invalid-feedback">{{$errors->first('floor_guide')}}</span>
                 @else
                 <input form="store_form" type="text" class="form-control" id="floor_guide" name="floor_guide" value="{{old('floor_guide')}}">
@@ -467,10 +467,10 @@
                   <dd>店舗のe-mailアドレスを入力してください。</dd>
                   <dt>店舗ホームページ</dt>
                   <dd>店舗のホームページのURLを入力してください。</dd>
-                  <dt>チラシ画像URL</dt>
-                  <dd>店舗のチラシがある場合は、画像URLを登録することでサイト上に表示されます。</dd>
-                  <dt>店内見取図画像URL</dt>
-                  <dd>店内の見取り図画像がある場合は、画像URLを登録することでサイト上に表示されます。</dd>
+                  <dt>チラシ画像名</dt>
+                  <dd>店舗のチラシがある場合は、店舗画像にアップロードしたファイル名を入力することでサイト上に表示されます。</dd>
+                  <dt>店内見取図画像名</dt>
+                  <dd>店内の見取り図画像がある場合は、店舗画像にアップロードしたファイル名を入力することでサイト上に表示されます。</dd>
                   <dt>店舗状態</dt>
                   <dd>サイト上に店舗を「表示」するか、「非表示」にするかを選択出来ます。</dd>
                   <dt>店舗からのお知らせ</dt>
