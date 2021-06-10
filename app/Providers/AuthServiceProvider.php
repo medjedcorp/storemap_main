@@ -64,11 +64,9 @@ class AuthServiceProvider extends ServiceProvider
             $company_id = $user->company_id;
             $company = Company::where('id', $company_id)->first();
 
-            // $subscriptionBool = $company->subscription('main')->exists();
-
+            // Log::debug($company);
             // Log::debug($subscriptionItem);
-            if (!is_null($company->subscription('main')->get())) {
-                // Log::debug($company->subscription('main')->first());
+            if (!is_null($company) and !is_null($company->stripe_id)) {
                 // プラン名を取得
                 // ストア数プラン以外で、引っかかるプランを取得(店舗数)
                 $stripePlan = $company->subscription('main')->items->whereNotIn('stripe_plan', $stores)->pluck('stripe_plan')->first();
@@ -76,16 +74,6 @@ class AuthServiceProvider extends ServiceProvider
             } else {
                 return false;
             }
-            // if ($subscriptionBool) {
-            //     // プラン名を取得
-            //     $stripePlan = $company->subscription('main')->items->whereNotIn('stripe_plan', $stores)->pluck('stripe_plan')->first();
-            //     // $stripePlan = $subscriptionItem->stripe_plan;
-            //     // ストア数プラン以外で、引っかかるプランを取得(店舗数)
-
-            //     return ($stripePlan === $basic or $stripePlan === $premium);
-            // }
-
-            // return false;
         });
 
         Gate::define('premium', function ($user) {
@@ -97,8 +85,8 @@ class AuthServiceProvider extends ServiceProvider
 
             $company_id = $user->company_id;
             $company = Company::where('id', $company_id)->first();
-
-            if (!is_null($company->subscription('main')->get())) {
+            // Log::debug($company);
+            if (!is_null($company) and !is_null($company->stripe_id)) {
                 // Log::debug($company->subscription('main')->first());
                 // プラン名を取得
                 // ストア数プラン以外で、引っかかるプランを取得(店舗数)
