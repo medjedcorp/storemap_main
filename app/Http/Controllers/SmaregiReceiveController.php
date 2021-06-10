@@ -9,7 +9,11 @@ use App\Models\Company;
 use App\Models\Store;
 use App\Models\Item;
 use App\Models\ItemStore;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB;
+use App\Mail\DataWorkerErrorMail;
 
+// スマレジからのデータ受信用API
 class SmaregiReceiveController extends Controller
 {
     public function stockImport(Request $request)
@@ -26,26 +30,50 @@ class SmaregiReceiveController extends Controller
         $headerToken = $request->header('token');
         // $storeId =  $arr['data']['0']['rows'][$i]['productId'];
 
-        $company = Company::where('ext_id', $headerId)->where('ext_token', $headerToken)->first();
-
-
+        // 会社チェック。データない場合は、とりあえずレスポンス200を送信
+        // $cCheck = DB::table('companies')->where('ext_id', $headerId)->where('ext_token', $headerToken)->exists();
+        if(Company::where('ext_id', $headerId)->where('ext_token', $headerToken)->exists()){
+            $company = Company::where('ext_id', $headerId)->where('ext_token', $headerToken)->first();
+        } else {
+            return response(200);
+        }
+        
         // Log::debug(print_r($input, true));
         // Log::debug(print_r($params, true));
         // Log::debug(print_r($json_count, true));
         // Log::debug(print_r($arr, true));
         // Log::debug(print_r($url, true));
         // Log::debug(print_r($method, true));
+        $errorLists = [];
+
         for ($i = 0; $i < $json_count; $i++) {
             $productId = $arr['data']['0']['rows'][$i]['productId'];
             $storeId =  $arr['data']['0']['rows'][$i]['storeId'];
             $stockAmount = $arr['data']['0']['rows'][$i]['stockAmount'];
 
-            $sId = Store::where('company_id', $company->id)->where('ext_store_code', $storeId)->first();
-            $iId = Item::where('company_id', $company->id)->where('ext_product_code', $productId)->first();
+            // 存在チェック
+            // $sCheck = DB::table('stores')->where('company_id', $company->id)->where('ext_store_code', $storeId)->exists();
+            // $iCheck = DB::table('items')->where('company_id', $company->id)->where('ext_product_code', $productId)->exists();
+            $sCheck = Store::where('company_id', $company->id)->where('ext_store_code', $storeId)->exists();
+            $iCheck = Item::where('company_id', $company->id)->where('ext_product_code', $productId)->exists();
 
-            if (is_null($iId)) {
-                continue;
+            if ( $sCheck === true && $iCheck === true ) {
+                $sId = Store::where('company_id', $company->id)->where('ext_store_code', $storeId)->first();
+                $iId = Item::where('company_id', $company->id)->where('ext_product_code', $productId)->first();
+            } elseif( $sCheck === false && $iCheck === false ) {
+                $errorLists[] = $storeId .":". $productId. " (店舗コードと商品コードが見つかりませんでした。\n)";
+                // $errorSid[] = $storeId;
+                // continue;
+                // エラーの店舗コードを配列化してまとめる。重複は削除する。ない場合はコンティニューでスキップ。for文終わってからメール送信処理。
+            } elseif( $sCheck === false && $iCheck === true ) {
+                $errorLists[] = $storeId .":". $productId. " (店舗コードが見つかりませんでした。\n)";
+            } elseif( $sCheck === true && $iCheck === false ) {
+                $errorLists[] = $storeId .":". $productId. " (商品コードが見つかりませんでした。\n)";
             }
+
+            // if (is_null($iId)) {
+            //     continue;
+            // }
 
             $produt = ItemStore::where('store_id', $sId->id)->where('item_id', $iId->id)->first();
 
@@ -54,6 +82,13 @@ class SmaregiReceiveController extends Controller
 
             // \Slack::channel('work')->send($produt);
             // Log::debug(print_r($produt, true));
+        }
+        
+        if (count($errorLists) > 0) {
+            $site = "スマレジ";
+            $to = $company->company_email;
+            $company_name = $company->company_name;
+            Mail::to($to)->send(new DataWorkerErrorMail($company_name, $errorLists, $site));
         }
 
         // Log::debug(print_r($headerId, true));
@@ -121,7 +156,6 @@ class SmaregiReceiveController extends Controller
                     $produt->start_date = $startDate;
                     $produt->end_date = $endDate;
                     $produt->save();
-
                 }
             }
         } elseif ($table_name === 'Product') {
@@ -142,8 +176,6 @@ class SmaregiReceiveController extends Controller
                 $item->save();
             }
         }
-        // アイテムの数だけ回す
-
 
         // Log::debug(print_r($headerId, true));
         // Log::debug(print_r($headerToken, true));
