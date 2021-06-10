@@ -71,9 +71,9 @@
               <dd class="col-sm-9">{{ $store->store_url }}</dd>
               @endif
 
-              @if( $store->flyer_url)
+              @if( $store->flyer_img)
               <dt class="col-sm-3">@lang('store.flyer')</dt>
-              <dd class="col-sm-9">{{ $store->flyer_url }}</dd>
+              <dd class="col-sm-9">{{ $store->flyer_img }}</dd>
               @endif
 
               @if( $store->floor_guide)

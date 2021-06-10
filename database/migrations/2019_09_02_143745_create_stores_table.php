@@ -38,7 +38,7 @@ class CreateStoresTable extends Migration
             $table->unsignedInteger('industry_id');
             $table->foreign('industry_id')->references('id')->on('industries'); //外部キー参照
             $table->string('store_url')->nullable();
-            $table->string('flyer_url')->nullable();
+            $table->string('flyer_img')->nullable();
             $table->string('floor_guide')->nullable();
             $table->string('pay_info',500)->nullable()->comment('決済方法');
             $table->string('access',255)->nullable()->comment('アクセス');

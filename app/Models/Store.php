@@ -42,7 +42,7 @@ class Store extends Model
     //     'store_info',
     //     'industry_id',
     //     'store_url',
-    //     'flyer_url',
+    //     'flyer_img',
     //     'floor_guide',
     //     'location',
     // ];
