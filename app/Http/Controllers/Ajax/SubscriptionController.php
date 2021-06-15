@@ -29,12 +29,14 @@ class SubscriptionController extends Controller
             // if(!$plan or !$stores_num or !$payment_method){
             //     abort(404); // 503
             // }
-            
+            Log::debug($stores_num);
+
             if(!$plan){                
                 return response()->json([
                     'message' => 'プランを選択してください',
                 ], 404);
-            } elseif(!$stores_num) {
+            } elseif($stores_num === null) {
+                // 0件の場合は除外するから、nullだけtrue
                 return response()->json([
                     'message' => '店舗数を選択してください',
                 ], 404);
