@@ -32,6 +32,12 @@ class AjaxSmcateController extends Controller
     // $req_ward = $request->ward;
     // dd($request);
 
+    if (!$lat or !$lng) {
+      return response()->json([
+        'message' => '位置情報の取得に失敗しました',
+    ], 404);
+    }
+
     if (isset($smid)) {
       $smids = StoremapCategory::orWhereDescendantOf($smid)->pluck('id');
       $low_cates = StoremapCategory::where('parent_id', $smid)->get();
@@ -65,7 +71,7 @@ class AjaxSmcateController extends Controller
                 ->orWhere('items.tag', 'like', '%' . $keyword . '%');
             });
         })->first();
-        
+
       // お店内の合致する商品の個数をカウント
       $count_item = ItemStore::where('item_store.store_id', $store->id)->ItemSort()->with('item')
         ->whereIn('item_store.item_id', function ($query) use ($keyword, $smids) {
@@ -79,7 +85,7 @@ class AjaxSmcateController extends Controller
                 ->orWhere('items.tag', 'like', '%' . $keyword . '%');
             });
         })->count();
-        // dd($tests, $stores,$store->id,$keyword,$items,$smids,$count_item);
+      // dd($tests, $stores,$store->id,$keyword,$items,$smids,$count_item);
       // 距離変換処理
       $distance = distanceSet($store);
       // if ($store->distance > 1000) {
@@ -164,7 +170,7 @@ class AjaxSmcateController extends Controller
       //     $stocks = null;
       // }
       // dd($price_num);
-      
+
       if ($count_item > 0) {
         $store_items[] = array(
           'id' => $store->id,
