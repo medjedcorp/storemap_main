@@ -255,7 +255,7 @@
     navigator.geolocation.getCurrentPosition(function(position) {
 
       @isset($req_pref)
-      var uluru = {lat: {!! $lat !!}, lng:{!! $lng !!}}
+      var uluru = {lat: {!! $lat !!}, lng:{!! $lng !!}};
       var lat = {!! $lat !!};
       var lng = {!! $lng !!};
       @else
@@ -460,12 +460,11 @@ for (var i = 0; i < markerData.length; i++) {
             setMarker(markerD);
             // console.log(data);
           })
-          .fail(function(XMLHttpRequest, textStatus, errorThrown) {
+          .fail(function(result) {
             console.log("failed...");
-            console.log("XMLHttpRequest : " + XMLHttpRequest.status);
-            console.log("textStatus     : " + textStatus);
-            console.log("errorThrown    : " + errorThrown.message);
-            alert('Error : ' + errorThrown);
+            // console.log(result);
+            alert('Error : ' + result.responseJSON.message);
+            $('.loading').addClass('none');
           });
       });
     });

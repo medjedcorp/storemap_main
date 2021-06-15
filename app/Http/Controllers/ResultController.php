@@ -34,7 +34,7 @@ class ResultController extends Controller
     if(!$req_pref){
       if(!$lat or !$lng){
         return redirect("/result")->with([
-          'warning' => '※位置情報の取得に失敗しました。位置情報を許可して、再度ページを読み込んでください。',
+          'warning' => '※位置情報の取得に失敗しました。',
         ]);
       }
     }
@@ -129,8 +129,14 @@ class ResultController extends Controller
     } elseif ($req_pref && !$req_city && !$req_ward) {
       $first_place = Prefecture::where('region', $req_pref)->selectRaw("id,code,region,city,ward,ST_X( location ) As latitude, ST_Y( location ) As longitude ")->first();
 
-      $lat = $first_place->latitude;
-      $lng = $first_place->longitude;
+      if(empty($first_place->latitude)){
+        return redirect("/result")->with([
+          'warning' => '※位置情報の取得に失敗しました。',
+        ]);
+      } else {
+        $lat = $first_place->latitude;
+        $lng = $first_place->longitude;
+      }
 
       // 県だけの場合、市区町村のどれか持ってる
       if ($first_place->ward) {
