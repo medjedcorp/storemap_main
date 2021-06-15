@@ -29,7 +29,7 @@ class SubscriptionController extends Controller
             // if(!$plan or !$stores_num or !$payment_method){
             //     abort(404); // 503
             // }
-            Log::debug($stores_num);
+            // Log::debug($stores_num);
 
             if(!$plan){                
                 return response()->json([
