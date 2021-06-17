@@ -90,4 +90,9 @@ class ItemCsvExportController extends Controller
       return Storage::disk('local')->download('csv_template/items_m0template.csv');
     }
   }
+
+  public function SMCTempFileDownload()
+  {
+    return Storage::download('csv_template/storemap_category.xlsx');
+  }
 }
