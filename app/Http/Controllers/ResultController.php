@@ -32,10 +32,10 @@ class ResultController extends Controller
     $req_ward = $request->ward;
 
     // 位置情報を拒否した場合、latとlngがない。
-    if ($req_pref === "" and $lat === "" and $lng === "" ) {
+    if ($req_pref === "" and $lat === "" and $lng === "") {
       // var_dump($req_pref, $lat, $lng);
       return redirect("/result")->with([
-        'warning' => '※位置情報の取得に失敗しました。error_016',
+        'warning' => '※位置情報の取得に失敗しました。',
       ]);
     }
     // if (empty($req_pref) and empty($lat) and empty($lng)) {
@@ -137,7 +137,7 @@ class ResultController extends Controller
 
       if (empty($first_place->latitude)) {
         return redirect("/result")->with([
-          'warning' => '※位置情報の取得に失敗しました。error_03',
+          'warning' => '※位置情報の取得に失敗しました。',
         ]);
       } else {
         $lat = $first_place->latitude;
@@ -172,6 +172,7 @@ class ResultController extends Controller
       }
     } else {
       // 近隣のお店２００件取得
+      dd($lat,$lng);
       $store_data = Store::ActiveStore()
         ->selectRaw("id,store_name,store_img1,store_postcode,prefecture,store_city,store_adnum,store_apart,store_phone_number,store_email,store_info,ST_X( location ) As latitude, ST_Y( location ) As longitude, ROUND(ST_LENGTH(ST_GEOMFROMTEXT( CONCAT( 'LineString( " . $lat . " " . $lng . " , ', ST_X( location ) ,  ' ', ST_Y( location ) ,  ')' ))) * 112.12 * 1000 ) AS distance") // 距離を計測。distanceに距離を代入
         ->orderByRaw('distance IS NULL ASC') // Nullは最後尾に
