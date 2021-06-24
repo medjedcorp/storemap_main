@@ -30,9 +30,9 @@ class ResultController extends Controller
     $req_pref = $request->pref;
     $req_city = $request->city;
     $req_ward = $request->ward;
-    dd($lat, $lng);
-    if(!$req_pref){
-      if(!$lat or !$lng){
+    
+    if(empty($req_pref)){
+      if(empty($lat) or empty($lng)){
         return redirect("/result")->with([
           'warning' => '※位置情報の取得に失敗しました。code_01' . $lat .' & '. $lng,
         ]);
