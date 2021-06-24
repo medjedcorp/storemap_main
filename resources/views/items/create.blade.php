@@ -495,7 +495,7 @@
               <input form="item_form" type="hidden" name="company_id" value="{{$company->id}}">
               <button form="item_form" type="submit" class="btn btn-primary"><i class="fa fa-check-square"></i> @lang('item.register.submit')</button>
             </form>
-            <button class="btn btn-default float-right" onclick="location.href='{{ route('items.index') }}'"><i class="fa fa-reply"></i> @lang('common.back')</button>
+            <button class="btn btn-default float-right" onclick="location.href='{{ route('items.index')}}'"><i class="fa fa-reply"></i> @lang('common.back')</button>
           </div>
           <!-- /.card-footer -->
         </div>

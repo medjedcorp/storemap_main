@@ -229,7 +229,7 @@
                 <tr>
                   <th>@lang('csv.item.s_c_id')</th>
                   <td>@lang('csv.item.storemap_category_id')</td>
-                  <td><span class="text-danger">@lang('csv.required')</span><br>@lang('csv.item.storemap_category_id_exp')<br>
+                  <td>@lang('csv.item.storemap_category_id_exp')<br>
                     <form method="get" action="{{ action('ItemCsvExportController@SMCTempFileDownload') }}" class="h-adr" enctype="multipart/form-data">
                       @csrf
                       @method('get')

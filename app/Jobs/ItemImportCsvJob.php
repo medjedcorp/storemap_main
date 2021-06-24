@@ -107,7 +107,7 @@ class ItemImportCsvJob implements ShouldQueue
       'display_flag.boolean' => 'display_flagに0(非公開)または1(公開)を入力してください',
       'item_status.required' => 'item_statusに0(中古)または1(新品)を入力してください',
       'item_status.boolean' => 'item_statusに0(中古)または1(新品)を入力してください',
-      'storemap_category_id.required' => 'storemap_category_idを入力してください',
+      // 'storemap_category_id.required' => 'storemap_category_idを入力してください',
       'storemap_category_id.integer' => 'storemap_category_idは整数で入力してください',
       'storemap_category_id.exists' => 'storemap_category_idの値が正しくありません',
       'item_img1.img_name' => '(item_img1)jpeg,png,jpg,gif形式で指定してください',
@@ -175,7 +175,7 @@ class ItemImportCsvJob implements ShouldQueue
         'color_id' => 'sometimes|nullable|integer|exists:colors,id',
         'display_flag' => 'nullable|boolean',
         'item_status' => 'nullable|boolean',
-        'storemap_category_id' => 'sometimes|required|integer|exists:storemap_categories,id',
+        'storemap_category_id' => 'sometimes|nullable|integer|exists:storemap_categories,id',
         'item_img1' => 'nullable|img_name|max:100',
         'item_img2' => 'nullable|img_name|max:100',
         'item_img3' => 'nullable|img_name|max:100',
@@ -392,7 +392,14 @@ class ItemImportCsvJob implements ShouldQueue
         if (isset($v['item_status'])) {
           $item->item_status = $v['item_status'];
         }
-        $item->storemap_category_id = $v['storemap_category_id'];
+        if (empty($v['storemap_category_id'])) {
+          // issetでするとエラーになるよ。空の場合はnull入れる
+          $item->storemap_category_id = null;
+        } else {
+          $item->storemap_category_id = $v['storemap_category_id'];
+        }
+        // dd($item);
+        // $item->storemap_category_id = $v['storemap_category_id'];
         // if ($item->storemap_category_id == null && empty($v['storemap_category_id'])) {
         //   // dd($item);
         //   $item->storemap_category_id = 1234;
