@@ -30,14 +30,15 @@ class ResultController extends Controller
     $req_pref = $request->pref;
     $req_city = $request->city;
     $req_ward = $request->ward;
-    
-    if($req_pref->isEmpty()){
+
+    if (empty($req_pref)) {
       // dd($lat , $lng);
-      if($lat->isEmpty()){
+      if (empty($lat)) {
         return redirect("/result")->with([
           'warning' => '※位置情報の取得に失敗しました。error_01',
         ]);
-      } elseif ($lng->isEmpty()){
+      }
+      if (empty($lng)) {
         return redirect("/result")->with([
           'warning' => '※位置情報の取得に失敗しました。error_02',
         ]);
@@ -140,7 +141,7 @@ class ResultController extends Controller
     } elseif ($req_pref && !$req_city && !$req_ward) {
       $first_place = Prefecture::where('region', $req_pref)->selectRaw("id,code,region,city,ward,ST_X( location ) As latitude, ST_Y( location ) As longitude ")->first();
 
-      if(empty($first_place->latitude)){
+      if (empty($first_place->latitude)) {
         return redirect("/result")->with([
           'warning' => '※位置情報の取得に失敗しました。error_03',
         ]);
@@ -198,7 +199,5 @@ class ResultController extends Controller
     $store_items = collect($store_items); // 配列をコレクションに変換
 
     return view('result', compact('store_items', 'low_cates', 'keyword', 'smid', 'lat', 'lng', 'sm_name', 'psmid', 'prefectures', 'req_pref', 'req_city', 'req_ward'));
-
   }
-
 }
