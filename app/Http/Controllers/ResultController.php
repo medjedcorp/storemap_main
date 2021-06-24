@@ -22,7 +22,7 @@ class ResultController extends Controller
   public function show(Request $request)
   {
     // IDをurlから取得
-    // dd($request);
+    dd($request);
     $smid = $request->id;
     $keyword = $request->keyword;
     $lat = $request->lat;
