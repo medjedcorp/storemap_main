@@ -180,7 +180,7 @@ class ResultController extends Controller
         ->limit(200)
         ->get();
 
-      dd($store_data);
+      // dd($store_data);
     }
 
     if ($smid && $keyword) {
