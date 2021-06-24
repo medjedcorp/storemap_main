@@ -732,7 +732,8 @@
             // console.log(value);
             var lat = value.coords.latitude;
             var lng = value.coords.longitude;
-
+            // console.log(lat);
+            // console.log(lng);
             $('<input>').attr({
               'type': 'hidden',
               'name': 'lat',
