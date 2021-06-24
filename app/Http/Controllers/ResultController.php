@@ -33,16 +33,17 @@ class ResultController extends Controller
 
     if (empty($req_pref)) {
       // dd($lat , $lng);
-      if (empty($lat)) {
-        return redirect("/result")->with([
-          'warning' => '※位置情報の取得に失敗しました。error_01',
-        ]);
-      }
       if (empty($lng)) {
         return redirect("/result")->with([
           'warning' => '※位置情報の取得に失敗しました。error_02',
         ]);
       }
+      if (empty($lat)) {
+        return redirect("/result")->with([
+          'warning' => '※位置情報の取得に失敗しました。error_01',
+        ]);
+      }
+
       // if(empty($lat) or empty($lng)){
       // 1行で書くとエラー
       //   return redirect("/result")->with([
