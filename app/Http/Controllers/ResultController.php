@@ -32,12 +32,21 @@ class ResultController extends Controller
     $req_ward = $request->ward;
     
     if(empty($req_pref)){
-      dd($lat , $lng);
-      if(empty($lat) or empty($lng)){
+      // dd($lat , $lng);
+      if(empty($lat)){
         return redirect("/result")->with([
-          'warning' => '※位置情報の取得に失敗しました。code_01' . $lat .' & '. $lng,
+          'warning' => '※位置情報の取得に失敗しました。error_01',
+        ]);
+      } elseif (empty($lng)){
+        return redirect("/result")->with([
+          'warning' => '※位置情報の取得に失敗しました。error_02',
         ]);
       }
+      // if(empty($lat) or empty($lng)){
+      //   return redirect("/result")->with([
+      //     'warning' => '※位置情報の取得に失敗しました。error_01',
+      //   ]);
+      // }
     }
     // dd($req_pref);
 
@@ -132,7 +141,7 @@ class ResultController extends Controller
 
       if(empty($first_place->latitude)){
         return redirect("/result")->with([
-          'warning' => '※位置情報の取得に失敗しました。code_02',
+          'warning' => '※位置情報の取得に失敗しました。error_03',
         ]);
       } else {
         $lat = $first_place->latitude;
