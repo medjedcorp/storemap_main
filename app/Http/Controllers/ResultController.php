@@ -32,34 +32,18 @@ class ResultController extends Controller
     $req_ward = $request->ward;
 
     // 位置情報を拒否した場合、latとlngがない。
-    if (empty($req_pref) and empty($lat) and empty($lng)) {
-      var_dump($req_pref, $lat, $lng);
+    if ($req_pref === "" and $lat === "" and $lng === "" ) {
+      // var_dump($req_pref, $lat, $lng);
       return redirect("/result")->with([
-        'warning' => '※位置情報の取得に失敗しました。error_015',
+        'warning' => '※位置情報の取得に失敗しました。error_016',
       ]);
-      // dd($request, $lat, $lng);
-      // dd($lat , $lng);
-      // var_dump($lat);
-      // if (empty($lat)) {
-      //   var_dump($lat);
-      //   return redirect("/result")->with([
-      //     'warning' => '※位置情報の取得に失敗しました。error_01',
-      //   ]);
-      // }
-      // if (empty($lng)) {
-      //   return redirect("/result")->with([
-      //     'warning' => '※位置情報の取得に失敗しました。error_02',
-      //   ]);
-      // }
-
-
-      // if(empty($lat) or empty($lng)){
-      // 1行で書くとエラー
-      //   return redirect("/result")->with([
-      //     'warning' => '※位置情報の取得に失敗しました。error_01',
-      //   ]);
-      // }
     }
+    // if (empty($req_pref) and empty($lat) and empty($lng)) {
+    //   var_dump($req_pref, $lat, $lng);
+    //   return redirect("/result")->with([
+    //     'warning' => '※位置情報の取得に失敗しました。error_015',
+    //   ]);
+    // }
     // dd($req_pref);
 
     // SMカテ作成
