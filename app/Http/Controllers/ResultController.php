@@ -22,7 +22,7 @@ class ResultController extends Controller
   public function show(Request $request)
   {
     // IDをurlから取得
-    dd($request);
+    // dd($request);
     $smid = $request->id;
     $keyword = $request->keyword;
     $lat = $request->lat;
@@ -30,7 +30,7 @@ class ResultController extends Controller
     $req_pref = $request->pref;
     $req_city = $request->city;
     $req_ward = $request->ward;
-
+    dd($lat, $lng);
     if(!$req_pref){
       if(!$lat or !$lng){
         return redirect("/result")->with([
