@@ -31,9 +31,9 @@ class ResultController extends Controller
     $req_city = $request->city;
     $req_ward = $request->ward;
 
-    if (empty($req_pref) and empty($lat) or empty($lng)) {
+    if (!isset($req_pref) and !isset($lat) or !isset($lng)) {
       return redirect("/result")->with([
-        'warning' => '※位置情報の取得に失敗しました。error_01',
+        'warning' => '※位置情報の取得に失敗しました。error_012',
       ]);
       // dd($lat , $lng);
       // var_dump($lat);
