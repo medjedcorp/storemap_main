@@ -31,14 +31,16 @@ class ResultController extends Controller
     $req_city = $request->city;
     $req_ward = $request->ward;
 
-    if (empty($request->pref)) {
+    if (empty($req_pref)) {
       // dd($lat , $lng);
-      if (empty($request->lng)) {
+      var_dump($lat);
+      if (empty($lat)) {
+        var_dump($lat);
         return redirect("/result")->with([
           'warning' => '※位置情報の取得に失敗しました。error_01',
         ]);
       }
-      if (empty($request->lat)) {
+      if (empty($lng)) {
         return redirect("/result")->with([
           'warning' => '※位置情報の取得に失敗しました。error_02',
         ]);
