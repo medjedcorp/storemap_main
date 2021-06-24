@@ -33,7 +33,6 @@ class ResultController extends Controller
     
     if(empty($req_pref)){
       if(empty($lat) or empty($lng)){
-        dd($lat, $lng);
         return redirect("/result")->with([
           'warning' => '※位置情報の取得に失敗しました。code_01' . $lat .' & '. $lng,
         ]);
