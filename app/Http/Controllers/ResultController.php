@@ -34,7 +34,7 @@ class ResultController extends Controller
     if(!$req_pref){
       if(!$lat or !$lng){
         return redirect("/result")->with([
-          'warning' => '※位置情報の取得に失敗しました。',
+          'warning' => '※位置情報の取得に失敗しました。code_01',
         ]);
       }
     }
@@ -131,7 +131,7 @@ class ResultController extends Controller
 
       if(empty($first_place->latitude)){
         return redirect("/result")->with([
-          'warning' => '※位置情報の取得に失敗しました。',
+          'warning' => '※位置情報の取得に失敗しました。code_02',
         ]);
       } else {
         $lat = $first_place->latitude;
