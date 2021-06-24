@@ -33,7 +33,7 @@ class ResultController extends Controller
 
     if (empty($req_pref)) {
       // dd($lat , $lng);
-      var_dump($lat);
+      // var_dump($lat);
       if (empty($lat)) {
         var_dump($lat);
         return redirect("/result")->with([
