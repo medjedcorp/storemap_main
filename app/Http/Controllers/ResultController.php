@@ -94,7 +94,7 @@ class ResultController extends Controller
         ->where('store_city', 'like', '%' . $first_place->city . '%')
         ->where('store_adnum', 'like', '%' . $first_place->ward . '%')
         ->ActiveStore()
-        ->selectRaw("id,store_name,store_img1,store_postcode,prefecture,store_city,store_adnum,store_apart,store_phone_number,store_email,store_info,ST_X( location ) As latitude, ST_Y( location ) As longitude, ROUND(ST_LENGTH(ST_GEOMFROMTEXT( CONCAT( 'LineString( " . $lat . " " . $lng . " , ', ST_X( location ) ,  ' ', ST_Y( location ) ,  ')' ))) * 112.12 * 1000 ) AS distance") // 距離を計測。distanceに距離を代入
+        ->selectRaw("id,store_name,store_img1,store_postcode,prefecture,store_city,store_adnum,store_apart,store_phone_number,store_email,store_info,ST_X( location ) As latitude, ST_Y( location ) As longitude, ROUND(ST_LENGTH(ST_GEOMFROMTEXT( CONCAT( 'LineString( {$lat} {$lng} , ', ST_X( location ) ,  ' ', ST_Y( location ) ,  ')' ))) * 112.12 * 1000 ) AS distance") // 距離を計測。distanceに距離を代入
         ->orderByRaw('distance IS NULL ASC') // Nullは最後尾に
         ->orderBy('distance', 'ASC') //遠い順、近い順
         ->limit(200)
@@ -115,7 +115,7 @@ class ResultController extends Controller
           ->where('store_city', 'like', '%' . $first_place->city . '%')
           ->where('store_adnum', 'like', '%' . $first_place->ward . '%')
           ->ActiveStore()
-          ->selectRaw("id,store_name,store_img1,store_postcode,prefecture,store_city,store_adnum,store_apart,store_phone_number,store_email,store_info,ST_X( location ) As latitude, ST_Y( location ) As longitude, ROUND(ST_LENGTH(ST_GEOMFROMTEXT( CONCAT( 'LineString( " . $lat . " " . $lng . " , ', ST_X( location ) ,  ' ', ST_Y( location ) ,  ')' ))) * 112.12 * 1000 ) AS distance") // 距離を計測。distanceに距離を代入
+          ->selectRaw("id,store_name,store_img1,store_postcode,prefecture,store_city,store_adnum,store_apart,store_phone_number,store_email,store_info,ST_X( location ) As latitude, ST_Y( location ) As longitude, ROUND(ST_LENGTH(ST_GEOMFROMTEXT( CONCAT( 'LineString( {$lat} {$lng} , ', ST_X( location ) ,  ' ', ST_Y( location ) ,  ')' ))) * 112.12 * 1000 ) AS distance") // 距離を計測。distanceに距離を代入
           ->orderByRaw('distance IS NULL ASC') // Nullは最後尾に
           ->orderBy('distance', 'ASC') //遠い順、近い順
           ->limit(200)
@@ -126,7 +126,7 @@ class ResultController extends Controller
         $store_data = Store::where('prefecture', $first_place->region)
           ->where('store_city', 'like', '%' . $first_place->city . '%')
           ->ActiveStore()
-          ->selectRaw("id,store_name,store_img1,store_postcode,prefecture,store_city,store_adnum,store_apart,store_phone_number,store_email,store_info,ST_X( location ) As latitude, ST_Y( location ) As longitude, ROUND(ST_LENGTH(ST_GEOMFROMTEXT( CONCAT( 'LineString( " . $lat . " " . $lng . " , ', ST_X( location ) ,  ' ', ST_Y( location ) ,  ')' ))) * 112.12 * 1000 ) AS distance") // 距離を計測。distanceに距離を代入
+          ->selectRaw("id,store_name,store_img1,store_postcode,prefecture,store_city,store_adnum,store_apart,store_phone_number,store_email,store_info,ST_X( location ) As latitude, ST_Y( location ) As longitude, ROUND(ST_LENGTH(ST_GEOMFROMTEXT( CONCAT( 'LineString( {$lat} {$lng} , ', ST_X( location ) ,  ' ', ST_Y( location ) ,  ')' ))) * 112.12 * 1000 ) AS distance") // 距離を計測。distanceに距離を代入
           ->orderByRaw('distance IS NULL ASC') // Nullは最後尾に
           ->orderBy('distance', 'ASC') //遠い順、近い順
           ->limit(200)
@@ -153,7 +153,7 @@ class ResultController extends Controller
           ->where('store_city', 'like', '%' . $first_place->city . '%')
           ->where('store_adnum', 'like', '%' . $first_place->ward . '%')
           ->ActiveStore()
-          ->selectRaw("id,store_name,store_img1,store_postcode,prefecture,store_city,store_adnum,store_apart,store_phone_number,store_email,store_info,ST_X( location ) As latitude, ST_Y( location ) As longitude, ROUND(ST_LENGTH(ST_GEOMFROMTEXT( CONCAT( 'LineString( " . $lat . " " . $lng . " , ', ST_X( location ) ,  ' ', ST_Y( location ) ,  ')' ))) * 112.12 * 1000 ) AS distance") // 距離を計測。distanceに距離を代入
+          ->selectRaw("id,store_name,store_img1,store_postcode,prefecture,store_city,store_adnum,store_apart,store_phone_number,store_email,store_info,ST_X( location ) As latitude, ST_Y( location ) As longitude, ROUND(ST_LENGTH(ST_GEOMFROMTEXT( CONCAT( 'LineString( {$lat} {$lng} , ', ST_X( location ) ,  ' ', ST_Y( location ) ,  ')' ))) * 112.12 * 1000 ) AS distance") // 距離を計測。distanceに距離を代入
           ->orderByRaw('distance IS NULL ASC') // Nullは最後尾に
           ->orderBy('distance', 'ASC') //遠い順、近い順
           ->limit(200)
@@ -162,13 +162,21 @@ class ResultController extends Controller
         $req_city = $first_place->city;
         // 市だけの場合
         $store_data = Store::where('prefecture', $first_place->region)
-          ->where('store_city', 'like', '%' . $first_place->city . '%')
-          ->ActiveStore()
-          ->selectRaw("id,store_name,store_img1,store_postcode,prefecture,store_city,store_adnum,store_apart,store_phone_number,store_email,store_info,ST_X( location ) As latitude, ST_Y( location ) As longitude, ROUND(ST_LENGTH(ST_GEOMFROMTEXT( CONCAT( 'LineString( " . $lat . " " . $lng . " , ', ST_X( location ) ,  ' ', ST_Y( location ) ,  ')' ))) * 112.12 * 1000 ) AS distance") // 距離を計測。distanceに距離を代入
-          ->orderByRaw('distance IS NULL ASC') // Nullは最後尾に
-          ->orderBy('distance', 'ASC') //遠い順、近い順
-          ->limit(200)
-          ->get();
+        ->where('store_city', 'like', '%' . $first_place->city . '%')
+        ->ActiveStore()
+        ->selectRaw("id,store_name,store_img1,store_postcode,prefecture,store_city,store_adnum,store_apart,store_phone_number,store_email,store_info,ST_X( location ) As latitude, ST_Y( location ) As longitude, ROUND(ST_LENGTH(ST_GEOMFROMTEXT( CONCAT( 'LineString( {$lat} {$lng} , ', ST_X( location ) ,  ' ', ST_Y( location ) ,  ')' ))) * 112.12 * 1000 ) AS distance") // 距離を計測。distanceに距離を代入
+        ->orderByRaw('distance IS NULL ASC') // Nullは最後尾に
+        ->orderBy('distance', 'ASC') //遠い順、近い順
+        ->limit(200)
+        ->get();
+        // $store_data = Store::where('prefecture', $first_place->region)
+        //   ->where('store_city', 'like', '%' . $first_place->city . '%')
+        //   ->ActiveStore()
+        //   ->selectRaw("id,store_name,store_img1,store_postcode,prefecture,store_city,store_adnum,store_apart,store_phone_number,store_email,store_info,ST_X( location ) As latitude, ST_Y( location ) As longitude, ROUND(ST_LENGTH(ST_GEOMFROMTEXT( CONCAT( 'LineString( " . $lat . " " . $lng . " , ', ST_X( location ) ,  ' ', ST_Y( location ) ,  ')' ))) * 112.12 * 1000 ) AS distance") // 距離を計測。distanceに距離を代入
+        //   ->orderByRaw('distance IS NULL ASC') // Nullは最後尾に
+        //   ->orderBy('distance', 'ASC') //遠い順、近い順
+        //   ->limit(200)
+        //   ->get();
       }
     } else {
       // 近隣のお店２００件取得
