@@ -37,7 +37,7 @@ class ResultController extends Controller
     if ($req_pref === null and $lat === null and $lng === null) {
       // if ($req_pref === "" and $lat === "" and $lng === "") {
       // var_dump($req_pref, $lat, $lng);
-      return redirect("/result")->with([
+      return view("/result")->with([
         'warning' => '※位置情報の取得に失敗しました。',
       ]);
     }
