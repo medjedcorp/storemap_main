@@ -173,21 +173,22 @@ class ResultController extends Controller
     } else {
       // 近隣のお店２００件取得
 
-      // $store_data = Store::ActiveStore()
-      // ->selectRaw("id,store_name,store_img1,store_postcode,prefecture,store_city,store_adnum,store_apart,store_phone_number,store_email,store_info,ST_X( location ) As latitude, ST_Y( location ) As longitude, ROUND(ST_LENGTH(ST_GEOMFROMTEXT( CONCAT( 'LINESTRING( " . $lat . " " . $lng . " ,ST_X( location ) ST_Y( location ))'))) * 112.12 * 1000 ) AS distance") // 距離を計測。distanceに距離を代入
-      // ->orderByRaw('distance IS NULL ASC') // Nullは最後尾に
-      // ->orderBy('distance', 'ASC') //遠い順、近い順
-      // ->limit(200)
-      // ->get();
-
       $store_data = Store::ActiveStore()
-        ->selectRaw("id,store_name,store_img1,store_postcode,prefecture,store_city,store_adnum,store_apart,store_phone_number,store_email,store_info,ST_X( location ) As latitude, ST_Y( location ) As longitude, ROUND(ST_LENGTH(ST_GEOMFROMTEXT( CONCAT( 'LINESTRING( " . $lat . " " . $lng . " , ', ST_X( location ) ,  ' ', ST_Y( location ) , ')' ))) * 112.12 * 1000 ) AS distance") // 距離を計測。distanceに距離を代入
+        ->selectRaw("id,store_name,store_img1,store_postcode,prefecture,store_city,store_adnum,store_apart,store_phone_number,store_email,store_info,ST_X( location ) As latitude, ST_Y( location ) As longitude, ROUND(ST_LENGTH(ST_GEOMFROMTEXT( CONCAT( 'LINESTRING( {$lat} {$lng} , ', ST_X( location ) ,  ' ', ST_Y( location ) , ')' ))) * 112.12 * 1000 ) AS distance") // 距離を計測。distanceに距離を代入
         ->orderByRaw('distance IS NULL ASC') // Nullは最後尾に
         ->orderBy('distance', 'ASC') //遠い順、近い順
         ->limit(200)
         ->get();
 
-      dd($store_data , $lat ,$lng);
+
+      // $store_data = Store::ActiveStore()
+      //   ->selectRaw("id,store_name,store_img1,store_postcode,prefecture,store_city,store_adnum,store_apart,store_phone_number,store_email,store_info,ST_X( location ) As latitude, ST_Y( location ) As longitude, ROUND(ST_LENGTH(ST_GEOMFROMTEXT( CONCAT( 'LINESTRING( " . $lat . " " . $lng . " , ', ST_X( location ) ,  ' ', ST_Y( location ) , ')' ))) * 112.12 * 1000 ) AS distance") // 距離を計測。distanceに距離を代入
+      //   ->orderByRaw('distance IS NULL ASC') // Nullは最後尾に
+      //   ->orderBy('distance', 'ASC') //遠い順、近い順
+      //   ->limit(200)
+      //   ->get();
+
+      // dd($store_data , $lat ,$lng);
     }
 
     if ($smid && $keyword) {
