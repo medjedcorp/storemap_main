@@ -16,7 +16,13 @@
       ストアマップは位置情報を利用して、近隣店舗で販売中の商品や価格を検索できるように設計されたサービスです。掲載を希望される場合は加盟店登録して頂き、商品の在庫や価格情報の登録が必要となります。在庫システムやPOSとの連携を広げることで、更新の手間を省けるように機能を拡張していく予定です。現在加盟店登録キャンペーン実施中で1年間無料でご利用いただけます。
     </div>
 
-    @include('partials.warning')
+    @if (session('warning'))
+    <div class="alert alert-warning alert-dismissible">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+      <h5><i class="icon fas fa-exclamation-triangle"></i> {{ session('warning') }}</h5>
+      画面を更新してください。
+    </div>
+    @endif
     
     <div class="row">
       <!-- left column -->
