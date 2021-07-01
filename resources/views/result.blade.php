@@ -51,7 +51,11 @@
           <div class="card-header ui-sortable-handle" style="cursor: move;">
             <h3 class="card-title">
               <i class="fas fa-shopping-cart"></i>
-              <span id="countArea">近隣：{{count($store_items)}}件の情報を表示</span>
+              <span id="countArea">近隣：
+              @isset($store_items)
+              {{count($store_items)}}
+              @endisset
+              件の情報を表示</span>
             </h3>
             <div class="card-tools">
               <ul class="nav nav-pills ml-auto">
