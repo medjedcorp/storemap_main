@@ -671,7 +671,6 @@
       font-size: 1.25rem;
       width: 50px;
     }
-
     #prefArea h6 {
       line-height: 1.35rem;
       font-size: 0.9rem;
@@ -688,7 +687,6 @@
       font-size: 1.5rem;
       width: 60px;
     }
-
     #prefArea h6 {
       line-height: 1.5rem;
       font-size: 1rem;
@@ -720,24 +718,22 @@
   function getPosition() {
     return new Promise((res, rej) => {
       navigator.geolocation.getCurrentPosition(res, rej);
-      event.preventDefault();
     });
   }
 
   // キーワード検索時に緯度経度を追加
-  $(function() {
+  $(function () {
     for (let i = 0; i < 24; i++) {
-      $('#posSend' + i).on('click', function() {
+      $('#posSend' + i).on('click', function () {
         getPosition()
-        .then(function(value) {
-          
+          .then(function (value) {
+            // event.preventDefault();
             var form = $('#posSend' + i).parents('form');
             // console.log(value);
             var lat = value.coords.latitude;
             var lng = value.coords.longitude;
             // console.log(lat);
             // console.log(lng);
-            
             $('<input>').attr({
               'type': 'hidden',
               'name': 'lat',
@@ -752,53 +748,51 @@
             }).appendTo(form);
             form.submit();
           })
-          .catch(function(value) {
+          .catch(function (value) {
             // 非同期処理が失敗した場合
-            window.alert("位置情報の取得に失敗しました。位置情報の利用を許可してください。");
+            window.alert("位置情報の取得に失敗しました");
           });
-
       });
-
     }
   })
+
 </script>
 
 <script type="text/javascript">
-  const maps = ["/svg/map-mobile.svg"]
-  const containers = document.querySelectorAll('.map')
+const maps = [ "/svg/map-mobile.svg"]
+const containers = document.querySelectorAll( '.map' )
 
-  maps.forEach(async (map, index) => {
-    const res = await fetch(map)
+maps.forEach( async ( map, index ) => {
+  const res = await fetch( map )
 
-    if (res.ok) {
-      const svg = await res.text()
-      containers[index].innerHTML = svg
-      const prefs = document.querySelectorAll('.geolonia-svg-map .prefecture')
+  if ( res.ok ) {
+    const svg = await res.text()
+    containers[ index ].innerHTML = svg
+    const prefs = document.querySelectorAll( '.geolonia-svg-map .prefecture' )
 
-      prefs.forEach((pref) => {
-        pref.addEventListener('mouseover', (event) => {
-          event.currentTarget.style.fill = "#ffc107"
-        })
-        pref.addEventListener('mouseleave', (event) => {
-          event.currentTarget.style.fill = ""
-        })
-        // マウスクリック時のイベント
-        pref.addEventListener('click', (event) => {
-          location.href = `/result/${event.currentTarget.dataset.code}`
-        })
-      })
-    }
-  })
+    prefs.forEach( ( pref ) => {
+      pref.addEventListener( 'mouseover', ( event ) => {
+        event.currentTarget.style.fill = "#ffc107"
+      } )
+      pref.addEventListener( 'mouseleave', ( event ) => {
+        event.currentTarget.style.fill = ""
+      } )
+          // マウスクリック時のイベント
+      pref.addEventListener( 'click', ( event ) => {
+        location.href = `/result/${event.currentTarget.dataset.code}`
+      } )
+    } )
+  }
+} )
 </script>
-
 <script type="text/javascript">
   // フォームのレスポンシブ対応
-  $(function() {
-    if (window.matchMedia("(max-width:640px)").matches) {
-      $('#search_class').addClass('input-group-sm').removeClass('input-group-lg'); //640px以下の場合
-    } else {
-      $('#search_class').addClass('input-group-lg').removeClass('input-group-sm'); //640px以上の場合
-    }
+  $(function(){
+  if(window.matchMedia("(max-width:640px)").matches){
+    $('#search_class').addClass('input-group-sm').removeClass('input-group-lg');  //640px以下の場合
+   }else{
+    $('#search_class').addClass('input-group-lg').removeClass('input-group-sm');  //640px以上の場合
+  }
   })
 </script>
 
