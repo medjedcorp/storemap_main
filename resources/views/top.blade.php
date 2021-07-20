@@ -784,7 +784,7 @@
         })
         // マウスクリック時のイベント
         pref.addEventListener('click', (event) => {
-          location.href = `/result/${event.currentTarget.dataset.code}`
+          location.href = `/result?pref=${event.currentTarget.dataset.code}`
         })
       })
     }
