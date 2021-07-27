@@ -7,6 +7,14 @@
 @stop
 
 @section('content')
+
+<div id="loading">
+    <div class="spinner">
+    <i class="fas fa-3x fa-sync-alt fa-spin"></i>
+    <p style="margin:5px 0 0 -5px;">Loading...</p>
+    </div>
+</div>
+
 <section class="content">
   <div class="container-fluid">
 
@@ -150,6 +158,29 @@
     opacity: 0;
   }
 
+  #loading {
+    width: 100vw;
+    height: 100vh;
+    transition: all 1s;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    background-color: rgba( 0, 0, 0, .5);
+  }
+  .spinner {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    top: 50%;
+    left: 50%;
+    z-index: 50;
+    color:#fff;
+  }
+  .loaded {
+    opacity: 0;
+    visibility: hidden;
+  }
   .products-list .product-img img {
     height: 64px;
     width: 64px;
@@ -367,6 +398,10 @@
 $(window).on('load', function() {
   // 初回ロード時に起動
   firstMarker(markerD);
+
+  const spinner = document.getElementById('loading');
+  spinner.classList.add('loaded');
+
 })
 
 
