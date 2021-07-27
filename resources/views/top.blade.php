@@ -100,7 +100,7 @@
                 <input type="text" class="form-control" placeholder="商品名 / サービス名 / JANコードで検索" name="keyword" value="">
                 <input type="hidden" value="" name="id">
                 <span class="input-group-append">
-                  <button type="button" class="btn btn-primary" id="posSend1"><i class="fas fa-search"></i> 検索</button>
+                  <button onclick="searchBox()" class="btn btn-primary"><i class="fas fa-search"></i> 検索</button>
                 </span>
               </div>
             </form>
@@ -130,7 +130,7 @@
                 <form action="/result" method="GET" name="form2">
                   @csrf
                   <input type="hidden" value="1" name="id">
-                  <a href="javascript:form2.submit()" class="d-flex pointer-set" id="posSend2">
+                  <a href="javascript:form2.submit()" class="d-flex pointer-set" id="posSend0">
                     <div class="info-box">
                       <span class="info-box-icon bg-pink"><i class="fas fa-tshirt"></i></span>
 
@@ -148,7 +148,7 @@
                 <form action="/result" method="GET" name="form3">
                   @csrf
                   <input type="hidden" value="2" name="id">
-                  <a href="javascript:form3.submit()" class="d-flex pointer-set" id="posSend3">
+                  <a href="javascript:form3.submit()" class="d-flex pointer-set" id="posSend1">
                     <div class="info-box">
                       <span class="info-box-icon bg-pink"><i class="fas fa-pizza-slice"></i></span>
 
@@ -165,7 +165,7 @@
                 <form action="/result" method="GET" name="form4">
                   @csrf
                   <input type="hidden" value="21" name="id">
-                  <a href="javascript:form4.submit()" class="d-flex pointer-set" id="posSend4">
+                  <a href="javascript:form4.submit()" class="d-flex pointer-set" id="posSend2">
                     <div class="info-box">
                       <span class="info-box-icon bg-pink"><i class="fas fa-ticket-alt"></i></span>
 
@@ -182,7 +182,7 @@
                 <form action="/result" method="GET" name="form5">
                   @csrf
                   <input type="hidden" value="14" name="id">
-                  <a href="javascript:form5.submit()" class="d-flex pointer-set" id="posSend5">
+                  <a href="javascript:form5.submit()" class="d-flex pointer-set" id="posSend3">
                     <div class="info-box">
                       <span class="info-box-icon bg-pink"><i class="fas fa-tools"></i></span>
 
@@ -199,7 +199,7 @@
                 <form action="/result" method="GET" name="form6">
                   @csrf
                   <input type="hidden" value="20" name="id">
-                  <a href="javascript:form6.submit()" class="d-flex pointer-set" id="posSend6">
+                  <a href="javascript:form6.submit()" class="d-flex pointer-set" id="posSend4">
                     <div class="info-box">
                       <span class="info-box-icon bg-pink"><i class="fas fa-compact-disc"></i></span>
 
@@ -216,7 +216,7 @@
                 <form action="/result" method="GET" name="form7">
                   @csrf
                   <input type="hidden" value="9" name="id">
-                  <a href="javascript:form7.submit()" class="d-flex pointer-set" id="posSend7">
+                  <a href="javascript:form7.submit()" class="d-flex pointer-set" id="posSend5">
                     <div class="info-box">
                       <span class="info-box-icon bg-pink"><i class="fas fa-campground"></i></span>
 
@@ -233,7 +233,7 @@
                 <form action="/result" method="GET" name="form8">
                   @csrf
                   <input type="hidden" value="7" name="id">
-                  <a href="javascript:form8.submit()" class="d-flex pointer-set" id="posSend8">
+                  <a href="javascript:form8.submit()" class="d-flex pointer-set" id="posSend6">
                     <div class="info-box">
                       <span class="info-box-icon bg-pink"><i class="fas fa-pencil-alt"></i></span>
 
@@ -250,7 +250,7 @@
                 <form action="/result" method="GET" name="form9">
                   @csrf
                   <input type="hidden" value="17" name="id">
-                  <a href="javascript:form9.submit()" class="d-flex pointer-set" id="posSend9">
+                  <a href="javascript:form9.submit()" class="d-flex pointer-set" id="posSend7">
                     <div class="info-box">
                       <span class="info-box-icon bg-pink"><i class="fas fa-gamepad"></i></span>
 
@@ -267,7 +267,7 @@
                 <form action="/result" method="GET" name="form10">
                   @csrf
                   <input type="hidden" value="11" name="id">
-                  <a href="javascript:form10.submit()" class="d-flex pointer-set" id="posSend10">
+                  <a href="javascript:form10.submit()" class="d-flex pointer-set" id="posSend8">
                     <div class="info-box">
                       <span class="info-box-icon bg-pink"><i class="fas fa-hand-sparkles"></i></span>
 
@@ -284,7 +284,7 @@
                 <form action="/result" method="GET" name="form11">
                   @csrf
                   <input type="hidden" value="8" name="id">
-                  <a href="javascript:form11.submit()" class="d-flex pointer-set" id="posSend11">
+                  <a href="javascript:form11.submit()" class="d-flex pointer-set" id="posSend9">
                     <div class="info-box">
                       <span class="info-box-icon bg-pink"><i class="fas fa-futbol"></i></span>
 
@@ -301,7 +301,7 @@
                 <form action="/result" method="GET" name="form12">
                   @csrf
                   <input type="hidden" value="3" name="id">
-                  <a href="javascript:form12.submit()" class="d-flex pointer-set" id="posSend12">
+                  <a href="javascript:form12.submit()" class="d-flex pointer-set" id="posSend10">
                     <div class="info-box">
                       <span class="info-box-icon bg-pink"><i class="fas fa-mobile-alt"></i></span>
 
@@ -318,7 +318,7 @@
                 <form action="/result" method="GET" name="form13">
                   @csrf
                   <input type="hidden" value="10" name="id">
-                  <a href="javascript:form13.submit()" class="d-flex pointer-set" id="posSend13">
+                  <a href="javascript:form13.submit()" class="d-flex pointer-set" id="posSend11">
                     <div class="info-box">
                       <span class="info-box-icon bg-pink"><i class="fab fa-gratipay"></i></span>
 
@@ -335,7 +335,7 @@
                 <form action="/result" method="GET" name="form14">
                   @csrf
                   <input type="hidden" value="4" name="id">
-                  <a href="javascript:form14.submit()" class="d-flex pointer-set" id="posSend14">
+                  <a href="javascript:form14.submit()" class="d-flex pointer-set" id="posSend12">
                     <div class="info-box">
                       <span class="info-box-icon bg-pink"><i class="fas fa-tv"></i></span>
 
@@ -352,7 +352,7 @@
                 <form action="/result" method="GET" name="form15">
                   @csrf
                   <input type="hidden" value="13" name="id">
-                  <a href="javascript:form15.submit()" class="d-flex pointer-set" id="posSend15">
+                  <a href="javascript:form15.submit()" class="d-flex pointer-set" id="posSend13">
                     <div class="info-box">
                       <span class="info-box-icon bg-pink"><i class="fas fa-cat"></i></span>
 
@@ -369,7 +369,7 @@
                 <form action="/result" method="GET" name="form16">
                   @csrf
                   <input type="hidden" value="16" name="id">
-                  <a href="javascript:form16.submit()" class="d-flex pointer-set" id="posSend16">
+                  <a href="javascript:form16.submit()" class="d-flex pointer-set" id="posSend14">
                     <div class="info-box">
                       <span class="info-box-icon bg-pink"><i class="fas fa-baby"></i></span>
 
@@ -386,7 +386,7 @@
                 <form action="/result" method="GET" name="form17">
                   @csrf
                   <input type="hidden" value="22" name="id">
-                  <a href="javascript:form17.submit()" class="d-flex pointer-set" id="posSend17">
+                  <a href="javascript:form17.submit()" class="d-flex pointer-set" id="posSend15">
                     <div class="info-box">
                       <span class="info-box-icon bg-pink"><i class="fas fa-concierge-bell"></i></span>
 
@@ -403,7 +403,7 @@
                 <form action="/result" method="GET" name="form18">
                   @csrf
                   <input type="hidden" value="6" name="id">
-                  <a href="javascript:form18.submit()" class="d-flex pointer-set" id="posSend18">
+                  <a href="javascript:form18.submit()" class="d-flex pointer-set" id="posSend16">
                     <div class="info-box">
                       <span class="info-box-icon bg-pink"><i class="fas fa-couch"></i></span>
 
@@ -420,7 +420,7 @@
                 <form action="/result" method="GET" name="form19">
                   @csrf
                   <input type="hidden" value="17" name="id">
-                  <a href="javascript:form19.submit()" class="d-flex pointer-set" id="posSend19">
+                  <a href="javascript:form19.submit()" class="d-flex pointer-set" id="posSend17">
                     <div class="info-box">
                       <span class="info-box-icon bg-pink"><i class="fas fa-blender"></i></span>
 
@@ -437,7 +437,7 @@
                 <form action="/result" method="GET" name="form20">
                   @csrf
                   <input type="hidden" value="12" name="id">
-                  <a href="javascript:form20.submit()" class="d-flex pointer-set" id="posSend20">
+                  <a href="javascript:form20.submit()" class="d-flex pointer-set" id="posSend18">
                     <div class="info-box">
                       <span class="info-box-icon bg-pink"><i class="fas fa-tree"></i></span>
 
@@ -454,7 +454,7 @@
                 <form action="/result" method="GET" name="form21">
                   @csrf
                   <input type="hidden" value="18" name="id">
-                  <a href="javascript:form21.submit()" class="d-flex pointer-set" id="posSend21">
+                  <a href="javascript:form21.submit()" class="d-flex pointer-set" id="posSend19">
                     <div class="info-box">
                       <span class="info-box-icon bg-pink"><i class="fas fa-drum"></i></span>
 
@@ -471,7 +471,7 @@
                 <form action="/result" method="GET" name="form22">
                   @csrf
                   <input type="hidden" value="15" name="id">
-                  <a href="javascript:form22.submit()" class="d-flex pointer-set" id="posSend22">
+                  <a href="javascript:form22.submit()" class="d-flex pointer-set" id="posSend20">
                     <div class="info-box">
                       <span class="info-box-icon bg-pink"><i class="fas fa-car-side"></i></span>
 
@@ -488,7 +488,7 @@
                 <form action="/result" method="GET" name="form23">
                   @csrf
                   <input type="hidden" value="19" name="id">
-                  <a href="javascript:form23.submit()" class="d-flex pointer-set" id="posSend23">
+                  <a href="javascript:form23.submit()" class="d-flex pointer-set" id="posSend21">
                     <div class="info-box">
                       <span class="info-box-icon bg-pink"><i class="fas fa-book-open"></i></span>
 
@@ -720,13 +720,14 @@
   function getPosition() {
     return new Promise((res, rej) => {
       navigator.geolocation.getCurrentPosition(res, rej);
+      // ↓これがないと位置情報確認画面で止まらない
       event.preventDefault();
     });
   }
 
   // キーワード検索時に緯度経度を追加
   $(function() {
-    for (let i = 0; i < 24; i++) {
+    for (let i = 0; i < 22; i++) {
       $('#posSend' + i).on('click', function() {
         getPosition()
         .then(function(value) {
@@ -735,8 +736,8 @@
             // console.log(value);
             var lat = value.coords.latitude;
             var lng = value.coords.longitude;
-            // console.log(lat);
-            // console.log(lng);
+            console.log(lat);
+            console.log(lng);
             
             $('<input>').attr({
               'type': 'hidden',
@@ -756,11 +757,38 @@
             // 非同期処理が失敗した場合
             window.alert("位置情報の取得に失敗しました。位置情報の利用を許可してください。");
           });
-
       });
-
     }
-  })
+  });
+
+  function searchBox() {
+    getPosition()
+        .then(function(value) {
+
+            var lat = value.coords.latitude;
+            var lng = value.coords.longitude;
+            // console.log(lat);
+            // console.log(lng);
+            
+            $('<input>').attr({
+              'type': 'hidden',
+              'name': 'lat',
+              'id': 'lat',
+              'value': lat
+            }).appendTo(document.form1);
+            $('<input>').attr({
+              'type': 'hidden',
+              'name': 'lng',
+              'id': 'lng',
+              'value': lng
+            }).appendTo(document.form1);
+            document.form1.submit();
+          })
+          .catch(function(value) {
+            // 非同期処理が失敗した場合
+            window.alert("位置情報の取得に失敗しました。位置情報の利用を許可してください。");
+          });
+  }
 </script>
 
 <script type="text/javascript">
