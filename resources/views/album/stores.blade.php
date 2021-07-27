@@ -163,7 +163,7 @@
 <script type="text/javascript">
   Dropzone.options.imageUpload = {
     dictDefaultMessage: 'アップロードするファイルをここへドロップしてください。<br>縦横の最大幅は750pxです。大きさを超える場合は、自動でリサイズされます。<br>同じファイル名の画像がある場合は上書きされます。<br>アップロードした画像は画像管理の店舗画像より確認できます。<br>日本語や全角文字を含むファイル名は、自動で半角ファイル名へリネームされます。<br>１度にアップできる枚数は５００枚までです。',
-    dictInvalidFileType: "jpgとgifとpngファイルのみアップロード可能です。",
+    dictInvalidFileType: "jpg、gif、pngファイルのみアップロード可能です。",
     paramName: 'images',
     resizeWidth: 750,
     resizeHeight: 750,
@@ -180,19 +180,23 @@
       $(file.previewElement).find('.dz-success-mark').show();
       $(file.previewElement).find('[data-dz-name]').text(response.success);
 
-      console.log(response.success);
+      // console.log(response.success);
     },
     error: function(file, response) {
       file.previewElement.classList.add('dz-error');
       $(file.previewElement).find('.dz-error-message').text(response);
     },
     maxfilesreached: function(file, response) {
+      // maxFilesをオーバーした場合、アラートを表示
       alert("※Error：画像枚数オーバー。１度にアップできる画像は５００枚までです。５００枚までの画像を登録します。");
+      // 処理を中断。これがないとオーバーした分のエラーポップアップが表示されます。
       response.preventDefault();
     },
     queuecomplete: function(file, response) {
+      // アップロード完了時の処理。アラートを表示
       alert("アップロードが完了しました");
-      location.reload()
+      // OKすると画面リロード
+      location.reload();
     },
   };
 </script>
