@@ -725,7 +725,7 @@
     });
   }
 
-  // キーワード検索時に緯度経度を追加
+  // SMカテゴリ検索時に緯度経度を追加
   $(function() {
     for (let i = 0; i < 22; i++) {
       $('#posSend' + i).on('click', function() {
@@ -761,6 +761,8 @@
     }
   });
 
+ // 検索BOXに緯度経度追加
+ // smカテゴリと一緒にしないのは、on('click'だとsubmitが発火しないため
   function searchBox() {
     getPosition()
         .then(function(value) {

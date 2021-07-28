@@ -264,15 +264,25 @@ class ItemStoreImportCsvJob implements ShouldQueue
           }
           if(isset($v['price'])){
             $itemstore->price = $v['price'];
+          } else {
+            // これがないと0が代入される
+            $itemstore->price = null;
           }
           if(isset($v['value'])){
             $itemstore->value = $v['value'];
+          } else {
+            // これがないと0が代入される
+            $itemstore->value = null;
           }
           if(isset($v['start_date'])){
             $itemstore->start_date = date('Y-m-d H:i:s', strtotime($v['start_date'] .':00' ));
+          } else {
+            $itemstore->start_date = null;
           }
           if(isset($v['end_date'])){
             $itemstore->end_date  = date('Y-m-d H:i:s', strtotime($v['end_date'] .':00' ));
+          } else {
+            $itemstore->end_date = null;
           }
           if(isset($v['sort_num'])){
             $itemstore->sort_num = $v['sort_num'];
