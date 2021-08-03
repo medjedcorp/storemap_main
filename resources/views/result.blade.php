@@ -35,7 +35,7 @@
     <div class="row">
       <!-- left column -->
       <div class="col-xl-7 col-12">
-        <div class="card card-success card-outline">
+        <div class="card card-secondary card-outline">
           <div class="card-header border-0 ui-sortable-handle" style="cursor: move;">
             <h3 class="card-title">
               <i class="fas fa-map-marker-alt mr-1"></i>
@@ -55,7 +55,7 @@
         </div>
       </div>
       <div id="sidebox" class="col-xl-5 col-12">
-        <div class="card">
+        <div class="card card-secondary card-outline">
           <div class="card-header ui-sortable-handle" style="cursor: move;">
             <h3 class="card-title">
               <i class="fas fa-shopping-cart"></i>
@@ -248,16 +248,31 @@
   .card-footer{
     background-color: #fff;
   }
+
+  /* .map-store .card-title{
+      font-size: .7rem;
+  }
+  .map-store .card-text{
+      font-size: .6rem;
+  }
+  .map-store .card-body{
+      padding: .5rem;
+  } */
+  .gm-style img {
+    max-width: 100%;
+  }
+  .gmpopup{
+    margin: 0;
+  }
   @media (min-width: 576px) {
     #countArea,
     #item-list-btn,
     #store-list-btn {
-      font-size: 0.85rem;
+      font-size: 0.7rem;
     }
   }
 
   @media (min-width: 768px) {
-
     #countArea,
     #item-list-btn,
     #store-list-btn {
@@ -266,6 +281,10 @@
   }
 
   @media (min-width: 992px) {
+    /* .map-store .card-body{
+      padding: 1rem;
+  } */
+
   }
 
   @media (min-width: 1200px) {
@@ -275,6 +294,10 @@
     .item-scroll {
     height: 75vh;
     }
+    /* .map-store .card-body{
+      padding: 1.25rem;
+  } */
+
   }
 </style>
 @stop
@@ -447,13 +470,44 @@ for (var i = 0; i < markerData.length; i++) {
     });
     // 吹き出しの追加
     // infoWindow[i] = new google.maps.InfoWindow({
-    //   content: '<div class="card mb-2" style="width: 100%;"><div class="row no-gutters"><div class="col-6 store_thum"><img src="{{ asset('img/no_image.png') }}" data-src="/storage/' + cid + '/stores/' + simg1 + '" class="card-img lazyload" alt="' + markerData[i]['store_name'] + '" decoding="async" onerror="this.src=' + noimg + ';"></div><div class="col-6" style="display:block;"><div class="card-body"><h3 class="card-title">' + markerData[i]['store_name'] + '</h3><p class="card-text">' + storeInfoBox + '〒&nbsp;' + markerData[i]['store_postcode'] + '<br><i class="fas fa-map-marker-alt"></i>&nbsp;' + markerData[i]['store_address'] + '<br><i class="fas fa-phone"></i>&nbsp;' + markerData[i]['store_phone_number']  + emailBox + '</p><p class="card-text mb-1"><a href="#store-area" onclick="itemclick(' + sid + ',' + keyword + ')" class="store_search_item" data-toggle="tab">検索商品の一覧を表示&nbsp;<i class="fas fa-arrow-circle-right"></i></a></p><p class="card-text"><a href="/store/' + sid + '" class="store_search">店舗と取扱商品を表示&nbsp;<i class="fas fa-arrow-circle-right"></i></a></p></div></div></div></div>'
+    //   content: '<div class="card mb-2" style="width: 100%;"><div class="row no-gutters map-store"><div class="col-sm-6 col-3 store_thum"><img src="{{ asset('img/no_image.png') }}" data-src="/storage/' + cid + '/stores/' + simg1 + '" class="card-img lazyload" alt="' + markerData[i]['store_name'] + '" decoding="async" onerror="this.src=' + noimg + ';"></div><div class="col-sm-6 col-9" style="display:block;"><div class="card-body"><h3 class="card-title">' + markerData[i]['store_name'] + '</h3><p class="card-text">〒&nbsp;' + markerData[i]['store_postcode'] + '<br><i class="fas fa-map-marker-alt"></i>&nbsp;' + markerData[i]['store_address'] + '<br><i class="fas fa-phone"></i>&nbsp;' + markerData[i]['store_phone_number']  + emailBox + '</p><p class="card-text mb-1"><a href="#store-area" onclick="itemclick(' + sid + ',' + keyword + ')" class="store_search_item" data-toggle="tab">検索商品の一覧を表示&nbsp;<i class="fas fa-arrow-circle-right"></i></a></p><p class="card-text"><a href="/store/' + sid + '" class="store_search">店舗と取扱商品を表示&nbsp;<i class="fas fa-arrow-circle-right"></i></a></p></div></div></div></div>'
     // });
+
+// infoWindow[i] = new google.maps.InfoWindow({
+//       content: '<div class="card mb-2" style="width: 100%;"><div class="bd-placeholder-img card-img-top" width="100%" height="180"><img src="{{ asset('img/no_image.png') }}" data-src="/storage/' + cid + '/stores/' + simg1 + '" class="card-img lazyload" alt="' + markerData[i]['store_name'] + '" decoding="async" onerror="this.src=' + noimg + ';"></div><div class="card-body"><h5 class="card-title">' + markerData[i]['store_name'] + '</h5><p class="card-text">〒&nbsp;' + markerData[i]['store_postcode'] + '<br><i class="fas fa-map-marker-alt"></i>&nbsp;' + markerData[i]['store_address'] + '<br><i class="fas fa-phone"></i>&nbsp;' + markerData[i]['store_phone_number']  + emailBox + '</p><p class="card-text mb-1"><a href="#store-area" onclick="itemclick(' + sid + ',' + keyword + ')" class="store_search_item" data-toggle="tab">検索商品の一覧を表示&nbsp;<i class="fas fa-arrow-circle-right"></i></a></p><p class="card-text"><small class="text-muted"><a href="#store-area" onclick="itemclick(' + sid + ',' + keyword + ')" class="store_search_item" data-toggle="tab">検索商品の一覧を表示&nbsp;<i class="fas fa-arrow-circle-right"></i></a></p><p class="card-text"><a href="/store/' + sid + '" class="store_search">店舗と取扱商品を表示&nbsp;<i class="fas fa-arrow-circle-right"></i></a></small></p></div></div>'
+//     });
+
+    // infoWindow[i] = new google.maps.InfoWindow({
+    //   content: '<div class="row"><div class="col-sm-6 col-3"><img src="{{ asset('img/no_image.png') }}" data-src="/storage/' + cid + '/stores/' + simg1 + '" class="card-img lazyload" alt="' + markerData[i]['store_name'] + '" decoding="async" onerror="this.src=' + noimg + ';"></div><h4 class="col-sm-6 col-9">' + markerData[i]['store_name'] + '</h4><p class="col-12">〒&nbsp;' + markerData[i]['store_postcode'] + '<br><i class="fas fa-map-marker-alt"></i>&nbsp;' + markerData[i]['store_address'] + '<br><i class="fas fa-phone"></i>&nbsp;' + markerData[i]['store_phone_number']  + emailBox + '</p><p class="mb-1"><a href="#store-area" onclick="itemclick(' + sid + ',' + keyword + ')" class="store_search_item" data-toggle="tab">検索商品の一覧を表示&nbsp;<i class="fas fa-arrow-circle-right"></i></a></p><p class="card-text"><a href="/store/' + sid + '" class="store_search">店舗と取扱商品を表示&nbsp;<i class="fas fa-arrow-circle-right"></i></a></p></div>'
+    // });
+
     infoWindow[i] = new google.maps.InfoWindow({
-      content: '<div class="card mb-2" style="width: 100%;"><div class="row no-gutters"><div class="col-6 store_thum"><img src="{{ asset('img/no_image.png') }}" data-src="/storage/' + cid + '/stores/' + simg1 + '" class="card-img lazyload" alt="' + markerData[i]['store_name'] + '" decoding="async" onerror="this.src=' + noimg + ';"></div><div class="col-6" style="display:block;"><div class="card-body"><h3 class="card-title">' + markerData[i]['store_name'] + '</h3><p class="card-text">〒&nbsp;' + markerData[i]['store_postcode'] + '<br><i class="fas fa-map-marker-alt"></i>&nbsp;' + markerData[i]['store_address'] + '<br><i class="fas fa-phone"></i>&nbsp;' + markerData[i]['store_phone_number']  + emailBox + '</p><p class="card-text mb-1"><a href="#store-area" onclick="itemclick(' + sid + ',' + keyword + ')" class="store_search_item" data-toggle="tab">検索商品の一覧を表示&nbsp;<i class="fas fa-arrow-circle-right"></i></a></p><p class="card-text"><a href="/store/' + sid + '" class="store_search">店舗と取扱商品を表示&nbsp;<i class="fas fa-arrow-circle-right"></i></a></p></div></div></div></div>'
+      content: '<div class="row gmpopup"><div class="col-sm-6 col-5 store_thum"><img src="{{ asset('img/no_image.png') }}" data-src="/storage/' + cid + '/stores/' + simg1 + '" class="img-thumbnail lazyload" alt="' + markerData[i]['store_name'] + '" decoding="async" onerror="this.src=' + noimg + ';"></div><div class="col-sm-6 col-7 d-none  d-md-block d-lg-block d-xl-block"><h4 class="h5"><a href="/store/' + sid + '" class="store_search">' + markerData[i]['store_name'] + '</a></h4><p class="col-12">〒&nbsp;' + markerData[i]['store_postcode'] + '<br><i class="fas fa-map-marker-alt"></i>&nbsp;' + markerData[i]['store_address'] + '<br><i class="fas fa-phone"></i>&nbsp;' + markerData[i]['store_phone_number']  + '</p><p class="mb-1"><a href="#store-area" onclick="itemclick(' + sid + ',' + keyword + ')" class="store_search_item btn btn-primary" data-toggle="tab"><i class="fas fa-list"></i>&nbsp;検索商品一覧</a></p></div><h4 class="h6 col-sm-6 col-7 d-block d-md-none d-lg-none d-xl-none text-sm"><a href="/store/' + sid + '" class="store_search">' + markerData[i]['store_name'] + '</a></h4><div class="col-12 d-block d-md-none d-lg-none d-xl-none"><p style="line-height:1.2rem;">〒&nbsp;' + markerData[i]['store_postcode'] + '<br><i class="fas fa-map-marker-alt"></i>&nbsp;' + markerData[i]['store_address'] + '<br><i class="fas fa-phone"></i>&nbsp;' + markerData[i]['store_phone_number']  + '</p><p class="mb-1"><a href="#store-area" onclick="itemclick(' + sid + ',' + keyword + ')" class="store_search_item btn btn-primary" data-toggle="tab"><i class="fas fa-list"></i>&nbsp;検索商品一覧</a></p></div></iv>'
     });
+
+
+
+    // <div class="row gmpopup">
+    //   <div class="col-sm-6 col-3 store_thum"><img src="{{ asset('img/no_image.png') }}" data-src="/storage/' + cid + '/stores/' + simg1 + '" class="img-thumbnail lazyload" alt="' + markerData[i]['store_name'] + '" decoding="async" onerror="this.src=' + noimg + ';"></div>
+    //   <div class="col-sm-6 col-9 d-sm-none d-md-block">
+    //     <h4 class="h5"><a href="/store/' + sid + '" class="store_search">' + markerData[i]['store_name'] + '</a></h4>
+    //       <p class="col-12">〒&nbsp;' + markerData[i]['store_postcode'] + '<br><i class="fas fa-map-marker-alt"></i>&nbsp;' + markerData[i]['store_address'] + '<br><i class="fas fa-phone"></i>&nbsp;' + markerData[i]['store_phone_number']  + emailBox + '</p>
+    //       <p class="mb-1"><a href="#store-area" onclick="itemclick(' + sid + ',' + keyword + ')" class="store_search_item" data-toggle="tab">検索商品の一覧を表示&nbsp;<i class="fas fa-arrow-circle-right"></i></a></p>
+    //   </div>
+    //   <h4 class="col-sm-6 col-9 d-none d-sm-block d-md-none"><a href="/store/' + sid + '" class="store_search">' + markerData[i]['store_name'] + '</a></h4>
+    //   <div class="col-12 d-none d-sm-block d-md-none">
+    //     <p>〒&nbsp;' + markerData[i]['store_postcode'] + '<br><i class="fas fa-map-marker-alt"></i>&nbsp;' + markerData[i]['store_address'] + '<br><i class="fas fa-phone"></i>&nbsp;' + markerData[i]['store_phone_number']  + emailBox + '</p>
+    //     <p class="mb-1"><a href="#store-area" onclick="itemclick(' + sid + ',' + keyword + ')" class="store_search_item" data-toggle="tab">検索商品の一覧を表示&nbsp;<i class="fas fa-arrow-circle-right"></i></a></p>
+    //   </div>
+    // </div>
+
     // マーカーにクリックイベントを追加
     markerEvent(i);
+
+    // console.log(markerLatLng);
+    // console.log(marker[i]);
+    // console.log(infoWindow[i]);
+
   }
 }
 
@@ -579,7 +633,7 @@ for (var i = 0; i < markerData.length; i++) {
         //   content: '<div class="card mb-2" style="width: 100%;"><div class="row no-gutters"><div class="col-6 store_thum"><img src="{{ asset('img/no_image.png') }}" data-src="/storage/' + cid + '/stores/' + simg1 + '" class="card-img lazyload" alt="' + markerData[i]['store_name'] + '" decoding="async" onerror="this.src=' + noimg + ';"></div><div class="col-6" style="display:block;"><div class="card-body"><h3 class="card-title">' + markerData[i]['store_name'] + '</h3><p class="card-text">' + storeInfoBox + '〒&nbsp;' + markerData[i]['store_postcode'] + '<br><i class="fas fa-map-marker-alt"></i>&nbsp;' + markerData[i]['store_address'] + '<br><i class="fas fa-phone"></i>&nbsp;' + markerData[i]['store_phone_number'] + emailBox + '</p><p class="card-text mb-1"><a href="#store-area" onclick="itemclick(' + sid + ',' + keyword + ')" class="store_search_item" data-toggle="tab">検索商品の一覧を表示&nbsp;<i class="fas fa-arrow-circle-right"></i></a></p><p class="card-text"><a href="/store/' + sid + '" class="store_search">店舗と取扱商品を表示&nbsp;<i class="fas fa-arrow-circle-right"></i></a></p></div></div></div></div>'
         // });
         infoWindow[i] = new google.maps.InfoWindow({
-          content: '<div class="card mb-2" style="width: 100%;"><div class="row no-gutters"><div class="col-6 store_thum"><img src="{{ asset('img/no_image.png') }}" data-src="/storage/' + cid + '/stores/' + simg1 + '" class="card-img lazyload" alt="' + markerData[i]['store_name'] + '" decoding="async" onerror="this.src=' + noimg + ';"></div><div class="col-6" style="display:block;"><div class="card-body"><h3 class="card-title">' + markerData[i]['store_name'] + '</h3><p class="card-text">〒&nbsp;' + markerData[i]['store_postcode'] + '<br><i class="fas fa-map-marker-alt"></i>&nbsp;' + markerData[i]['store_address'] + '<br><i class="fas fa-phone"></i>&nbsp;' + markerData[i]['store_phone_number'] + emailBox + '</p><p class="card-text mb-1"><a href="#store-area" onclick="itemclick(' + sid + ',' + keyword + ')" class="store_search_item" data-toggle="tab">検索商品の一覧を表示&nbsp;<i class="fas fa-arrow-circle-right"></i></a></p><p class="card-text"><a href="/store/' + sid + '" class="store_search">店舗と取扱商品を表示&nbsp;<i class="fas fa-arrow-circle-right"></i></a></p></div></div></div></div>'
+          content: '<div class="row gmpopup"><div class="col-sm-6 col-5 store_thum"><img src="{{ asset('img/no_image.png') }}" data-src="/storage/' + cid + '/stores/' + simg1 + '" class="img-thumbnail lazyload" alt="' + markerData[i]['store_name'] + '" decoding="async" onerror="this.src=' + noimg + ';"></div><div class="col-sm-6 col-7 d-none  d-md-block d-lg-block d-xl-block"><h4 class="h5"><a href="/store/' + sid + '" class="store_search">' + markerData[i]['store_name'] + '</a></h4><p class="col-12">〒&nbsp;' + markerData[i]['store_postcode'] + '<br><i class="fas fa-map-marker-alt"></i>&nbsp;' + markerData[i]['store_address'] + '<br><i class="fas fa-phone"></i>&nbsp;' + markerData[i]['store_phone_number']  + '</p><p class="mb-1"><a href="#store-area" onclick="itemclick(' + sid + ',' + keyword + ')" class="store_search_item btn btn-primary" data-toggle="tab"><i class="fas fa-list"></i>&nbsp;検索商品一覧</a></p></div><h4 class="h6 col-sm-6 col-7 d-block d-md-none d-lg-none d-xl-none text-sm"><a href="/store/' + sid + '" class="store_search">' + markerData[i]['store_name'] + '</a></h4><div class="col-12 d-block d-md-none d-lg-none d-xl-none"><p style="line-height:1.2rem;">〒&nbsp;' + markerData[i]['store_postcode'] + '<br><i class="fas fa-map-marker-alt"></i>&nbsp;' + markerData[i]['store_address'] + '<br><i class="fas fa-phone"></i>&nbsp;' + markerData[i]['store_phone_number']  + '</p><p class="mb-1"><a href="#store-area" onclick="itemclick(' + sid + ',' + keyword + ')" class="store_search_item btn btn-primary" data-toggle="tab"><i class="fas fa-list"></i>&nbsp;検索商品一覧</a></p></div></iv>'
         });
 
         sidebar1_html += '<li class="item"><div class="product-img"><img src="{{ asset('img/no_image.png') }}" alt="' + markerData[i]['product_name'] + '" data-src="/storage/' + cid + '/items/' + iimg1 + '" class="img-size-64 lazyload" decoding="async" onerror="this.src=' + noimg + ';"></div><div class="product-info"><a href="javascript:myclick(' + i + ')" class="product-title">' + markerData[i]['product_name'] + '<div class="float-right"><h6 class="text-right"><span class="badge badge-danger">' + markerData[i]['price'] + '</span></h6><h6 class="text-right"><span class="badge badge-success" style="display:block;"> 距離:約' + markerData[i]['distance'] + '</span></h6><h6 class="text-right"><span class="badge badge-warning" style="display:block;">' + stocks + '</span></h6></div><span class="product-description"><i class="fas fa-store"></i>&nbsp;' + markerData[i]['store_name'] + '</span><small class="text-muted">Last updated&nbsp;' + update + '<br>他' + markerData[i]['count'] + '件のHit</small></a></div></li>';
@@ -655,8 +709,8 @@ for (var i = 0; i < markerData.length; i++) {
 
       function storeItem(itemData) {
 
-        console.log(itemData);
-        console.log(itemData.length);
+        // console.log(itemData);
+        // console.log(itemData.length);
 
         //マーカー生成
         var sidebar2_html = "";
@@ -676,8 +730,8 @@ for (var i = 0; i < markerData.length; i++) {
           var shelf = itemData[i]['shelf_number'];
           var stocks = itemData[i]['stocks'];
 
-          console.log(shelf);
-          console.log(update_at);
+          // console.log(shelf);
+          // console.log(update_at);
 
           if (!shelf) {
             var shelf_num = '';
@@ -690,8 +744,8 @@ for (var i = 0; i < markerData.length; i++) {
           } else {
             var update = update_at;
           }
-          console.log(shelf_num);
-          console.log(update);
+          // console.log(shelf_num);
+          // console.log(update);
 
 
           sidebar2_html += '<li class="item"><div class="product-img"><img src="{{ asset('img/no_image.png') }}" alt="' + itemData[i]['product_name'] + '" data-src="/storage/' + cid + '/items/' + iimg1 + '" class="img-size-64 lazyload" decoding="async" onerror="this.src=' + noimg + ';"></div><div class="product-info"><a href="javascript:void(0)" class="product-title">' + itemData[i]['product_name'] + '<div class="float-right"><h6 class="text-right"><span class="badge badge-danger">' + itemData[i]['price'] + '</span></h6><h6 class="text-right"><span class="badge badge-warning" style="display:block;">' + stocks + '</span></h6></div><span class="product-description"><i class="fas fa-store"></i>&nbsp;' + itemData[i]['store_name'] + '</span><small class="text-muted">' + shelf_num + 'Last updated&nbsp;' + update + '</small></a></div></li>';
@@ -708,5 +762,5 @@ for (var i = 0; i < markerData.length; i++) {
       }
       
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?language=ja&region=JP&key={{ config('const.map_key') }}&callback=initMap" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?language=ja&region=JP&key={{ config('const.map_key') }}&callback=initMap" defer></script>
 @stop
