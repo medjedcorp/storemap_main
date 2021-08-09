@@ -2,7 +2,7 @@
 
 return [
     'manage' => [
-        'version' => '<b>Version</b> beta',
+        'version' => '<b>Version</b> Alpha',
         'footer' => 'Copyright © <strong> Medjed</strong>, Llc.',
     ],
     'map_key' => env('GOOGLE_MAPS_API_KEY'),
