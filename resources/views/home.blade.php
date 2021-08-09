@@ -3,12 +3,96 @@
 @section('title', 'Storemap Cockpit：ストアマップコックピット')
 
 @section('content_header')
-<h1>お知らせ</h1>
+<h1>Home</h1>
 @stop
 
 @section('content')
 <section class="content">
   <div class="container-fluid">
+    <h5 class="mt-4 mb-2">登録情報<code> -status- </code></h5>
+    <div class="row">
+      <!-- /.col -->
+      <div class="col-md-3 col-sm-6 col-12">
+        <div class="info-box bg-success">
+          <span class="info-box-icon"><i class="fas fa-file-signature"></i></span>
+          <div class="info-box-content">
+            <span class="info-box-text">現在のプラン</span>
+            <span class="info-box-number">{{ $plan }}</span>
+            <div class="progress">
+              <div class="progress-bar" style="width: 0%"></div>
+            </div>
+            @empty($trial_ends)
+            <span class="progress-description">
+              &nbsp;
+            </span>
+            @else
+            <span class="progress-description">
+              試用期間：{{$trial_ends}} まで
+            </span>
+            @endif
+          </div>
+          <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+      </div>
+      <div class="col-md-3 col-sm-6 col-12">
+        <div class="info-box bg-info">
+          <span class="info-box-icon"><i class="fas fa-shopping-basket"></i></span>
+          <div class="info-box-content">
+            <span class="info-box-text">商品数</span>
+            <span class="info-box-number">{{ $nowItems }} / {{ $maxItems }}</span>
+            <div class="progress">
+              <div class="progress-bar" style="width: {{ $pgsItems }}%"></div>
+            </div>
+            <span class="progress-description">
+              残枠数：<b>{{ $maxItems - $nowItems }}</b>
+            </span>
+          </div>
+          <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+      </div>
+
+      <!-- /.col -->
+      <div class="col-md-3 col-sm-6 col-12">
+        <div class="info-box bg-warning">
+          <span class="info-box-icon"><i class="fas fa-store-alt"></i></span>
+          <div class="info-box-content">
+            <span class="info-box-text">店舗数</span>
+            <span class="info-box-number">{{ $nowStores }} / {{ $maxStores }}</span>
+            <div class="progress">
+              <div class="progress-bar" style="width: {{ $pgsStores }}%"></div>
+            </div>
+            <span class="progress-description">
+              残枠数：<b>{{ $maxStores - $nowStores }}</b>
+            </span>
+          </div>
+          <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+      </div>
+      <!-- /.col -->
+      <div class="col-md-3 col-sm-6 col-12">
+        <div class="info-box bg-danger">
+          <span class="info-box-icon"><i class="far fa-images"></i></span>
+          <div class="info-box-content">
+            <span class="info-box-text">画像容量</span>
+            <span class="info-box-number">{{ $nowImagesTxt }} / {{ $storageTxt }}</span>
+            <div class="progress">
+              <div class="progress-bar" style="width: {{ $pgsImages }}%"></div>
+            </div>
+            <span class="progress-description">
+              残容量：<b>{{ $zanTxt }}</b>
+            </span>
+          </div>
+          <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+      </div>
+      <!-- /.col -->
+    </div>
+
+    <h5 class="mt-4 mb-2">お知らせ <code>-Information-</code></h5>
     <div class="row">
       <div class="col-md-7">
         <div class="card">
@@ -178,6 +262,11 @@
 
 @section('css')
 <link rel="stylesheet" href="/css/admin_custom.css">
+<style>
+  .info-box .info-box-content {
+    line-height: 1.8;
+  }
+</style>
 @stop
 
 @section('js')

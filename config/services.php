@@ -47,7 +47,6 @@ return [
         'basic_item' => 10000,
         'premium_item' => 50000,
         'light_storage' => 107374182, // 100MByte
-         // 'light_storage' => 10737418, // 10MByte test用
          //'light_storage' => 1073741824, // 1GByte
         'basic_storage' => 10737418240, // 10GByte
         'premium_storage' => 53687091200, // 50GByte

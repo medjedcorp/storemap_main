@@ -3,17 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-// use App\Models\Store;
-// use App\Models\Item;
-// use App\Models\ItemStore;
-// use App\Models\Category;
-// use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Topic; // 追加
-// use Illuminate\Support\Facades\DB;
-// use Illuminate\Pagination\LengthAwarePaginator;
-// use Illuminate\Pagination\Paginator;
-
+use App\Models\Company;
+use App\Models\Item;
+use App\Models\Store;
+use App\Models\ItemStore;
+use App\Models\ItemImage;
+use App\Models\StoreImage;
+use Laravel\Cashier\Cashier;
 
 class HomeController extends Controller
 {
@@ -39,11 +37,78 @@ class HomeController extends Controller
         $topics = topic::latest()->paginate(10);
         $features = topic::where('info', 0)->latest()->paginate(10);
         $promotions = topic::where('info', 1)->latest()->paginate(10);
-        $maintenances = topic::whereIn('info',[2,3])->latest()->paginate(10);
-        $others = topic::whereIn('info',[4,5])->latest()->paginate(10);
+        $maintenances = topic::whereIn('info', [2, 3])->latest()->paginate(10);
+        $others = topic::whereIn('info', [4, 5])->latest()->paginate(10);
+
+        $light_id = config('services.stripe.light');
+        $basic_id = config('services.stripe.basic');
+        $premium_id = config('services.stripe.premium');
+        $stores_id = config('services.stripe.stores');
+        $user = Auth::user();
+        $company = Company::where('id', $user->company_id)->first();
+        // $payinfo = $company->subscription('main');
+
+        // 最大店舗数取得
+        // 課金にstores_idがある場合、店舗ない場合は項目なしになる
+        if ($company->subscribedToPlan($stores_id, 'main')) {
+            // stores_idの決済方法をカンパニーでセグメントしてメインから取得
+            $subscriptionItem = $company->subscription('main')->findItemOrFail($stores_id);
+            // 該当idからquantity(店舗数)を取得
+            $stores_quantity = $subscriptionItem->quantity;
+            $maxStores = $stores_quantity + 1;
+        } else {
+            $maxStores = 1;
+        }
+
+        $nowItemImages = ItemImage::where('company_id', $user->company_id)->sum('size');
+        $nowStoreImages = StoreImage::where('company_id', $user->company_id)->sum('size');
+        $nowImages = $nowItemImages + $nowStoreImages;
+
+        // 最大登録可能商品と画像容量取得
+        if ($company->subscribedToPlan($light_id, 'main')) {
+            $plan = 'ライトプラン';
+            $maxItems = config('services.stripe.light_item');
+            $maxImages =  config('services.stripe.light_storage');
+            $storageTxt =  config('services.stripe.light_storage_domination');
+            $nowImagesTxt = round(($nowItemImages + $nowStoreImages) / 1000000, 2);
+            $zanTxt = round(($maxImages - $nowImages) / 1000000, 2);
+        } elseif ($company->subscribedToPlan($basic_id, 'main')) {
+            $plan = 'ベーシックプラン';
+            $maxItems = config('services.stripe.basic_item');
+            $maxImages =  config('services.stripe.basic_storage');
+            $storageTxt =  config('services.stripe.basic_storage_domination');
+            $nowImagesTxt = round(($nowItemImages + $nowStoreImages) / 1000000000, 2);
+            // $zanTxt = $maxImages - $nowImages;
+            $zanTxt = round(($maxImages - $nowImages) / 1000000000, 2) . ' Gbyte';
+        } elseif ($company->subscribedToPlan($premium_id, 'main')) {
+            $plan = 'プレミアムプラン';
+            $maxItems = config('services.stripe.premium_item');
+            $maxImages =  config('services.stripe.premium_storage');
+            $storageTxt =  config('services.stripe.premium_storage_domination');
+            $nowImagesTxt = round(($nowItemImages + $nowStoreImages) / 1000000000, 2);
+            $zanTxt = round(($maxImages - $nowImages) / 1000000000, 2);
+        } else {
+            $plan = 'その他';
+            $maxItems = '不明';
+            $storageTxt = '不明';
+        }
+
+        if ($company->subscription('main')->onTrial()) {
+            // 試用期間中の場合は日付を返す
+            $trial_ends = $company->subscription('main')->trial_ends_at;
+        } else {
+            $trial_ends = '';
+        }
+
+        $nowStores = Store::where('company_id', $user->company_id)->count();
+        $nowItems = Item::where('company_id', $user->company_id)->count();
+
+        $pgsStores = $nowStores / $maxStores * 100;
+        $pgsItems = $nowItems / $maxItems * 100;
+        $pgsImages = $nowImages / $maxImages * 100;
         
-        return view('home', compact('topics', 'features', 'promotions','maintenances','others'));
+
+        return view('home', compact('topics', 'features', 'promotions', 'maintenances', 'others', 'plan', 'maxItems', 'maxImages', 'maxStores', 'nowStores', 'nowItems', 'nowImages', 'pgsStores', 'pgsItems', 'pgsImages', 'storageTxt', 'nowImagesTxt', 'zanTxt' , 'trial_ends'));
         // return view('home', ['topics' => $topics]);
     }
-
 }
