@@ -107,10 +107,15 @@ class Store extends Model
     public function scopeActiveStore($query)
     {
     
+        // stripeのstatusがactiveか、trialingの場合取得
         $status = ['active', 'trialing'];
         $subscriptions = Subscription::whereIn('stripe_status', $status)->pluck('company_id');
+        // 公開状態の会社ID
+        $display_company = Company::where('display_flag', 1)->pluck('id');
         // dd($subscriptions);
-        return $query->whereIn('stores.company_id', $subscriptions)->where('stores.pause_flag', '=', '1');
+        return $query->whereIn('stores.company_id', $subscriptions)
+        ->whereIn('stores.company_id', $display_company)
+        ->where('stores.pause_flag', '=', '1');
         // return $query->where('stores.pause_flag', '=', '1');
         // return $query->whereIn('stores.company_id', $clist)->where('stores.pause_flag', '=', '1');
         // dd($query);

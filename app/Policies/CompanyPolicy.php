@@ -21,4 +21,9 @@ class CompanyPolicy
         return $user->company_id === $company->id;
     }
 
+    public function delete(User $user, Company $company)
+    {
+        return $user->company_id === $company->id;
+    }
+
 }

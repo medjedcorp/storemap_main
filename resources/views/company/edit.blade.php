@@ -3,7 +3,20 @@
 @section('title', '会社情報の編集 - Storemap Cockpit')
 
 @section('content_header')
-<h1>@lang('company.edit.title')</h1>
+<div class="container-fluid">
+  <div class="row mb-2">
+    <div class="col-sm-6">
+      <h1 class="m-0">@lang('company.edit.title')</h1>
+    </div><!-- /.col -->
+    <div class="col-sm-6">
+      <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item"><a href="/home">Home</a></li>
+        <li class="breadcrumb-item"><a href="/company/show">@lang('company.show.company_info')</a></li>
+        <li class="breadcrumb-item active">@lang('company.edit.title')</li>
+      </ol>
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+</div>
 @stop
 
 @section('content')
@@ -15,7 +28,7 @@
         <!-- Horizontal Form -->
         <div class="card card-primary">
           <div class="card-header">
-            <h3 class="card-title">@lang('company.edit.card_title')</h3>
+            <h3 class="card-title"><i class="fas fa-building"></i> @lang('company.edit.card_title')</h3>
           </div>
           <!-- /.card-header -->
           @include('partials.errors')
@@ -170,6 +183,22 @@
                   <span id="site_url-error" class="error invalid-feedback">{{$errors->first('site_url')}}</span>
                   @else
                   <input type="text" class="form-control" id="site_url" name="site_url" value="{{old('site_url', isset($company->site_url) ? $company->site_url: '') }}">
+                  @endif
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-2 col-form-label">公開設定 <i type="button" class="fas fa-question-circle text-warning" data-toggle="tooltip" data-placement="right" title="" data-original-title="公開しないを選択すると、全店舗表示されなくなります。"></i>@include('partials.required')</label>
+                <div class="col-sm-10">
+                  <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-outline-info">
+                      <input type="radio" name="display_flag" id="display_flag1" value="1" {{ old( 'display_flag' , $company->display_flag) == '1' ? 'checked' : '' }}>公開
+                    </label>
+                    <label class="btn btn-outline-info active">
+                      <input type="radio" name="display_flag" id="display_flag0" value="0" {{ old( 'display_flag' , $company->display_flag) == '0' ? 'checked' : '' }}>非公開
+                    </label>
+                  </div>
+                  @if($errors->has('display_flag'))
+                  <div class="small text-danger">{{$errors->first('display_flag')}}</div>
                   @endif
                 </div>
               </div>

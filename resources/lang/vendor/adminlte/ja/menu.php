@@ -48,6 +48,7 @@ return [
     'store_img'                   => '店舗画像管理',
     'config'                   => '設定',
     'api_config'                   => 'API設定',
+    'sm_apitoken'                   => '受信用API',
     'sr_api_import'                   => 'スマレジAPI連携',
     'system'                   => 'システム管理',
     'sm_cate'                   => 'ストアマップカテゴリ',

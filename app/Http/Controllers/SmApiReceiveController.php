@@ -13,14 +13,12 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use App\Mail\DataWorkerErrorMail;
 
-// スマレジからのデータ受信用API
-class SmaregiReceiveController extends Controller
+// 汎用受信API
+class SmApiReceiveController extends Controller
 {
     public function stockImport(Request $request)
     {
         // $input = $request->all();
-        // Log::debug(print_r('テスト', true));
-        // dd($request);
         // 送られてきたデータ取得
         $params = $request->input('params');
         // jsonに変換
@@ -87,7 +85,7 @@ class SmaregiReceiveController extends Controller
         }
         
         if (count($errorLists) > 0) {
-            $site = "スマレジ";
+            $site = "API";
             $to = $company->company_email;
             $company_name = $company->company_name;
             Mail::to($to)->send(new DataWorkerErrorMail($company_name, $errorLists, $site));
@@ -99,89 +97,4 @@ class SmaregiReceiveController extends Controller
         return response(200);
     }
 
-    public function itemImport(Request $request)
-    {
-        $params = $request->input('params');
-        // jsonに変換
-
-        $arr = json_decode($params, true);
-        // Log::debug(print_r($arr, true));
-
-        // 何商品分データあるか、rowsをカウント。
-        $json_count = count($arr['data']['0']['rows']);
-        // ヘッダーにあるidとtokenを取得(スマレジで設定)
-        $headerId = $request->header('id');
-        $headerToken = $request->header('token');
-        // 会社セグメント
-        $company = Company::where('ext_id', $headerId)->where('ext_token', $headerToken)->first();
-
-        // table_name取得。処理を振り分け
-        $table_name = $arr['data']['0']['table_name'];
-
-        if ($table_name === 'ProductPrice') {
-            // 価格の更新
-            for ($i = 0; $i < $json_count; $i++) {
-                $productId = $arr['data']['0']['rows'][$i]['productId'];
-                $storeId =  $arr['data']['0']['rows'][$i]['storeId'];
-                $priceDivision =  0;
-                $price = $arr['data']['0']['rows'][$i]['price'];
-                $startDate =  $arr['data']['0']['rows'][$i]['startDate'];
-                $endDate =  $arr['data']['0']['rows'][$i]['endDate'];
-
-                $iId = Item::where('company_id', $company->id)->where('ext_product_code', $productId)->first();
-                if (is_null($iId)) {
-                    // アイテムが見つからない場合はスキップ
-                    continue;
-                }
-
-                // Log::debug(print_r($storeId,true));
-                if ($storeId === '_ALL_') {
-                    // 全店の場合の処理
-                    $sId = Store::where('company_id', $company->id)->pluck('id');
-                    $sId_count = count($sId);
-
-                    for ($v = 0; $v < $sId_count; $v++) {
-                        // 店舗を見つけて、１個ずつ処理
-                        $produt = ItemStore::where('store_id', $sId[$v])->where('item_id', $iId->id)->first();
-                        $produt->price_type = $priceDivision;
-                        $produt->value = $price;
-                        $produt->start_date = $startDate;
-                        $produt->end_date = $endDate;
-                        $produt->save();
-                    }
-                } else {
-                    // 店舗個別の処理
-                    $sId = Store::where('company_id', $company->id)->where('ext_store_code', $storeId)->first();
-                    $produt = ItemStore::whereIn('store_id', $sId)->where('item_id', $iId->id)->first();
-                    $produt->price_type = $priceDivision;
-                    $produt->value = $price;
-                    $produt->start_date = $startDate;
-                    $produt->end_date = $endDate;
-                    $produt->save();
-                }
-            }
-        } elseif ($table_name === 'Product') {
-            // 商品情報の更新。現状、表示設定と定価のみ変更
-            for ($i = 0; $i < $json_count; $i++) {
-                $productId = $arr['data']['0']['rows'][$i]['productId'];
-                $displayFlag = $arr['data']['0']['rows'][$i]['displayFlag'];
-                $price = $arr['data']['0']['rows'][$i]['price'];
-
-                $item = Item::where('ext_product_code', $productId)->where('company_id', $company->id)->first();
-                // Log::debug(print_r($item, true));
-                if (is_null($item)) {
-                    continue;
-                }
-                // 定価と表示非表示を変更
-                $item->original_price = $price;
-                $item->display_flag = $displayFlag;
-                $item->save();
-            }
-        }
-
-        // Log::debug(print_r($headerId, true));
-        // Log::debug(print_r($headerToken, true));
-
-        return response(200);
-    }
 }

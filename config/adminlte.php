@@ -418,11 +418,18 @@ return [
                     'can' =>  'basic',
                     'submenu' => [
                         [
+                            'text' => 'sm_apitoken',
+                            'url'  => 'config/sm-import',
+                            'icon' => 'nav-icon fas fa-angle-right fa-fw',
+                            'can' => 'basic',
+                        ],
+                        [
                             'text' => 'sr_api_import',
                             'url'  => 'config/sr-import',
                             'icon' => 'nav-icon fas fa-angle-right fa-fw',
                             'can' => 'basic',
-                        ]
+                        ],
+
                     ],
                 ],
                 [

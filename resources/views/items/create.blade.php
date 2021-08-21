@@ -3,7 +3,20 @@
 @section('title', '商品情報の登録 - Storemap Cockpit')
 
 @section('content_header')
-<h1>@lang('item.register.title')</h1>
+<div class="container-fluid">
+  <div class="row mb-2">
+    <div class="col-sm-7">
+      <h1 class="m-0">@lang('item.register.title')</h1>
+    </div><!-- /.col -->
+    <div class="col-sm-5">
+      <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item"><a href="/home">Home</a></li>
+        <li class="breadcrumb-item"><a href="/items">商品一覧</a></li>
+        <li class="breadcrumb-item active">@lang('item.register.title')</li>
+      </ol>
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+</div>
 @stop
 
 @section('content')

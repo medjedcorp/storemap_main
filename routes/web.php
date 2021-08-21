@@ -241,10 +241,16 @@ Route::middleware('verified')->group(function () {
       Route::group(['middleware' => ['auth', 'can:basic']], function () {
         // スマレジAPI
         Route::get('/config/sr-import', 'SmaregiController@show')->name('sr.product_ref');
-        Route::post('/config/sr-import/store', 'SmaregiController@store')->name('sr.tokensave');
-        Route::post('/config/sr-import/stores_id', 'SmaregiController@storesId')->name('sr.storeSave');
+        // Route::post('/config/sr-import/store', 'SmaregiController@store')->name('sr.tokensave');
+        // Route::post('/config/sr-import/stores_id', 'SmaregiController@storesId')->name('sr.storeSave');
         Route::post('/config/sr-import/data', 'SmarejiCsvImportController@importCSV')->name('sr.importCSV');
         Route::get('/config/sr-import/stfdownload', 'SmaregiController@SmarejiTempFileDownload');
+
+        // 汎用API
+        Route::get('/config/sm-import', 'SmApiShowController@show');
+        Route::post('/config/sm-import/store', 'SmApiShowController@store')->name('sm.useApi');
+        Route::post('/config/sm-import/generate', 'SmApiShowController@generateApiKey')->name('sm.generate');
+        Route::post('/config/sm-import/delete', 'SmApiShowController@destroy')->name('sm.apiDel');
       });
 
       // システム アドミンのみ

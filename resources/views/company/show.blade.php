@@ -3,7 +3,19 @@
 @section('title', '会社情報の詳細 - Storemap Cockpit')
 
 @section('content_header')
-<h1>@lang('company.register.title')</h1>
+<div class="container-fluid">
+  <div class="row mb-2">
+    <div class="col-sm-6">
+      <h1 class="m-0">@lang('company.show.company_info')</h1>
+    </div><!-- /.col -->
+    <div class="col-sm-6">
+      <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item"><a href="/home">Home</a></li>
+        <li class="breadcrumb-item active">@lang('company.show.company_info')</li>
+      </ol>
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+</div>
 @stop
 
 @section('content')
@@ -15,7 +27,7 @@
 
         <div class="card card-info card-outline">
           <div class="card-header">
-            <h5 class="m-0">{{ $company->company_name }} の @lang('company.show.company_info')</h5>
+            <h5 class="m-0"><i class="fas fa-building"></i> {{ $company->company_name }} の @lang('company.show.company_info')</h5>
           </div>
           @include('partials.success')
           @include('partials.warning')
@@ -64,6 +76,15 @@
 
                 <dt class="col-sm-2 h6">@lang('company.register.site_url')</dt>
                 <dd class="col-sm-10 h6">{{ isset($company->site_url) ? $company->site_url : '' }}</dd>
+
+                <dt class="col-sm-2 h6">公開設定</dt>
+                @if( $company->display_flag == 0 )
+                <dd class="col-sm-10 h6">非公開</dd>
+                @elseif ( $company->display_flag == 1 )
+                <dd class="col-sm-10 h6">公開中</dd>
+                @else
+                <dd class="col-sm-10 h6"></dd>
+                @endif
 
                 <dt class="col-sm-2 h6">@lang('company.register.maker_flag')</dt>
                 @if( $company->maker_flag == 0 )
