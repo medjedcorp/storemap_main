@@ -50,7 +50,7 @@ class CreateStoresTable extends Migration
             // $table->geometry('positions');
             // $table->double('latitude', 9, 6)->nullable();
             // $table->double('longitude', 9, 6)->nullable();
-            $table->string('ext_store_code')->nullable();
+            // $table->string('ext_store_code')->nullable();
             $table->unique(['company_id', 'store_code'], 'company_store'); // 追加
             
             $table->timestamps();

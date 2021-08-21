@@ -19,5 +19,12 @@ use Illuminate\Support\Facades\Route;
 // });
 
 // API 受信 api.phpはcsrfが無効になるから、外部からアクセスできます
-Route::post('sregi/receive_stock', 'SmaregiReceiveController@stockImport');
-Route::post('sregi/receive_item', 'SmaregiReceiveController@itemImport');
+Route::post('/sregi/receive_stock', 'SmaregiReceiveController@stockImport'); // 在庫
+Route::post('/sregi/receive_item', 'SmaregiReceiveController@itemImport'); // 価格
+
+// 汎用受信API
+Route::post('/smapi/receive_stock', 'SmApiReceiveController@stockImport');
+// Route::post('smapi/receive_item', 'SmApiReceiveController@itemImport');
+
+Route::get('/sample', 'SampleController@apiHello'); //api/sampleのページになる
+// Route::get('/sample', [SampleController::class, 'apiHello']); // 8の書き方

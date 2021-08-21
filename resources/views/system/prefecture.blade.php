@@ -3,7 +3,13 @@
 @section('title', '都道府県緯度経度一括編集 - Storemap Cockpit')
 
 @section('content_header')
-<h1><i class="fas fa-user-secret"></i> @lang('system.pref.title')</h1>
+<div class="container-fluid">
+  <div class="row mb-2">
+    <div class="col-sm-12">
+      <h1 class="m-0"><i class="fas fa-user-secret"></i> @lang('system.pref.title')</h1>
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+</div>
 @stop
 
 @section('content')

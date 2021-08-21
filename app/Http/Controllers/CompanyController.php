@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage; //ファイルアクセス
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 
 class CompanyController extends Controller
 {
@@ -48,7 +49,7 @@ class CompanyController extends Controller
     if (isset($user->company_id)) {
       // 戻るボタンを使った２重登録防止
       return redirect("/company/show")->with('warning', '※会社情報が登録済みです');
-    } 
+    }
 
     $company = new Company;
     $company->company_name = $request->company_name;
@@ -73,6 +74,32 @@ class CompanyController extends Controller
       $company->img_flag = 0;
       $company->gs1_company_prefix = null;
     }
+
+    // $api_flg = true;
+    $code_flg =  true;
+    // dd($api_flg);
+    // while ($api_flg) {
+    //   //
+    //   $api_token = Str::random(32);
+    //   // 存在チェック。存在する場合はtrueで、ループ継続
+    //   $api_flg = DB::table('companies')->where('api_token', $api_token)->exists();
+    //   // 存在しない場合はfalse してbreak
+    // }
+    
+    while ($code_flg) {
+      //
+      $company_code = Str::random(7);
+      $company_code = Str::upper($company_code);
+      // 存在チェック。存在する場合はtrueで、ループ継続
+      $code_flg = DB::table('companies')->where('company_code', $company_code)->exists();
+      // 存在しない場合はfalse してbreak
+    }
+
+    // dd($api_token,$api_flg,$code_flg,$company_code);
+
+    // $company->api_token = $api_token;
+    $company->company_code = $company_code;
+
     $company->save();
     //$last_insert_id で最後に入力したIDを取得
     $last_insert_id = $company->id;
@@ -154,6 +181,7 @@ class CompanyController extends Controller
     $company->manager_name = $request->manager_name;
     $company->manager_kana = $request->manager_kana;
     $company->site_url = $request->site_url;
+    $company->display_flag = $request->display_flag;
     $company->maker_flag = $request->maker_flag;
 
     if ($company->maker_flag == 1) {

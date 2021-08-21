@@ -11,6 +11,7 @@ class Company extends Model
   use Billable;
   
   protected $guarded = ['id'];
+  protected $hidden = ['api_token'];
 
   public $timestamps = true;
 
@@ -43,5 +44,8 @@ class Company extends Model
     public function store_image(){
       return $this->hasMany('App\Models\StoreImage');
     }
-
+    public function scopeActiveCompany($query)
+    {
+      return $query->where('display_flag', '=', '1');
+    }
 }

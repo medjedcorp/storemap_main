@@ -3,8 +3,21 @@
 @section('title', '商品コメントの編集 - Storemap Cockpit')
 
 @section('content_header')
-<h1><span class="h4"><i class="fas fa-edit"></i> {{$item->product_name}}/<span class="h5">{{$item->product_code}} の
+<div class="container-fluid">
+  <div class="row mb-2">
+    <div class="col-sm-7">
+      <h1 class="m-0"><span class="h4"><i class="fas fa-edit"></i> {{$item->product_name}}/<span class="h5">{{$item->product_code}} の
       @lang('item.comment.title')</span></span></h1>
+    </div><!-- /.col -->
+    <div class="col-sm-5">
+      <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item"><a href="/home">Home</a></li>
+        <li class="breadcrumb-item"><a href="/items">商品一覧</a></li>
+        <li class="breadcrumb-item active">@lang('item.main.comment')</li>
+      </ol>
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+</div>
 @stop
 
 @section('content')
@@ -89,15 +102,15 @@
 @stop
 
 @section('right-sidebar')
-    <div class="os-padding text-sm">
-        <div class="os-viewport os-viewport-native-scrollbars-invisible" style="overflow-y: scroll;">
-            <div class="os-content" style="padding: 16px; height: 100%; width: 100%;">
-                <h5>商品コメントの編集</h5>
-                <hr class="mb-2">
-                <p>この商品に対する店舗からのコメントを登録・編集可能です。各店舗ごとに設定が出来ます。</p>
-            </div>
-        </div>
+<div class="os-padding text-sm">
+  <div class="os-viewport os-viewport-native-scrollbars-invisible" style="overflow-y: scroll;">
+    <div class="os-content" style="padding: 16px; height: 100%; width: 100%;">
+      <h5>商品コメントの編集</h5>
+      <hr class="mb-2">
+      <p>この商品に対する店舗からのコメントを登録・編集可能です。各店舗ごとに設定が出来ます。</p>
     </div>
+  </div>
+</div>
 @stop
 
 @section('footer')

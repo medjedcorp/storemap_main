@@ -3,7 +3,20 @@
 @section('title', 'ユーザー詳細設定 - Storemap Cockpit')
 
 @section('content_header')
-<h1>@lang('user.edit.title')</h1>
+<div class="container-fluid">
+  <div class="row mb-2">
+    <div class="col-sm-7">
+      <h1 class="m-0">@lang('user.edit.title')</h1>
+    </div><!-- /.col -->
+    <div class="col-sm-5">
+      <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item"><a href="/home">Home</a></li>
+        <li class="breadcrumb-item"><a href="/users">@lang('user.index.title')</a></li>
+        <li class="breadcrumb-item active">ユーザー情報の編集</li>
+      </ol>
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+</div>
 @stop
 
 @section('content')

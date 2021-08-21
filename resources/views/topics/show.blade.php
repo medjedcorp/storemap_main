@@ -3,7 +3,13 @@
 @section('title', 'トピックスの詳細 - Storemap Cockpit')
 
 @section('content_header')
-<h1>{{ $topic->title }}の詳細</h1>
+<div class="container-fluid">
+  <div class="row mb-2">
+    <div class="col-12">
+      <h1 class="m-0">{{ $topic->title }}の詳細</h1>
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+</div>
 @stop
 
 @section('content')

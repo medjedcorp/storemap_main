@@ -3,7 +3,13 @@
 @section('title', 'Storemap Cockpit：ストアマップコックピット')
 
 @section('content_header')
-<h1>Home</h1>
+<div class="container-fluid">
+  <div class="row mb-2">
+    <div class="col-12">
+      <h1 class="m-0">Home</h1>
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+</div>
 @stop
 
 @section('content')

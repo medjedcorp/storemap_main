@@ -3,7 +3,20 @@
 @section('title', '営業日カレンダー - Storemap')
 
 @section('content_header')
-<h1>{{$s_name}} / @lang('calendar.title')</h1>
+<div class="container-fluid">
+  <div class="row mb-2">
+    <div class="col-sm-6">
+      <h1 class="m-0"><i class="far fa-calendar-alt"></i> {{$s_name}} / @lang('calendar.title')</h1>
+    </div><!-- /.col -->
+    <div class="col-sm-6">
+      <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item"><a href="/home">Home</a></li>
+        <li class="breadcrumb-item"><a href="/stores">店舗一覧</a></li>
+        <li class="breadcrumb-item active">@lang('calendar.title')</li>
+      </ol>
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+</div>
 @stop
 
 @section('content')

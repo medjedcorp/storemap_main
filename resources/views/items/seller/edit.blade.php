@@ -3,8 +3,21 @@
 @section('title', '販売店情報の編集 - Storemap Cockpit')
 
 @section('content_header')
-<h1><span class="h4"><i class="fas fa-edit"></i> {{$item->product_name}}/<span class="h5">{{$item->product_code}} の
+<div class="container-fluid">
+  <div class="row mb-2">
+    <div class="col-sm-7">
+      <h1 class="m-0"><span class="h4"><i class="fas fa-edit"></i> {{$item->product_name}}/<span class="h5">{{$item->product_code}} の
       @lang('item.price.title')</span></span></h1>
+    </div><!-- /.col -->
+    <div class="col-sm-5">
+      <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item"><a href="/home">Home</a></li>
+        <li class="breadcrumb-item"><a href="/items">商品一覧</a></li>
+        <li class="breadcrumb-item active">@lang('item.main.store')</li>
+      </ol>
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+</div>
 @stop
 
 @section('content')

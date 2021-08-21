@@ -3,7 +3,13 @@
 @section('title', 'カード情報登録 - Storemap Cockpit')
 
 @section('content_header')
-<h1>{{ $company->company_name }} さま / @lang('payment.title')</h1>
+<div class="container-fluid">
+  <div class="row mb-2">
+    <div class="col-sm-12">
+      <h1 class="m-0"><i class="far fa-credit-card"></i> {{ $company->company_name }} さま / @lang('payment.title')</h1>
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+</div>
 @stop
 
 @section('content')

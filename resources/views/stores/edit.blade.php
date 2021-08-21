@@ -3,7 +3,21 @@
 @section('title', '店舗の編集 - Storemap Cockpit')
 
 @section('content_header')
-<h1>{{$c_name}} / @lang('store.edit.title')</h1>
+<div class="container-fluid">
+  <div class="row mb-2">
+    <div class="col-sm-7">
+      <h1 class="m-0">{{$c_name}} / @lang('store.edit.title')</h1>
+    </div><!-- /.col -->
+    <div class="col-sm-5">
+      <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item"><a href="/home">Home</a></li>
+        <li class="breadcrumb-item"><a href="/stores">店舗一覧</a></li>
+        <li class="breadcrumb-item"><a href="/stores/{{$store->id}}">店舗詳細</a></li>
+        <li class="breadcrumb-item active">@lang('store.edit.title')</li>
+      </ol>
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+</div>
 @stop
 
 @section('content')

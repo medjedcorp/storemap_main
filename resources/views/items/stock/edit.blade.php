@@ -3,8 +3,21 @@
 @section('title', '在庫情報の編集 - Storemap Cockpit')
 
 @section('content_header')
-<h1><span class="h4"><i class="fas fa-edit"></i> {{$item->product_name}}/<span class="h5">{{$item->product_code}} の
+<div class="container-fluid">
+  <div class="row mb-2">
+    <div class="col-sm-7">
+      <h1 class="m-0"><span class="h4"><i class="fas fa-edit"></i> {{$item->product_name}}/<span class="h5">{{$item->product_code}} の
       @lang('item.stock.title')</span></span></h1>
+    </div><!-- /.col -->
+    <div class="col-sm-5">
+      <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item"><a href="/home">Home</a></li>
+        <li class="breadcrumb-item"><a href="/items">商品一覧</a></li>
+        <li class="breadcrumb-item active">@lang('item.main.stock')</li>
+      </ol>
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+</div>
 @stop
 
 @section('content')
@@ -111,26 +124,26 @@
 @stop
 
 @section('right-sidebar')
-    <div class="os-padding text-sm">
-        <div class="os-viewport os-viewport-native-scrollbars-invisible" style="overflow-y: scroll;">
-            <div class="os-content" style="padding: 16px; height: 100%; width: 100%;">
-                <h5>在庫設定</h5>
-                <hr class="mb-2">
-                <p>店舗ごとに在庫の設定ができます。</p>
-                <dl>
-                  <dt>在庫設定</dt>
-                  <dd>「しない」を選択すると、無限在庫となります。サービス商品など、特に在庫を設定する必要のない商品は「しない」を選択してください。</dd>
-                  <dt>在庫数</dt>
-                  <dd>商品の在庫数が設定できます。在庫設定を「する」で在庫数が
-                    「0」の場合はサイト上に「在庫なし」と表示されます。</dd>
-                  <dt>表示優先順位</dt>
-                  <dd>検索結果画面でキーワードにヒットしたとき、表示優先順位の高い商品から表示されます。整数を入力してください。</dd>
-                  <dt>棚番号</dt>
-                  <dd>商品の置いてある棚番号を入力してください。入力があると検索結果画面に表示されます。</dd>
-                </dl>
-            </div>
-        </div>
+<div class="os-padding text-sm">
+  <div class="os-viewport os-viewport-native-scrollbars-invisible" style="overflow-y: scroll;">
+    <div class="os-content" style="padding: 16px; height: 100%; width: 100%;">
+      <h5>在庫設定</h5>
+      <hr class="mb-2">
+      <p>店舗ごとに在庫の設定ができます。</p>
+      <dl>
+        <dt>在庫設定</dt>
+        <dd>「しない」を選択すると、無限在庫となります。サービス商品など、特に在庫を設定する必要のない商品は「しない」を選択してください。</dd>
+        <dt>在庫数</dt>
+        <dd>商品の在庫数が設定できます。在庫設定を「する」で在庫数が
+          「0」の場合はサイト上に「在庫なし」と表示されます。</dd>
+        <dt>表示優先順位</dt>
+        <dd>検索結果画面でキーワードにヒットしたとき、表示優先順位の高い商品から表示されます。整数を入力してください。</dd>
+        <dt>棚番号</dt>
+        <dd>商品の置いてある棚番号を入力してください。入力があると検索結果画面に表示されます。</dd>
+      </dl>
     </div>
+  </div>
+</div>
 @stop
 
 @section('footer')

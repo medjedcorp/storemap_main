@@ -33,11 +33,10 @@ class CreateCompaniesTable extends Migration
             $table->string('site_url',255)->nullable();
             $table->string('certificate',255)->nullable(); // 会社証明
             $table->boolean('maker_flag')->default(0);
+            $table->boolean('display_flag')->default(1);
             $table->boolean('img_flag')->default(0);
             $table->bigInteger('gs1_company_prefix')->unsigned()->nullable()->unique();
             $table->tinyInteger('status')->default(1)->unsigned();
-            $table->string('ext_id')->nullable();
-            $table->string('ext_token')->nullable();
             $table->timestamps();
         });
     }
