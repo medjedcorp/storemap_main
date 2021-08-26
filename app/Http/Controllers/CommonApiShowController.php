@@ -16,7 +16,7 @@ use Log;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 
-class SmApiShowController extends Controller
+class CommonApiShowController extends Controller
 {
 
     public function show(Request $request)
@@ -42,7 +42,7 @@ class SmApiShowController extends Controller
 
         // $stores = Store::where('company_id', $user->company_id)->get();
 
-        return view('config.sm-import', compact('company_code', 'api_flag', 'api_token'));
+        return view('config.import', compact('company_code', 'api_flag', 'api_token'));
     }
 
     public function store(Request $request)
@@ -56,7 +56,7 @@ class SmApiShowController extends Controller
 
         $company->save();
 
-        return redirect('/config/sm-import')->with('success', '※API情報を更新しました');
+        return redirect('/config/import')->with('success', '※API情報を更新しました');
     }
 
     public function generateApiKey()
@@ -79,7 +79,7 @@ class SmApiShowController extends Controller
         $company->api_token = $api_token;
         $company->save();
 
-        return redirect('/config/sm-import')->with('success', '※APIトークンを作成しました');
+        return redirect('/config/import')->with('success', '※APIトークンを作成しました');
     }
 
 
@@ -96,6 +96,6 @@ class SmApiShowController extends Controller
         $company->api_token = null;
         $company->save();
 
-        return redirect("/config/sm-import")->with('danger', '※APIトークンを削除しました');
+        return redirect("/config/import")->with('danger', '※APIトークンを削除しました');
     }
 }

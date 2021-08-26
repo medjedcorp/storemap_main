@@ -419,7 +419,7 @@ return [
                     'submenu' => [
                         [
                             'text' => 'sm_apitoken',
-                            'url'  => 'config/sm-import',
+                            'url'  => 'config/import',
                             'icon' => 'nav-icon fas fa-angle-right fa-fw',
                             'can' => 'basic',
                         ],

@@ -13,67 +13,78 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use App\Mail\DataWorkerErrorMail;
 
-// スマレジからのデータ受信用API
-class SmaregiReceiveController extends Controller
+// 汎用受信API
+class CommonApiReceiveController extends Controller
 {
     public function stockImport(Request $request)
     {
         // $input = $request->all();
-        // Log::debug(print_r('テスト', true));
-        // dd($request);
         // 送られてきたデータ取得
-        $params = $request->input('params');
+        $arr = $request;
+        // return response($request);
         // jsonに変換
-        $arr = json_decode($params, true);
-        // 何商品分データあるか、rowsをカウント。
-        $json_count = count($arr['data']['0']['rows']);
+        // $arr = json_decode($params, true);
+        // Log::debug(print_r($params, true));
+        // Log::debug(print_r($arr, true));
         // ヘッダーにあるidとtokenを取得(スマレジで設定)
-        $headerId = $request->header('id');
-        $headerToken = $request->header('token');
+        $headerId = $request->header('X-contract-id');
+        $headerToken = $request->header('X-access-token');
+        // $headerId = $request->header('id');
+        // $headerToken = $request->header('token');
+        // Log::debug(print_r($request->header(), true));
+        // Log::debug(print_r($headerId, true));
+        // Log::debug(print_r($headerToken, true));
+
+        // 何商品分データあるか、rowsをカウント。
+        $json_count = count($arr['data']['rows']);
         // $storeId =  $arr['data']['0']['rows'][$i]['productId'];
 
         // 会社チェック。データない場合は、とりあえずレスポンス200を送信
-         if(Company::where('company_code', $headerId)->where('api_token', $headerToken)->exists()){
+        // $cCheck = DB::table('companies')->where('ext_id', $headerId)->where('ext_token', $headerToken)->exists();
+        if (Company::where('company_code', $headerId)->where('api_token', $headerToken)->exists()) {
             $company = Company::where('company_code', $headerId)->where('api_token', $headerToken)->first();
             $api_flag =  $company->api_flag;
-            if($api_flag === 0 ){
+            if ($api_flag === 0) {
                 return response(403);
             }
         } else {
             return response(404);
         }
-        
+
         // Log::debug(print_r($input, true));
         // Log::debug(print_r($params, true));
         // Log::debug(print_r($json_count, true));
         // Log::debug(print_r($arr, true));
         // Log::debug(print_r($url, true));
         // Log::debug(print_r($method, true));
+        // $errorLists = array();
         $errorLists = [];
 
         for ($i = 0; $i < $json_count; $i++) {
-            $productId = $arr['data']['0']['rows'][$i]['productId'];
-            $storeId =  $arr['data']['0']['rows'][$i]['storeId'];
-            $stockAmount = $arr['data']['0']['rows'][$i]['stockAmount'];
+            // Log::debug(print_r($i, true));
+            $productId = $arr['data']['rows'][$i]['productId'];
+            $storeId =  $arr['data']['rows'][$i]['storeId'];
+            $stockAmount = $arr['data']['rows'][$i]['stockAmount'];
 
             // 存在チェック
             // $sCheck = DB::table('stores')->where('company_id', $company->id)->where('ext_store_code', $storeId)->exists();
             // $iCheck = DB::table('items')->where('company_id', $company->id)->where('ext_product_code', $productId)->exists();
             $sCheck = Store::where('company_id', $company->id)->where('store_code', $storeId)->exists();
-            $iCheck = Item::where('company_id', $company->id)->where('ext_product_code', $productId)->exists();
+            $iCheck = Item::where('company_id', $company->id)->where('product_code', $productId)->exists();
 
-            if ( $sCheck === true && $iCheck === true ) {
+            if ($sCheck === true && $iCheck === true) {
                 $sId = Store::where('company_id', $company->id)->where('store_code', $storeId)->first();
-                $iId = Item::where('company_id', $company->id)->where('ext_product_code', $productId)->first();
-            } elseif( $sCheck === false && $iCheck === false ) {
+                $iId = Item::where('company_id', $company->id)->where('product_code', $productId)->first();
+            } elseif ($sCheck === false && $iCheck === false) {
                 $errorLists[$i] = "[店舗コードと商品コードが見つかりませんでした]  店舗コード：" . $storeId . " / 商品コード：" . $productId;
-                // $errorSid[] = $storeId;
-                continue;
+                 continue;
                 // エラーの店舗コードを配列化してまとめる。重複は削除する。ない場合はコンティニューでスキップ。for文終わってからメール送信処理。
-            } elseif( $sCheck === false && $iCheck === true ) {
+            } elseif ($sCheck === false && $iCheck === true) {
                 $errorLists[$i] = "[店舗コードが見つかりませんでした]  店舗コード：". $storeId . " / 商品コード：" . $productId . "\n";
-            } elseif( $sCheck === true && $iCheck === false ) {
+                continue;
+            } elseif ($sCheck === true && $iCheck === false) {
                 $errorLists[$i] = "[商品コードが見つかりませんでした]  店舗コード：". $storeId . " / 商品コード：" . $productId . "\n";
+                continue;
             }
 
             // if (is_null($iId)) {
@@ -85,15 +96,17 @@ class SmaregiReceiveController extends Controller
             $produt->stock_amount = $stockAmount;
             $produt->save();
 
-            // \Slack::channel('work')->send($produt);
-            // Log::debug(print_r($produt, true));
         }
-        
+
+        // Log::debug(print_r($errorLists, true));
+
         if (count($errorLists) > 0) {
-            $site = "スマレジAPI";
+            $site = "在庫API";
             $to = $company->company_email;
             $company_name = $company->company_name;
             Mail::to($to)->send(new DataWorkerErrorMail($company_name, $errorLists, $site));
+            // Log::debug(print_r($errorLists, true));
+            // return response($errorLists);
             return response(404);
         }
 
@@ -126,13 +139,13 @@ class SmaregiReceiveController extends Controller
             // 価格の更新
             for ($i = 0; $i < $json_count; $i++) {
                 $productId = $arr['data']['0']['rows'][$i]['productId'];
-                $storeId =  $arr['data']['0']['rows'][$i]['storeId'];
-                $priceDivision =  0;
+                $storeId = $arr['data']['0']['rows'][$i]['storeId'];
+                $priceDivision = 0;
                 $price = $arr['data']['0']['rows'][$i]['price'];
-                $startDate =  $arr['data']['0']['rows'][$i]['startDate'];
-                $endDate =  $arr['data']['0']['rows'][$i]['endDate'];
+                $startDate = $arr['data']['0']['rows'][$i]['startDate'];
+                $endDate = $arr['data']['0']['rows'][$i]['endDate'];
 
-                $iId = Item::where('company_id', $company->id)->where('ext_product_code', $productId)->first();
+                $iId = Item::where('company_id', $company->id)->where('product_code', $productId)->first();
                 if (is_null($iId)) {
                     // アイテムが見つからない場合はスキップ
                     continue;
@@ -171,7 +184,7 @@ class SmaregiReceiveController extends Controller
                 $displayFlag = $arr['data']['0']['rows'][$i]['displayFlag'];
                 $price = $arr['data']['0']['rows'][$i]['price'];
 
-                $item = Item::where('ext_product_code', $productId)->where('company_id', $company->id)->first();
+                $item = Item::where('product_code', $productId)->where('company_id', $company->id)->first();
                 // Log::debug(print_r($item, true));
                 if (is_null($item)) {
                     continue;

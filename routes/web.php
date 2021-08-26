@@ -247,10 +247,10 @@ Route::middleware('verified')->group(function () {
         Route::get('/config/sr-import/stfdownload', 'SmaregiController@SmarejiTempFileDownload');
 
         // 汎用API
-        Route::get('/config/sm-import', 'SmApiShowController@show');
-        Route::post('/config/sm-import/store', 'SmApiShowController@store')->name('sm.useApi');
-        Route::post('/config/sm-import/generate', 'SmApiShowController@generateApiKey')->name('sm.generate');
-        Route::post('/config/sm-import/delete', 'SmApiShowController@destroy')->name('sm.apiDel');
+        Route::get('/config/import', 'CommonApiShowController@show');
+        Route::post('/config/import/store', 'CommonApiShowController@store')->name('sm.useApi');
+        Route::post('/config/import/generate', 'CommonApiShowController@generateApiKey')->name('sm.generate');
+        Route::post('/config/import/delete', 'CommonApiShowController@destroy')->name('sm.apiDel');
       });
 
       // システム アドミンのみ
