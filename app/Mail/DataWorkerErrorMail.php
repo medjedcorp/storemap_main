@@ -11,9 +11,9 @@ class DataWorkerErrorMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected $title;
-    protected $text;
-    protected $upload_filename;
+    // protected $title;
+    // protected $text;
+    // protected $upload_filename;
 
     /**
      * Create a new message instance.

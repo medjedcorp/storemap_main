@@ -2,12 +2,14 @@
 ご担当者様
 
 データ送信時にエラーが発生しました。
-エラー内容をご確認ください。
+エラー内容をご確認ください。text
 
 サイト: {{ $site }}
 
 エラー内容
-{{ $errorLists }}
+@foreach ( $errorLists as $errorList )
+{{ $errorList }}\n
+@endforeach
 
 ※本メールへの返信はできません。
 

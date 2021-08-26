@@ -10,10 +10,12 @@
 <body>
   <p>{{$company_name}}&nbsp;ご担当者様</p>
   <p>データ送信時にエラーが発生しました。<br>
-  エラー内容をご確認ください。</p>
+  エラー内容をご確認ください。pc</p>
   <p>サイト:&nbsp;{{ $site }}</p>
   <p>エラー内容<br>
-  {{ $errorLists }}
+  @foreach ($errorLists as $errorList)
+  {{$errorList}}<br>
+  @endforeach
   </p>
  
   <p>※このメールに心当たりがない場合は、メールの破棄をお願いいたします。</p>

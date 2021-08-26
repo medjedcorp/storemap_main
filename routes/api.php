@@ -23,7 +23,8 @@ Route::post('/sregi/receive_stock', 'SmaregiReceiveController@stockImport'); // 
 Route::post('/sregi/receive_item', 'SmaregiReceiveController@itemImport'); // 価格
 
 // 汎用受信API
-Route::post('/smapi/receive_stock', 'SmApiReceiveController@stockImport');
+Route::post('/common/receive_stock', 'CommonApiReceiveController@stockImport');
+Route::post('/common/receive_item', 'CommonApiReceiveController@itemImport');
 // Route::post('smapi/receive_item', 'SmApiReceiveController@itemImport');
 
 Route::get('/sample', 'SampleController@apiHello'); //api/sampleのページになる
