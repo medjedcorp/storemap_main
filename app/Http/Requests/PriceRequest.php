@@ -74,8 +74,8 @@ class PriceRequest extends FormRequest
           $edate = $this->input('end_date')[$i];
             if(isset($sdate) and isset($edate)) {
               if( $sdate > $edate ){
-              $validator->errors()->add('start_date', 'セール開始日はセール終了日よりも前の日付を入力してください');
-              $validator->errors()->add('end_date', 'セール終了日はセール開始日よりも後の日付を入力してください');
+              $validator->errors()->add('start_date', 'セール開始日時はセール終了日時よりも前の日時を入力してください');
+              $validator->errors()->add('end_date', 'セール終了日時はセール開始日時よりも後の日時を入力してください');
                 }
               }
             }
