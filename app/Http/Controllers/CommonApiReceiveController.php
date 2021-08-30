@@ -42,10 +42,8 @@ class CommonApiReceiveController extends Controller
         } else {
             $json_count = count($arr['data']['rows']);
         }
-        // $storeId =  $arr['data']['0']['rows'][$i]['productId'];
 
-        // 会社チェック。データない場合は、とりあえずレスポンス200を送信
-        // $cCheck = DB::table('companies')->where('ext_id', $headerId)->where('ext_token', $headerToken)->exists();
+        // 会社チェック
         if (Company::where('company_code', $headerId)->where('api_token', $headerToken)->exists()) {
             $company = Company::where('company_code', $headerId)->where('api_token', $headerToken)->first();
             $api_flag =  $company->api_flag;
@@ -137,7 +135,7 @@ class CommonApiReceiveController extends Controller
     {
         // 送られてきたデータ取得
         $arr = $request;
-
+        // return response()->json($arr, 400);
         // ヘッダーにあるidとtokenを取得(スマレジで設定)
         $headerId = $request->header('X-contract-id');
         $headerToken = $request->header('X-access-token');
@@ -217,27 +215,36 @@ class CommonApiReceiveController extends Controller
             // それぞれ値が存在するかチェック
             if (isset($arr['data']['rows'][$i]['price'])) {
                 $price = $arr['data']['rows'][$i]['price'];
-                if (!is_int($price)) {
+                if (!is_numeric($price)) {
                     // 金額チェック。整数かどうか
                     $errorLists[$i] = "[販売価格が整数ではありません]  店舗コード：" . $storeId . " / 商品コード：" . $productId . "\n";
                     // return response()->json($price, 400);
                     // return response()->json(['message' => '400 販売価格が整数ではありません'], 400);
                     continue;
                 }
+                if($price < 0){
+                    $errorLists[$i] = "[販売価格は0以上の値を指定してください]  店舗コード：" . $storeId . " / 商品コード：" . $productId . "\n";
+                    continue; 
+                }
             } else {
-                $price = $produt->price;
+                // $price = $produt->price;
+                $price = null;
             }
             if (isset($arr['data']['rows'][$i]['value'])) {
                 $value = $arr['data']['rows'][$i]['value'];
-                if (!is_int($value)) {
+                if (!is_numeric($value)) {
                     // 金額チェック。整数かどうか
                     $errorLists[$i] = "[セール価格が整数ではありません]  店舗コード：" . $storeId . " / 商品コード：" . $productId . "\n";
                     // return response()->json($value, 400);
                     // return response()->json(['message' => '400 セール価格が整数ではありません'], 400);
                     continue;
                 }
+                if($value < 0){
+                    $errorLists[$i] = "[セール価格は0以上の値を指定してください]  店舗コード：" . $storeId . " / 商品コード：" . $productId . "\n";
+                    continue; 
+                }
             } else {
-                $value = $produt->value;
+                $value = null;
             }
             if (isset($arr['data']['rows'][$i]['displayFlag'])) {
                 $displayFlag = $arr['data']['rows'][$i]['displayFlag'];
@@ -253,7 +260,8 @@ class CommonApiReceiveController extends Controller
                     continue;
                 }
             } else {
-                $startDate = $produt->start_date;
+                $startDate = null;
+                // $startDate = $produt->start_date;
             }
             if (isset($arr['data']['rows'][$i]['endDate'])) {
                 $endDate = $arr['data']['rows'][$i]['endDate'];
@@ -263,19 +271,22 @@ class CommonApiReceiveController extends Controller
                     continue;
                 }
             } else {
-                $endDate = $produt->end_date;
+                $endDate = null;
+                // $endDate = $produt->end_date;
             }
 
             // 時間設定 終了時間が開始時間より早くないかチェック
-            $dateDiff = strtotime($endDate) - strtotime($startDate);
-            if ($dateDiff <= 0) {
-                $errorLists[$i] = "[セール開始日時はセール終了日時よりも前の日時を入力してください]  店舗コード：" . $storeId . " / 商品コード：" . $productId . "\n";
-                // return response()->json(['message' => '400 セール開始日時はセール終了日時よりも前の日時を入力してください'], 400);
-                continue;
+            if(!is_null($startDate) and !is_null($endDate)){
+                $dateDiff = strtotime($endDate) - strtotime($startDate);
+                if ($dateDiff <= 0) {
+                    $errorLists[$i] = "[セール開始日時はセール終了日時よりも前の日時を入力してください]  店舗コード：" . $storeId . " / 商品コード：" . $productId . "\n";
+                    // return response()->json(['message' => '400 セール開始日時はセール終了日時よりも前の日時を入力してください'], 400);
+                    continue;
+                }
             }
 
             // 金額チェック。セール価格より安くないか
-            //　両方nullの場合は保存しない
+            //　両方nullの場合は、金額を削除。定価が自動で入ります
             if (!is_null($price) and !is_null($value)) {
                 // 両方nullではない場合
                 // 価格がマイナスにならないかチェック
@@ -284,22 +295,16 @@ class CommonApiReceiveController extends Controller
                     $errorLists[$i] = "[セール価格は販売価格よりも安い値を入力してください]  店舗コード：" . $storeId . " / 商品コード：" . $productId . "\n";
                     // return response()->json(['message' => '400 セール価格は販売価格よりも安い値を入力してください'], 400);
                     continue;
-                } else {
-                    // 両方値があって正しいから保存
-                    $produt->price = $price;
-                    $produt->value = $value;
-                }
+                } 
             } elseif (is_null($price) and !is_null($value)) {
                 // セール価格に値があって、販売価格がnullの場合、エラー
                 $errorLists[$i] = "[セール価格を入力する場合は、販売価格を入力してください]  店舗コード：" . $storeId . " / 商品コード：" . $productId . "\n";
                 // return response()->json(['message' => '400 セール価格を入力する場合は、販売価格を入力してください'], 400);
                 continue;
-            // } elseif (!is_null($price) and is_null($value)){
                 // 販売価格に値があって、セール価格がnullの場合は、販売価格のみ保存
                 $produt->price = $price;
             }
 
-            
 
             if (!isset($arr['data']['rows'][0]['productId'])) {
                 return response()->json(['message' => '400 productId not found'], 400);
@@ -310,25 +315,20 @@ class CommonApiReceiveController extends Controller
             }
             $produt->start_date = $startDate;
             $produt->end_date = $endDate;
+            $produt->price = $price;
+            $produt->value = $value;
 
             $produt->save();
         }
 
-        // Log::debug(print_r($errorLists, true));
 
         if (count($errorLists) > 0) {
             $site = "商品API";
             $to = $company->company_email;
             $company_name = $company->company_name;
             Mail::to($to)->send(new DataWorkerErrorMail($company_name, $errorLists, $site));
-            // Log::debug(print_r($errorLists, true));
-            // return response($errorLists);
-            return response(400);
+            return response()->json($errorLists, 400);
         }
-
-        // Log::debug(print_r($headerId, true));
-        // Log::debug(print_r($headerToken, true));
-
         return response(200);
     }
 }

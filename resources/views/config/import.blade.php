@@ -54,9 +54,9 @@
                 </form>
                 @endif
               </div>
-              <p class="col-sm-4">在庫設定受信用URL</p>
+              <p class="col-sm-4">在庫情報送信先URL</p>
               <p class="col-sm-8">https://storemap.jp/api/common/receive_stock</p>
-              <p class="col-sm-4">価格設定受信用URL</p>
+              <p class="col-sm-4">商品情報送信先URL</p>
               <p class="col-sm-8">https://storemap.jp/api/common/receive_item</p>
               <div class="col-12">
                 <form id="flag_form" method="POST" action="{{route('sm.useApi')}}" enctype="multipart/form-data" class="row">
@@ -91,12 +91,12 @@
             <hr>
             <dl class="dl_first">
               <dt>1.リクエスト</dt>
-              <dd class="mb-2">
+              <dd class="mb-4">
                 <dl class="dl_second">
                   <dt> 1.1. HTTP メソッド</dt>
                   <dd>POSTを指定</dd>
                   <dt>1.2. ヘッダ情報</dt>
-                  <dd>ヘッダ情報には下記の値を指定してください
+                  <dd>ヘッダ情報には下記の値を指定してください。
                     <table class="table table-bordered">
                       <thead>
                         <tr>
@@ -129,10 +129,10 @@
                 </dl>
               </dd>
               <dt>2.ボディ情報</dt>
-              <dd>ボディ情報にパラメータを設定し、リクエストしてください。<br>パラメータはJSON形式で設定する。<br>
-                その際のパラメータは文字コードを「UTF-8」を指定してください。
+              <dd class="mb-4">ボディ情報にパラメータを設定し、リクエストしてください。<br>パラメータはJSON形式で設定してください。<br>
+                パラメータの文字コードは「UTF-8」を指定してください。
                 <dl class="dl_second">
-                  <dt> 2.1. 在庫設定用JSON形式</dt>
+                  <dt> 2.1. 在庫情報送信JSON形式</dt>
                   <dd>基本フォーマットは以下のとおりです。
                     <table class="table table-bordered">
                       <thead>
@@ -145,29 +145,29 @@
                       <tbody>
                         <tr>
                           <td>data[table_name]</td>
-                          <td>Stock</td>
+                          <td>Stock<br>※必須</td>
                           <td>在庫更新タイプはStockを指定
                           </td>
                         </tr>
                         <tr>
                           <td>data[rows][$i]][storeId]</td>
-                          <td>店舗コード</td>
+                          <td>店舗コード<br>※必須</td>
                           <td>Storemapに登録済み店舗の店舗コードを指定</td>
                         </tr>
                         <tr>
                           <td>data[rows][$i][productId]</td>
-                          <td>商品コード</td>
+                          <td>商品コード<br>※必須</td>
                           <td>Storemapに登録済みの商品コードを指定</td>
                         </tr>
                         <tr>
                           <td>data[rows][$i][stockAmount]</td>
-                          <td>在庫数</td>
+                          <td>在庫数<br>※必須</td>
                           <td>在庫数を絶対値で指定</td>
                         </tr>
                       </tbody>
-                    </table>  
+                    </table>
                   </dd>
-                  <dt> 2.2. 在庫設定JSONサンプル</dt>
+                  <dt> 2.2. 在庫情報JSONサンプル</dt>
                   <dd>
                     便宜上、コメントや改行・空白を入れています
                     <pre class="bg-light disabled p-2">
@@ -193,17 +193,105 @@
 &#009;]
 }</pre>
                   </dd>
-                  <dt>1.2. ヘッダ情報</dt>
-                  <dd>ヘッダ情報には下記の値を指定してください
-
-
+                  <dt>2.3. 商品情報送信JSON形式</dt>
+                  <dd>基本フォーマットは以下のとおりです。
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th>キー</th>
+                          <th>設定値</th>
+                          <th>備考</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>data[table_name]</td>
+                          <td>Item<br>※必須</td>
+                          <td>商品情報更新タイプはItemを指定
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>data[rows][$i]][storeId]</td>
+                          <td>店舗コード<br>※必須</td>
+                          <td>Storemapに登録済み店舗の店舗コードを指定</td>
+                        </tr>
+                        <tr>
+                          <td>data[rows][$i][productId]</td>
+                          <td>商品コード<br>※必須</td>
+                          <td>Storemapに登録済みの商品コードを指定</td>
+                        </tr>
+                        <tr>
+                          <td>data[rows][$i][price]</td>
+                          <td>通常価格<br>※必須</td>
+                          <td>店舗で販売するときの通常価格を指定<br>nullの場合は、基本情報の定価が反映されます</td>
+                        </tr>
+                        <tr>
+                          <td>data[rows][$i][value]</td>
+                          <td>セール価格<br>※必須</td>
+                          <td>店舗で販売するときのセール価格を指定<br>nullの場合は、既存の値が削除されます<br>※セール価格は通常価格よりも低い値を指定してください</td>
+                        </tr>
+                        <tr>
+                          <td>data[rows][$i][startDate]</td>
+                          <td>開始日時<br>※必須</td>
+                          <td>セール開始日時を指定<br>YYYY-mm-dd HH:MM:SS形式<br>nullの場合は、既存の値が削除されます</td>
+                        </tr>
+                        <tr>
+                          <td>data[rows][$i][endDate]</td>
+                          <td>終了日時<br>※必須</td>
+                          <td>セール終了日時を指定<br>YYYY-mm-dd HH:MM:SS形式<br>nullの場合は、既存の値が削除されます<br>※セール終了日時はセール開始日時よりも、後の日時を指定してください。</td>
+                        </tr>
+                        <tr>
+                          <td>data[rows][$i][displayFlag]</td>
+                          <td>表示設定</td>
+                          <td>商品の表示、非表示をbooleanで指定<br>
+                            0:非表示<br>
+                            1:表示
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </dd>
+                  <dt> 2.4. 商品情報JSONサンプル</dt>
+                  <dd>
+                    便宜上、コメントや改行・空白を入れています
+                    <pre class="bg-light disabled p-2">
+{
+&#009;"data": [{
+&#009;&#009;"table_name": "Item",
+&#009;&#009;"rows": [{
+&#009;&#009;&#009;"storeId": "T001", // 店舗コード
+&#009;&#009;&#009;"productId": "ABCD123-BK-M", // 商品コード
+&#009;&#009;&#009;"price": "10000", // 通常価格を指定
+&#009;&#009;&#009;"value": "5000", // セール価格を指定
+&#009;&#009;&#009;"startDate": "2021-12-31 00:00:00", // セール開始日時を指定
+&#009;&#009;&#009;"endDate": "2022-01-01 01:59:59", // セール終了日時を指定
+&#009;&#009;&#009;"displayFlag": "1", // 0か1を指定
+&#009;&#009;&#009;},
+&#009;&#009;&#009;{
+&#009;&#009;&#009;"storeId": "T001", // 店舗コード
+&#009;&#009;&#009;"productId": "EFGH456-PK-M", // 商品コード
+&#009;&#009;&#009;"price": "10000", // 通常価格を指定
+&#009;&#009;&#009;"value": "", // セール価格を指定
+&#009;&#009;&#009;"startDate": "", // セール開始日時を指定
+&#009;&#009;&#009;"endDate": "", // セール終了日時を指定
+&#009;&#009;&#009;"displayFlag": "0", // 0か1を指定
+&#009;&#009;&#009;},
+&#009;&#009;&#009;{
+&#009;&#009;&#009;"storeId": "T002", // 店舗コード
+&#009;&#009;&#009;"productId": "EFGH456-PK-M", // 商品コード
+&#009;&#009;&#009;"price": "10000", // 通常価格を指定
+&#009;&#009;&#009;"value": "5000", // セール価格を指定
+&#009;&#009;&#009;"startDate": "2021-12-31 00:00:00", // セール開始日時を指定
+&#009;&#009;&#009;"endDate": "2022-01-01 01:59:59", // セール終了日時を指定
+&#009;&#009;&#009;"displayFlag": "1", // 0か1を指定
+&#009;&#009;&#009;}
+&#009;&#009;]}
+&#009;]
+}</pre>
                   </dd>
                 </dl>
 
               </dd>
-              <dd>Donec id elit non mi porta gravida at eget metus.</dd>
-              <dt>Malesuada porta</dt>
-              <dd>Etiam porta sem malesuada magna mollis euismod.</dd>
             </dl>
 
 
@@ -240,6 +328,7 @@
 <style>
   .dl_second {
     margin-left: 1rem;
+    margin-top: 1rem;
   }
 
   dd {
