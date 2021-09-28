@@ -54,4 +54,8 @@ return [
     'sm_cate'                   => 'ストアマップカテゴリ',
     'prefecture'                   => '都道府県情報編集',
     'calendar'                   => 'カレンダー',
+    'guide'              => 'ご利用ガイド',
+    'manual'              => 'マニュアル',
+    'support'              => 'お問い合わせ',
+    'link'              => 'リンク',
 ];

@@ -51,7 +51,7 @@ return [
     'store'     => '取扱店舗',
     'price'     => '価格設定',
     'stock'     => '在庫設定',
-    'comment'     => '店舗毎コメント',
+    'comment'     => '店舗コメント',
   ],
   'edit' => [
     'title'          => '編集',

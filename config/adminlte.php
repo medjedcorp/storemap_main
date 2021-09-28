@@ -168,7 +168,6 @@ return [
     |
     */
     'right_sidebar' => true,
-    // 'right_sidebar_icon' => 'fas fa-question-circle',
     'right_sidebar_icon' => 'far fa-question-circle',
     'right_sidebar_theme' => 'light',
     'right_sidebar_slide' => false,
@@ -285,13 +284,13 @@ return [
                     'icon' => 'nav-icon fas fa-angle-right fa-fw',
                     'can' =>  'isStaff',
                 ],
-              ],
-          ],
+            ],
+        ],
         [
-          'text'    => 'catalog',
-          'icon'    => 'nav-icon fas fa-book fa-fw',
-          'can' =>  'isStaff',
-              'submenu' => [
+            'text'    => 'catalog',
+            'icon'    => 'nav-icon far fa-list-alt fa-fw',
+            'can' =>  'isStaff',
+            'submenu' => [
                 [
                     'text' => 'catalog_manager',
                     'url'  => 'catalog',
@@ -452,6 +451,23 @@ return [
                 ],
             ],
         ],
+        ['header' => 'guide'],
+        [
+            'text' => 'manual',
+            'url'  => 'manual',
+            'icon' => 'nav-icon fas fa-book fa-fw',
+        ],
+        [
+            'text' => 'support',
+            'url'  => 'support',
+            'icon' => 'nav-icon far fa-envelope fa-fw',
+        ],
+        // ['header' => 'link'],
+        // [
+        //     'text' => 'Storemap',
+        //     'url'  => '/',
+        //     'icon' => 'nav-icon fas fa-home fa-fw',
+        // ],
         // [ // ログイン
         //     'text' => 'login',
         //     // 'url'  => 'login',

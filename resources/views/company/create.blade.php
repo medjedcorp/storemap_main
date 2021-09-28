@@ -6,7 +6,7 @@
 <div class="container-fluid">
   <div class="row mb-2">
     <div class="col-sm-6">
-      <h1 class="m-0">{{$c_name}} / @lang('company.register.title')</h1>
+      <h1 class="m-0">@lang('company.register.title')</h1>
     </div><!-- /.col -->
     <div class="col-sm-6">
     </div><!-- /.col -->
