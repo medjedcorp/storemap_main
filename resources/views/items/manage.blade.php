@@ -166,7 +166,7 @@
                 <tr>
                   <th>@lang('csv.manage.catch_copy_title')</th>
                   <td>@lang('csv.manage.catch_copy')</td>
-                  <td><span class="text-danger">@lang('csv.required')</span><br>@lang('csv.manage.catch_copy_exp')</td>
+                  <td>@lang('csv.manage.catch_copy_exp')</td>
                   <td>@lang('csv.string')(140)</td>
                   <td></td>
                 </tr>

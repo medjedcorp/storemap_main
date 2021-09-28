@@ -28,12 +28,12 @@ class CatalogController extends Controller
             // カンパニーIDでセグメントしてから、orWhereのいずれかにあてはまったものを抽出
             // 自分が登録している商品は除外
             $items = Item::where('global_flag', 1)->where('company_id', '!=', $user->company_id)
-            ->whereNotIn('barcode', $my_items)
-            ->where(function ($query) use ($keyword) {
-                $query->orWhere('product_code', 'like', '%' . $keyword . '%')
-                    ->orWhere('product_name', 'like', '%' . $keyword . '%')
-                    ->orWhere('barcode', 'like', '%' . $keyword . '%');
-            })->paginate(30);
+                ->whereNotIn('barcode', $my_items)
+                ->where(function ($query) use ($keyword) {
+                    $query->orWhere('product_code', 'like', '%' . $keyword . '%')
+                        ->orWhere('product_name', 'like', '%' . $keyword . '%')
+                        ->orWhere('barcode', 'like', '%' . $keyword . '%');
+                })->paginate(30);
             // $items = Item::where('global_flag', 1)->where('company_id', '!=', $user->company_id)->whereNotIn('product_code', $my_items)->where('product_name', 'like', '%' . $keyword . '%')->get();
             // dd($my_items,$items);
             return view('catalog.index', [
@@ -169,21 +169,23 @@ class CatalogController extends Controller
                     // 元ファイルの存在チェック
 
                     $base_item_img1 = ItemImage::where('filename', $base_item->item_img1)->where('company_id', $base_item->company_id)->first();
-                    $copy_item_img1 = $base_item_img1->replicate();
-                    // ItemImageを検索してコピー
-                    $copy_item_img1->company_id = $user->company_id;
-                    // カンパニーIDだけ更新。IDやタイムスタンプは自動更新
-                    $copy_item_img1->save();
+                    if (!is_null($base_item_img1)) {
+                        $copy_item_img1 = $base_item_img1->replicate();
+                        // ItemImageを検索してコピー
+                        $copy_item_img1->company_id = $user->company_id;
+                        // カンパニーIDだけ更新。IDやタイムスタンプは自動更新
+                        $copy_item_img1->save();
 
-                    if (Storage::exists($copy_img)) {
-                        // 元ファイルが存在する場合、コピー先ファイルの存在チェック
-                        Storage::delete($copy_img);
-                        // 存在すれば削除
-                        Storage::copy($base_img, $copy_img);
-                        // 削除後にコピー
-                    } else {
-                        // コピー先にファイルがなければ普通にコピー
-                        Storage::copy($base_img, $copy_img);
+                        if (Storage::exists($copy_img)) {
+                            // 元ファイルが存在する場合、コピー先ファイルの存在チェック
+                            Storage::delete($copy_img);
+                            // 存在すれば削除
+                            Storage::copy($base_img, $copy_img);
+                            // 削除後にコピー
+                        } else {
+                            // コピー先にファイルがなければ普通にコピー
+                            Storage::copy($base_img, $copy_img);
+                        }
                     }
                 } else {
                     $item->item_img1 = null;
@@ -195,19 +197,21 @@ class CatalogController extends Controller
                 $copy_img = '/public/' . $user->company_id . '/items/' . $base_item->item_img2;
                 if (Storage::exists($base_img)) {
 
-                    $base_item_img2 = ItemImage::where('filename', $base_item->item_img4)->where('company_id', $base_item->company_id)->first();
-                    $copy_item_img2 = $base_item_img2->replicate();
-                    // ItemImageを検索してコピー
-                    $copy_item_img2->company_id = $user->company_id;
-                    // カンパニーIDだけ更新。IDやタイムスタンプは自動更新
-                    $copy_item_img2->save();
+                    $base_item_img2 = ItemImage::where('filename', $base_item->item_img2)->where('company_id', $base_item->company_id)->first();
+                    if (!is_null($base_item_img2)) {
+                        $copy_item_img2 = $base_item_img2->replicate();
+                        // ItemImageを検索してコピー
+                        $copy_item_img2->company_id = $user->company_id;
+                        // カンパニーIDだけ更新。IDやタイムスタンプは自動更新
+                        $copy_item_img2->save();
 
-                    if (Storage::exists($copy_img)) {
-                        Storage::delete($copy_img);
-                        Storage::copy($base_img, $copy_img);
-                    } else {
-                        // コピー先にファイルがなければ普通にコピー
-                        Storage::copy($base_img, $copy_img);
+                        if (Storage::exists($copy_img)) {
+                            Storage::delete($copy_img);
+                            Storage::copy($base_img, $copy_img);
+                        } else {
+                            // コピー先にファイルがなければ普通にコピー
+                            Storage::copy($base_img, $copy_img);
+                        }
                     }
                 } else {
                     $item->item_img2 = null;
@@ -219,18 +223,20 @@ class CatalogController extends Controller
                 if (Storage::exists($base_img)) {
 
                     $base_item_img3 = ItemImage::where('filename', $base_item->item_img3)->where('company_id', $base_item->company_id)->first();
-                    $copy_item_img3 = $base_item_img3->replicate();
-                    // ItemImageを検索してコピー
-                    $copy_item_img3->company_id = $user->company_id;
-                    // カンパニーIDだけ更新。IDやタイムスタンプは自動更新
-                    $copy_item_img3->save();
+                    if (!is_null($base_item_img3)) {
+                        $copy_item_img3 = $base_item_img3->replicate();
+                        // ItemImageを検索してコピー
+                        $copy_item_img3->company_id = $user->company_id;
+                        // カンパニーIDだけ更新。IDやタイムスタンプは自動更新
+                        $copy_item_img3->save();
 
-                    if (Storage::exists($copy_img)) {
-                        Storage::delete($copy_img);
-                        Storage::copy($base_img, $copy_img);
-                    } else {
-                        // コピー先にファイルがなければ普通にコピー
-                        Storage::copy($base_img, $copy_img);
+                        if (Storage::exists($copy_img)) {
+                            Storage::delete($copy_img);
+                            Storage::copy($base_img, $copy_img);
+                        } else {
+                            // コピー先にファイルがなければ普通にコピー
+                            Storage::copy($base_img, $copy_img);
+                        }
                     }
                 } else {
                     $item->item_img3 = null;
@@ -242,18 +248,20 @@ class CatalogController extends Controller
                 if (Storage::exists($base_img)) {
 
                     $base_item_img4 = ItemImage::where('filename', $base_item->item_img4)->where('company_id', $base_item->company_id)->first();
-                    $copy_item_img4 = $base_item_img4->replicate();
-                    // ItemImageを検索してコピー
-                    $copy_item_img4->company_id = $user->company_id;
-                    // カンパニーIDだけ更新。IDやタイムスタンプは自動更新
-                    $copy_item_img4->save();
+                    if (!is_null($base_item_img4)) {
+                        $copy_item_img4 = $base_item_img4->replicate();
+                        // ItemImageを検索してコピー
+                        $copy_item_img4->company_id = $user->company_id;
+                        // カンパニーIDだけ更新。IDやタイムスタンプは自動更新
+                        $copy_item_img4->save();
 
-                    if (Storage::exists($copy_img)) {
-                        Storage::delete($copy_img);
-                        Storage::copy($base_img, $copy_img);
-                    } else {
-                        // コピー先にファイルがなければ普通にコピー
-                        Storage::copy($base_img, $copy_img);
+                        if (Storage::exists($copy_img)) {
+                            Storage::delete($copy_img);
+                            Storage::copy($base_img, $copy_img);
+                        } else {
+                            // コピー先にファイルがなければ普通にコピー
+                            Storage::copy($base_img, $copy_img);
+                        }
                     }
                 } else {
                     $item->item_img4 = null;
@@ -265,18 +273,20 @@ class CatalogController extends Controller
                 if (Storage::exists($base_img)) {
 
                     $base_item_img5 = ItemImage::where('filename', $base_item->item_img5)->where('company_id', $base_item->company_id)->first();
-                    $copy_item_img5 = $base_item_img5->replicate();
-                    // ItemImageを検索してコピー
-                    $copy_item_img5->company_id = $user->company_id;
-                    // カンパニーIDだけ更新。IDやタイムスタンプは自動更新
-                    $copy_item_img5->save();
+                    if (!is_null($base_item_img5)) {
+                        $copy_item_img5 = $base_item_img5->replicate();
+                        // ItemImageを検索してコピー
+                        $copy_item_img5->company_id = $user->company_id;
+                        // カンパニーIDだけ更新。IDやタイムスタンプは自動更新
+                        $copy_item_img5->save();
 
-                    if (Storage::exists($copy_img)) {
-                        Storage::delete($copy_img);
-                        Storage::copy($base_img, $copy_img);
-                    } else {
-                        // コピー先にファイルがなければ普通にコピー
-                        Storage::copy($base_img, $copy_img);
+                        if (Storage::exists($copy_img)) {
+                            Storage::delete($copy_img);
+                            Storage::copy($base_img, $copy_img);
+                        } else {
+                            // コピー先にファイルがなければ普通にコピー
+                            Storage::copy($base_img, $copy_img);
+                        }
                     }
                 } else {
                     $item->item_img5 = null;
@@ -288,18 +298,20 @@ class CatalogController extends Controller
                 if (Storage::exists($base_img)) {
 
                     $base_item_img6 = ItemImage::where('filename', $base_item->item_img6)->where('company_id', $base_item->company_id)->first();
-                    $copy_item_img6 = $base_item_img6->replicate();
-                    // ItemImageを検索してコピー
-                    $copy_item_img6->company_id = $user->company_id;
-                    // カンパニーIDだけ更新。IDやタイムスタンプは自動更新
-                    $copy_item_img6->save();
+                    if (!is_null($base_item_img6)) {
+                        $copy_item_img6 = $base_item_img6->replicate();
+                        // ItemImageを検索してコピー
+                        $copy_item_img6->company_id = $user->company_id;
+                        // カンパニーIDだけ更新。IDやタイムスタンプは自動更新
+                        $copy_item_img6->save();
 
-                    if (Storage::exists($copy_img)) {
-                        Storage::delete($copy_img);
-                        Storage::copy($base_img, $copy_img);
-                    } else {
-                        // コピー先にファイルがなければ普通にコピー
-                        Storage::copy($base_img, $copy_img);
+                        if (Storage::exists($copy_img)) {
+                            Storage::delete($copy_img);
+                            Storage::copy($base_img, $copy_img);
+                        } else {
+                            // コピー先にファイルがなければ普通にコピー
+                            Storage::copy($base_img, $copy_img);
+                        }
                     }
                 } else {
                     $item->item_img6 = null;
@@ -311,18 +323,20 @@ class CatalogController extends Controller
                 if (Storage::exists($base_img)) {
 
                     $base_item_img7 = ItemImage::where('filename', $base_item->item_img7)->where('company_id', $base_item->company_id)->first();
-                    $copy_item_img7 = $base_item_img7->replicate();
-                    // ItemImageを検索してコピー
-                    $copy_item_img7->company_id = $user->company_id;
-                    // カンパニーIDだけ更新。IDやタイムスタンプは自動更新
-                    $copy_item_img7->save();
+                    if (!is_null($base_item_img7)) {
+                        $copy_item_img7 = $base_item_img7->replicate();
+                        // ItemImageを検索してコピー
+                        $copy_item_img7->company_id = $user->company_id;
+                        // カンパニーIDだけ更新。IDやタイムスタンプは自動更新
+                        $copy_item_img7->save();
 
-                    if (Storage::exists($copy_img)) {
-                        Storage::delete($copy_img);
-                        Storage::copy($base_img, $copy_img);
-                    } else {
-                        // コピー先にファイルがなければ普通にコピー
-                        Storage::copy($base_img, $copy_img);
+                        if (Storage::exists($copy_img)) {
+                            Storage::delete($copy_img);
+                            Storage::copy($base_img, $copy_img);
+                        } else {
+                            // コピー先にファイルがなければ普通にコピー
+                            Storage::copy($base_img, $copy_img);
+                        }
                     }
                 } else {
                     $item->item_img7 = null;
@@ -334,18 +348,20 @@ class CatalogController extends Controller
                 if (Storage::exists($base_img)) {
 
                     $base_item_img8 = ItemImage::where('filename', $base_item->item_img8)->where('company_id', $base_item->company_id)->first();
-                    $copy_item_img8 = $base_item_img8->replicate();
-                    // ItemImageを検索してコピー
-                    $copy_item_img8->company_id = $user->company_id;
-                    // カンパニーIDだけ更新。IDやタイムスタンプは自動更新
-                    $copy_item_img8->save();
+                    if (!is_null($base_item_img8)) {
+                        $copy_item_img8 = $base_item_img8->replicate();
+                        // ItemImageを検索してコピー
+                        $copy_item_img8->company_id = $user->company_id;
+                        // カンパニーIDだけ更新。IDやタイムスタンプは自動更新
+                        $copy_item_img8->save();
 
-                    if (Storage::exists($copy_img)) {
-                        Storage::delete($copy_img);
-                        Storage::copy($base_img, $copy_img);
-                    } else {
-                        // コピー先にファイルがなければ普通にコピー
-                        Storage::copy($base_img, $copy_img);
+                        if (Storage::exists($copy_img)) {
+                            Storage::delete($copy_img);
+                            Storage::copy($base_img, $copy_img);
+                        } else {
+                            // コピー先にファイルがなければ普通にコピー
+                            Storage::copy($base_img, $copy_img);
+                        }
                     }
                 } else {
                     $item->item_img8 = null;
@@ -356,18 +372,20 @@ class CatalogController extends Controller
                 $copy_img = '/public/' . $user->company_id . '/items/' . $base_item->item_img9;
                 if (Storage::exists($base_img)) {
                     $base_item_img9 = ItemImage::where('filename', $base_item->item_img9)->where('company_id', $base_item->company_id)->first();
-                    $copy_item_img9 = $base_item_img9->replicate();
-                    // ItemImageを検索してコピー
-                    $copy_item_img9->company_id = $user->company_id;
-                    // カンパニーIDだけ更新。IDやタイムスタンプは自動更新
-                    $copy_item_img9->save();
+                    if (!is_null($base_item_img9)) {
+                        $copy_item_img9 = $base_item_img9->replicate();
+                        // ItemImageを検索してコピー
+                        $copy_item_img9->company_id = $user->company_id;
+                        // カンパニーIDだけ更新。IDやタイムスタンプは自動更新
+                        $copy_item_img9->save();
 
-                    if (Storage::exists($copy_img)) {
-                        Storage::delete($copy_img);
-                        Storage::copy($base_img, $copy_img);
-                    } else {
-                        // コピー先にファイルがなければ普通にコピー
-                        Storage::copy($base_img, $copy_img);
+                        if (Storage::exists($copy_img)) {
+                            Storage::delete($copy_img);
+                            Storage::copy($base_img, $copy_img);
+                        } else {
+                            // コピー先にファイルがなければ普通にコピー
+                            Storage::copy($base_img, $copy_img);
+                        }
                     }
                 } else {
                     $item->item_img9 = null;
@@ -378,18 +396,20 @@ class CatalogController extends Controller
                 $copy_img = '/public/' . $user->company_id . '/items/' . $base_item->item_img10;
                 if (Storage::exists($base_img)) {
                     $base_item_img10 = ItemImage::where('filename', $base_item->item_img10)->where('company_id', $base_item->company_id)->first();
-                    $copy_item_img10 = $base_item_img10->replicate();
-                    // ItemImageを検索してコピー
-                    $copy_item_img10->company_id = $user->company_id;
-                    // カンパニーIDだけ更新。IDやタイムスタンプは自動更新
-                    $copy_item_img10->save();
+                    if (!is_null($base_item_img10)) {
+                        $copy_item_img10 = $base_item_img10->replicate();
+                        // ItemImageを検索してコピー
+                        $copy_item_img10->company_id = $user->company_id;
+                        // カンパニーIDだけ更新。IDやタイムスタンプは自動更新
+                        $copy_item_img10->save();
 
-                    if (Storage::exists($copy_img)) {
-                        Storage::delete($copy_img);
-                        Storage::copy($base_img, $copy_img);
-                    } else {
-                        // コピー先にファイルがなければ普通にコピー
-                        Storage::copy($base_img, $copy_img);
+                        if (Storage::exists($copy_img)) {
+                            Storage::delete($copy_img);
+                            Storage::copy($base_img, $copy_img);
+                        } else {
+                            // コピー先にファイルがなければ普通にコピー
+                            Storage::copy($base_img, $copy_img);
+                        }
                     }
                 } else {
                     $item->item_img10 = null;

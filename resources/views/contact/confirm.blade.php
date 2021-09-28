@@ -47,8 +47,8 @@
             </div>
             <!-- /.card-body -->
             <div class="card-footer">
-              <button type="submit" name="action" class="btn btn-warning" value="back"><i class="fas fa-edit"></i> 入力内容を修正</button>
               <button type="submit" name="action" class="btn btn-primary" value="submit"><i class="far fa-paper-plane"></i> 入力内容を送信</button>
+              <button type="submit" name="action" class="btn btn-warning float-right" value="back"><i class="fas fa-edit"></i> 入力内容を修正</button>
             </div>
           </form>
         </div>

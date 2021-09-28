@@ -226,6 +226,14 @@ Route::middleware('verified')->group(function () {
       Route::get('changepassword', 'PasswordController@showChangePasswordForm');
       Route::post('changepassword', 'PasswordController@changePassword')->name('changepassword');
 
+      // マニュアル
+      Route::get('/manual', 'ManualController@index')->name('manual.index');
+
+      // サポートお問い合わせ
+      Route::get('/support', 'SupportController@index')->name('support.index');
+      Route::post('/support/confirm', 'SupportController@confirm')->name('support.confirm');
+      Route::post('/support/thanks', 'SupportController@send')->name('support.send');
+
       // トピックスの作成
       // Route::resource('home', 'TopicsController', ['only' => ['index']]);
       Route::get('/home', 'HomeController@index')->name('home');
