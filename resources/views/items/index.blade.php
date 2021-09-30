@@ -90,7 +90,7 @@
                                             <i class="fas fa-edit"></i>
                                             @lang('common.edit')</button>
                                     </td>
-                                    @can('isSeller')
+                                    {{-- @can('isSeller') --}}
                                     <td class="text-nowrap">
                                         <form method="POST" action="{{ route('items.destroy' , $item->id ) }}" class="h-adr">
                                             @method('DELETE')
@@ -100,7 +100,7 @@
                                                 削除</button>
                                         </form>
                                     </td>
-                                    @endcan
+                                    {{-- @endcan --}}
                                 </tr>
                                 @endforeach
                                 @endif

@@ -39,13 +39,13 @@ class AuthServiceProvider extends ServiceProvider
             return $user->role == 'admin';
         });
         Gate::define('isSeller', function ($user) {
-            return ($user->role == 'seller' or $user->role == 'admin');
+            return ($user->role == 'seller' or $user->role == 'tester' or $user->role == 'admin');
         });
         Gate::define('isStaff', function ($user) {
-            return ($user->role == 'staff' or $user->role == 'seller' or $user->role == 'admin');
+            return ($user->role == 'staff' or $user->role == 'seller' or $user->role == 'tester' or $user->role == 'admin');
         });
         Gate::define('isUser', function ($user) {
-            return ($user->role == 'user' or $user->role == 'staff' or $user->role == 'seller' or $user->role == 'admin');
+            return ($user->role == 'user' or $user->role == 'staff' or $user->role == 'tester' or $user->role == 'seller' or $user->role == 'admin');
         });
         Gate::define('guest', function () {
             return Auth::guest() == 'true';
@@ -53,6 +53,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('delete-user', function ($user, $company) {
             return $user->id === $company->id;
         });
+
 
         Gate::define('basic', function ($user) {
             // プランを取得

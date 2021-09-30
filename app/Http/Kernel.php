@@ -69,5 +69,6 @@ class Kernel extends HttpKernel
         'StoreCheck' => \App\Http\Middleware\StoreCheck::class,
         'AddStore' => \App\Http\Middleware\AddStore::class,
         'AddItem' => \App\Http\Middleware\AddItem::class,
+        'TesterCheck' => \App\Http\Middleware\TesterCheck::class,
     ];
 }

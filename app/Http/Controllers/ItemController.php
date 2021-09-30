@@ -298,7 +298,7 @@ class ItemController extends Controller
   {
     $item = Item::find($id);
 
-    Gate::authorize('isSeller'); // gate staffは削除不可
+    // Gate::authorize('isSeller'); // gate staffは削除不可
     // 権限設定ポリシー。会社ID違うと見れない
     $this->authorize('delete', $item);
 

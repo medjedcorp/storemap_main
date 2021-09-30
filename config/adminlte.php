@@ -415,18 +415,21 @@ return [
                     'url'  => 'config/api',
                     'icon' => 'nav-icon fas fa-cog fa-fw',
                     'can' =>  'basic',
+                    'can' =>  'isSeller',
                     'submenu' => [
                         [
                             'text' => 'sm_apitoken',
                             'url'  => 'config/import',
                             'icon' => 'nav-icon fas fa-angle-right fa-fw',
                             'can' => 'basic',
+                            'can' =>  'isSeller',
                         ],
                         [
                             'text' => 'sr_api_import',
                             'url'  => 'config/sr-import',
                             'icon' => 'nav-icon fas fa-angle-right fa-fw',
                             'can' => 'basic',
+                            'can' =>  'isSeller',
                         ],
 
                     ],

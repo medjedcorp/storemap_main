@@ -227,7 +227,6 @@
                                     </div>
 
                                     <div class="col-12 col-md-6">
-                                        {{-- @if($company->stripe_id) --}}
                                         @if($company->hasDefaultPaymentMethod())
                                         <p id="firstdate" class="lead">現在のご請求金額</p>
                                         <div class="table-responsive">
