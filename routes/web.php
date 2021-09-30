@@ -89,22 +89,35 @@ Auth::routes(['verify' => true]);
 Route::middleware('verified')->group(function () {
   Route::middleware('auth')->group(function () {
     // 要ログイン
-    Route::resource('company', 'CompanyController', ['onphp artisan config:cachely' => ['create', 'store']]);
-    Route::resource('company', 'CompanyController', ['only' => ['edit', 'update', 'show']]);
+    // 会社概要
+    // Route::resource('company', 'CompanyController', ['onphp artisan config:cachely' => ['create', 'store']]);
+    // Route::resource('company', 'CompanyController', ['onphp artisan config:cachely' => ['create', 'store'],'only' => ['create', 'store']]);
+    Route::get('/company/create', 'CompanyController@create', ['onphp artisan config:cachely' => ['create']])->name('company.create');
+    Route::post('/company', 'CompanyController@store', ['onphp artisan config:cachely' => ['store']])->name('company.store');
+    // Route::resource('company', 'CompanyController', ['only' => ['edit', 'update', 'show']]);
+    Route::get('/company/{id}', 'CompanyController@show')->name('company.show')->middleware('TesterCheck');
+    Route::group(['middleware' => ['auth', 'can:isSeller']], function () {
+      Route::get('/company/{id}/edit', 'CompanyController@edit')->name('company.edit')->middleware('TesterCheck');
+      Route::patch('/company/{id}', 'CompanyController@update')->name('company.update')->middleware('TesterCheck');
+    });
+
     Route::get('/company/download', 'CompanyController@download'); //会社証明ダウンロード用
 
 
 
-    Route::middleware('PaymentCheck')->group(function () {
+
+    Route::middleware('PaymentCheck')->middleware('TesterCheck')->group(function () {
       // 会社情報がなければ、会社登録へ
       // お支払い情報設定
-      Route::get('/payment/card', 'SubscriptionController@index')->name('payment.card');
-      Route::get('/payment/ajax/status', 'Ajax\SubscriptionController@status');
-      Route::post('/payment/ajax/subscribe', 'Ajax\SubscriptionController@subscribe');
-      Route::post('/payment/ajax/cancel', 'Ajax\SubscriptionController@cancel');
-      Route::post('/payment/ajax/resume', 'Ajax\SubscriptionController@resume');
-      Route::post('/payment/ajax/change_plan', 'Ajax\SubscriptionController@change_plan');
-      Route::post('/payment/ajax/update_card', 'Ajax\SubscriptionController@update_card');
+      Route::group(['middleware' => ['auth', 'can:isSeller']], function () {
+        Route::get('/payment/card', 'SubscriptionController@index')->name('payment.card');
+        Route::get('/payment/ajax/status', 'Ajax\SubscriptionController@status');
+        Route::post('/payment/ajax/subscribe', 'Ajax\SubscriptionController@subscribe');
+        Route::post('/payment/ajax/cancel', 'Ajax\SubscriptionController@cancel');
+        Route::post('/payment/ajax/resume', 'Ajax\SubscriptionController@resume');
+        Route::post('/payment/ajax/change_plan', 'Ajax\SubscriptionController@change_plan');
+        Route::post('/payment/ajax/update_card', 'Ajax\SubscriptionController@update_card');
+      });
     });
 
     Route::middleware('CompanyCheck')->group(function () {
@@ -134,12 +147,57 @@ Route::middleware('verified')->group(function () {
       Route::post('/items/manage', 'ItemStoreCsvImportController@importItemStoreCSV')->name('IS.importISCSV');
       Route::get('/items/manage/ItemStoreTempFileDownload', 'ItemStoreCsvExportController@ItemStoreTempFileDownload');
 
-      Route::resource('categories', 'CategoryController', ['except' => 'show']);
-      Route::resource('users', 'UserController', ['except' => 'show']);
-      Route::resource('stores', 'StoreController', ['only' => ['create', 'store']])->middleware('AddStore');
-      Route::resource('stores', 'StoreController', ['except' => ['create', 'store']]);
+      // カテゴリ
+      // Route::resource('categories', 'CategoryController', ['except' => 'show']);
+      Route::get('/categories', 'CategoryController@index')->name('categories.index');
+      Route::patch('/categories/{category}', 'CategoryController@update')->name('categories.update');
+      Route::get('/categories/{category}/edit', 'CategoryController@edit')->name('categories.edit');
+      Route::group(['middleware' => ['auth', 'can:isSeller']], function () {
+        //　カテゴリ登録と削除は管理者のみ
+        Route::get('/categories/create', 'CategoryController@create')->name('categories.create');
+        Route::post('/categories', 'CategoryController@store')->name('category.store');
+        Route::DELETE('/categories/{category}', 'CategoryController@destroy')->name('categories.destroy');
+      });
+
+      // ユーザー
+      // Route::resource('users', 'UserController', ['except' => 'show']);
+      Route::get('/users', 'UserController@index')->name('users.index')->middleware('TesterCheck');
+      Route::group(['middleware' => ['auth', 'can:isSeller']], function () {
+        //　ユーザー登録・編集・削除は管理者のみ
+        Route::patch('/users/{user}', 'UserController@update')->name('users.update')->middleware('TesterCheck');
+        Route::get('/users/create', 'UserController@create')->name('users.create')->middleware('TesterCheck');
+        Route::get('/users/{user}/edit', 'UserController@edit')->name('users.edit')->middleware('TesterCheck');
+        Route::post('/users', 'UserController@store')->name('users.store')->middleware('TesterCheck');
+        Route::DELETE('/users/{user}', 'UserController@destroy')->name('users.destroy')->middleware('TesterCheck');
+      });
+
+      // ストア管理
+      // Route::resource('stores', 'StoreController', ['only' => ['create', 'store']])->middleware('AddStore');
+      // Route::resource('stores', 'StoreController', ['except' => ['create', 'store']]);
+      Route::get('/stores', 'StoreController@index')->name('stores.index');
+      Route::patch('/stores/{store}', 'StoreController@update')->name('stores.update');
+      Route::get('/stores/{store}/edit', 'StoreController@edit')->name('stores.edit');
+      Route::get('/stores/{store}', 'StoreController@show')->name('stores.show');
+      Route::group(['middleware' => ['auth', 'can:isSeller']], function () {
+        //　ストア登録と削除は管理者のみ、middlewareは課金管理
+        Route::get('/stores/create', 'StoreController@create')->name('stores.create')->middleware('AddStore');
+        Route::post('/stores', 'StoreController@store')->name('stores.store')->middleware('AddStore');
+        Route::DELETE('/stores/{store}', 'StoreController@destroy')->name('stores.destroy');
+      });
+
+      // 商品管理
       Route::resource('items', 'ItemController', ['only' => ['create', 'store']])->middleware('AddItem');
       Route::resource('items', 'ItemController', ['except' => ['create', 'store', 'show']]);
+      // Route::get('/items', 'ItemController@index')->name('items.index');
+      // Route::patch('/items/{item}', 'ItemController@update')->name('items.update');
+      // Route::get('/items/{item}/edit', 'ItemController@edit')->name('items.edit');
+      // // Route::get('/items/{item}', 'ItemController@show')->name('items.show');
+      // Route::group(['middleware' => ['auth', 'can:isSeller']], function () {
+      //   //　商品削除は管理者のみ、middlewareは課金管理
+      //   Route::get('/items/create', 'ItemController@create')->name('items.create')->middleware('AddItem');
+      //   Route::post('/items', 'ItemController@store')->name('items.store')->middleware('AddItem');
+      //   Route::DELETE('/items/{item}', 'ItemController@destroy')->name('items.destroy');
+      // });
 
       Route::middleware('StoreCheck')->group(function () {
         Route::get('/items/{id}/seller/edit', 'ItemStoreController@seller_edit')->name('items.seller.edit');
@@ -147,6 +205,7 @@ Route::middleware('verified')->group(function () {
         Route::get('/items/{id}/stock', 'ItemStoreController@stock_edit')->name('items.stock.edit');
         Route::get('/items/{id}/comment', 'ItemStoreController@comment_edit')->name('items.comment.edit');
       });
+
       // 商品取扱店舗
       Route::patch('/items/{id}/seller/edit/update', 'ItemStoreController@seller_update')->name('items.seller.update');
 
@@ -230,35 +289,29 @@ Route::middleware('verified')->group(function () {
       Route::get('/manual', 'ManualController@index')->name('manual.index');
 
       // サポートお問い合わせ
-      Route::get('/support', 'SupportController@index')->name('support.index');
-      Route::post('/support/confirm', 'SupportController@confirm')->name('support.confirm');
-      Route::post('/support/thanks', 'SupportController@send')->name('support.send');
+      Route::get('/support', 'SupportController@index')->name('support.index')->middleware('TesterCheck');
+      Route::post('/support/confirm', 'SupportController@confirm')->name('support.confirm')->middleware('TesterCheck');
+      Route::post('/support/thanks', 'SupportController@send')->name('support.send')->middleware('TesterCheck');
 
-      // トピックスの作成
-      // Route::resource('home', 'TopicsController', ['only' => ['index']]);
+      // home
       Route::get('/home', 'HomeController@index')->name('home');
-      // Route::get('/home', 'TopicsController@index')->name('topics.index');
-      Route::get('/topics/create', 'TopicsController@create')->name('topics.create');
-      Route::post('/topics/', 'TopicsController@store')->name('topics.store');
-      Route::get('/topics/{id}', 'TopicsController@show')->name('topics.show');
-      Route::get('/topics/{id}/edit', 'TopicsController@edit')->name('topics.edit');
-      Route::put('/topics/{id}', 'TopicsController@update')->name('topics.update');
-      Route::delete('/topics/{id}', 'TopicsController@destroy')->name('topics.destroy');
 
       // ベーシックプラン以上利用可能
       Route::group(['middleware' => ['auth', 'can:basic']], function () {
-        // スマレジAPI
-        Route::get('/config/sr-import', 'SmaregiController@show')->name('sr.product_ref');
-        // Route::post('/config/sr-import/store', 'SmaregiController@store')->name('sr.tokensave');
-        // Route::post('/config/sr-import/stores_id', 'SmaregiController@storesId')->name('sr.storeSave');
-        Route::post('/config/sr-import/data', 'SmarejiCsvImportController@importCSV')->name('sr.importCSV');
-        Route::get('/config/sr-import/stfdownload', 'SmaregiController@SmarejiTempFileDownload');
+        Route::group(['middleware' => ['auth', 'can:isSeller']], function () {
+          // スマレジAPI
+          Route::get('/config/sr-import', 'SmaregiController@show')->name('sr.product_ref');
+          // Route::post('/config/sr-import/store', 'SmaregiController@store')->name('sr.tokensave');
+          // Route::post('/config/sr-import/stores_id', 'SmaregiController@storesId')->name('sr.storeSave');
+          Route::post('/config/sr-import/data', 'SmarejiCsvImportController@importCSV')->name('sr.importCSV');
+          Route::get('/config/sr-import/stfdownload', 'SmaregiController@SmarejiTempFileDownload');
 
-        // 汎用API
-        Route::get('/config/import', 'CommonApiShowController@show');
-        Route::post('/config/import/store', 'CommonApiShowController@store')->name('sm.useApi');
-        Route::post('/config/import/generate', 'CommonApiShowController@generateApiKey')->name('sm.generate');
-        Route::post('/config/import/delete', 'CommonApiShowController@destroy')->name('sm.apiDel');
+          // 汎用API
+          Route::get('/config/import', 'CommonApiShowController@show');
+          Route::post('/config/import/store', 'CommonApiShowController@store')->name('sm.useApi');
+          Route::post('/config/import/generate', 'CommonApiShowController@generateApiKey')->name('sm.generate');
+          Route::post('/config/import/delete', 'CommonApiShowController@destroy')->name('sm.apiDel');
+        });
       });
 
       // システム アドミンのみ
@@ -278,6 +331,14 @@ Route::middleware('verified')->group(function () {
         Route::get('/system/prefecture', 'ViewOnlyController@prefecture');
         Route::post('/system/prefecture', 'PrefectureCsvImportController@importPrefectureCSV')->name('system.importPrefCsv');
         Route::get('/system/prefecture/download', 'PrefectureCsvExportController@download');
+
+        // トピックスの作成
+        Route::get('/topics/create', 'TopicsController@create')->name('topics.create');
+        Route::post('/topics', 'TopicsController@store')->name('topics.store');
+        Route::get('/topics/{id}', 'TopicsController@show')->name('topics.show');
+        Route::get('/topics/{id}/edit', 'TopicsController@edit')->name('topics.edit');
+        Route::put('/topics/{id}', 'TopicsController@update')->name('topics.update');
+        Route::delete('/topics/{id}', 'TopicsController@destroy')->name('topics.destroy');
       });
     });
   });

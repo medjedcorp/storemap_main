@@ -71,7 +71,12 @@ class UserController extends Controller
     $user->email = $request->email;
     // パスワードハッシュ化
     $user->password = \Hash::make($request['password']);
-    $user->role = $request->role;
+    if($cid->email === 'smsupport@storemap.jp'){
+      $user->role = 'tester';
+    } else {
+      $user->role = $request->role;
+    }
+    
     $user->company_id = $cid->company_id;
     $user->save();
 

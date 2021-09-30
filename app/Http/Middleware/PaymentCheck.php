@@ -19,7 +19,7 @@ class PaymentCheck
   public function handle($request, Closure $next)
   {
     $user = Auth::user();
-    $company = Company::where('id', $user->company_id)->first();
+    // $company = Company::where('id', $user->company_id)->first();
 
     if ($user->role === 'seller' && empty($user->company_id))  {
       return redirect(route('company.create'))->with('warning', '※最初に会社情報を登録してください');

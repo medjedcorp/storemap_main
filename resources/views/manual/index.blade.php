@@ -1014,14 +1014,9 @@
                                                         <td><i class="far fa-circle"></i></td>
                                                     </tr>
                                                     <tr>
-                                                        <th>商品の追加・編集</th>
+                                                        <th>商品の追加・編集・削除</th>
                                                         <td><i class="far fa-circle"></i></td>
                                                         <td><i class="far fa-circle"></i></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>商品の削除</th>
-                                                        <td><i class="far fa-circle"></i></td>
-                                                        <td><i class="fas fa-times"></i></td>
                                                     </tr>
                                                     <tr>
                                                         <th>カテゴリの登録</th>

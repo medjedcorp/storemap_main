@@ -111,9 +111,9 @@ class SubscriptionController extends Controller
             return response()->json([
                 'message' => 'プランを選択してください',
             ], 404);
-        } elseif(!$stores_num) {
+        } elseif(!$stores_num < 0) {
             return response()->json([
-                'message' => '店舗数を選択してください',
+                'message' => '店舗数の指定に誤りがあります',
             ], 404);
         }
 
