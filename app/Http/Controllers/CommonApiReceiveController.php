@@ -223,7 +223,7 @@ class CommonApiReceiveController extends Controller
                     continue;
                 }
                 if($price < 0){
-                    $errorLists[$i] = "[販売価格は0以上の値を指定してください]  店舗コード：" . $storeId . " / 商品コード：" . $productId . "\n";
+                    $errorLists[$i] = "[販売価格(price)は0以上の値を指定してください]  店舗コード：" . $storeId . " / 商品コード：" . $productId . "\n";
                     continue; 
                 }
             } else {
@@ -240,14 +240,23 @@ class CommonApiReceiveController extends Controller
                     continue;
                 }
                 if($value < 0){
-                    $errorLists[$i] = "[セール価格は0以上の値を指定してください]  店舗コード：" . $storeId . " / 商品コード：" . $productId . "\n";
+                    $errorLists[$i] = "[セール価格(value)は0以上の値を指定してください]  店舗コード：" . $storeId . " / 商品コード：" . $productId . "\n";
                     continue; 
                 }
             } else {
                 $value = null;
             }
+            
+            if (isset($arr['data']['rows'][$i]['shelf_number'])) {
+                $shelf_num = $arr['data']['rows'][$i]['shelf_number'];
+            } else {
+                $shelf_num = null;
+            }
             if (isset($arr['data']['rows'][$i]['displayFlag'])) {
                 $displayFlag = $arr['data']['rows'][$i]['displayFlag'];
+            } else {
+                $errorLists[$i] = "[表示設定(displayFlag)は必須項目です]  店舗コード：" . $storeId . " / 商品コード：" . $productId . "\n";
+                continue; 
             }
             // 日付形式チェック
             $format_str = '%Y-%m-%d %H:%M:%S';
@@ -317,6 +326,7 @@ class CommonApiReceiveController extends Controller
             $produt->end_date = $endDate;
             $produt->price = $price;
             $produt->value = $value;
+            $produt->shelf_number = $shelf_num;
 
             $produt->save();
         }
