@@ -56,10 +56,9 @@ class StoreController extends Controller
       $user = Auth::user();
       $company_id = $user->company_id;
       $industry = Industry::orderBy('id')->get();
-      // $storeimg = StoreImage::where('company_id', $company_id)->pluck('filename','id');
-      // dd($storeimg);
+
       return view('stores.create', compact( 'user', 'industry', 'company_id'));
-      // return view('stores.create', compact( 'user', 'industry', 'company_id', 'storeimg'));
+
 
     }
 
