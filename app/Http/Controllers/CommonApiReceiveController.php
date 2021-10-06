@@ -21,7 +21,6 @@ class CommonApiReceiveController extends Controller
         // $input = $request->all();
         // 送られてきたデータ取得
         $arr = $request;
-
         // return response($arr);
         // jsonに変換
         // $arr = json_decode($params, true);
@@ -59,6 +58,19 @@ class CommonApiReceiveController extends Controller
             return response()->json(['message' => '400 table_name not found'], 400);
         } else {
             $tableName = $arr['data']['table_name'];
+        }
+
+        // stock_typeが存在するかチェック
+        // 0の場合絶対値
+        // 1の場合相対値
+        if (!isset($arr['data']['stock_type'])) {
+            return response()->json(['message' => '400 stock_type not found'], 400);
+        } else {
+            $stockType = $arr['data']['stock_type'];
+            // return response()->json(['message' => '400 Incorrect specification of stock_type ' . $stockType], 400);
+            if (!($stockType === '0' or $stockType === '1')) {
+                return response()->json(['message' => '400 Incorrect specification of stock_type'], 400);
+            }
         }
 
         // table_nameが違う場合エラーを返す
@@ -109,7 +121,15 @@ class CommonApiReceiveController extends Controller
 
             $produt = ItemStore::where('store_id', $sId->id)->where('item_id', $iId->id)->first();
 
-            $produt->stock_amount = $stockAmount;
+            // 絶対値か相対値で在庫の入れ方を変える
+            if ($stockType === '0') {
+                $produt->stock_amount = $stockAmount;
+            } elseif ($stockType === '1') {
+                $nowStock = $produt->stock_amount;
+                $stockAmount = $nowStock + $stockAmount;
+                $produt->stock_amount = $stockAmount;
+            }
+
             $produt->save();
         }
 
@@ -148,7 +168,7 @@ class CommonApiReceiveController extends Controller
         }
         // $storeId =  $arr['data']['0']['rows'][$i]['productId'];
 
-        // 会社チェック。データない場合は、とりあえずレスポンス200を送信
+        // 会社チェック。
         // $cCheck = DB::table('companies')->where('ext_id', $headerId)->where('ext_token', $headerToken)->exists();
         if (Company::where('company_code', $headerId)->where('api_token', $headerToken)->exists()) {
             $company = Company::where('company_code', $headerId)->where('api_token', $headerToken)->first();
@@ -180,16 +200,13 @@ class CommonApiReceiveController extends Controller
         } elseif (!isset($arr['data']['rows'][0]['storeId'])) {
             return response()->json(['message' => '400 storeId not found'], 400);
         }
-        //  elseif (!isset($arr['data']['rows'][0]['price'])) {
-        //     return response()->json(['message' => '400 price not found'], 400);
-        // }
 
         for ($i = 0; $i < $json_count; $i++) {
             // Log::debug(print_r($i, true));
 
             $productId = $arr['data']['rows'][$i]['productId'];
             $storeId =  $arr['data']['rows'][$i]['storeId'];
-
+            $dataCheck =  $arr['data']['rows'][$i];
 
             // 存在チェック
             $sCheck = Store::where('company_id', $company->id)->where('store_code', $storeId)->exists();
@@ -222,16 +239,29 @@ class CommonApiReceiveController extends Controller
                     // return response()->json(['message' => '400 販売価格が整数ではありません'], 400);
                     continue;
                 }
-                if($price < 0){
+                if ($price < 0) {
                     $errorLists[$i] = "[販売価格(price)は0以上の値を指定してください]  店舗コード：" . $storeId . " / 商品コード：" . $productId . "\n";
-                    continue; 
+                    continue;
                 }
             } else {
-                // $price = $produt->price;
-                $price = null;
+                // nullか、未定義かを判定(項目自体があるかないか)
+                $price_key = 'price';
+
+                if (array_key_exists($price_key, $dataCheck)) {
+                    // nullの場合は、(項目がある場合)は、価格を削除
+                    $price = null;
+                    // return response()->json(['message' => $valueNum], 400);
+                } else {
+                    // 未定義の場合は、(項目がない場合)は、前回の値を活かす
+                    $price = $produt->price;
+                    // return response()->json(['message' => $valueNum], 400);
+                }
             }
+
             if (isset($arr['data']['rows'][$i]['value'])) {
+                // $arr['data']['rows'][$i]['value']に値があってnullじゃない場合
                 $value = $arr['data']['rows'][$i]['value'];
+
                 if (!is_numeric($value)) {
                     // 金額チェック。整数かどうか
                     $errorLists[$i] = "[セール価格が整数ではありません]  店舗コード：" . $storeId . " / 商品コード：" . $productId . "\n";
@@ -239,24 +269,59 @@ class CommonApiReceiveController extends Controller
                     // return response()->json(['message' => '400 セール価格が整数ではありません'], 400);
                     continue;
                 }
-                if($value < 0){
+                if ($value <= 0) {
                     $errorLists[$i] = "[セール価格(value)は0以上の値を指定してください]  店舗コード：" . $storeId . " / 商品コード：" . $productId . "\n";
-                    continue; 
+                    continue;
                 }
             } else {
-                $value = null;
+                // nullか、未定義かを判定(項目自体があるかないか)
+                $value_key = 'value';
+
+                if (array_key_exists($value_key, $dataCheck)) {
+                    // nullの場合は、(項目がある場合)は、セール価格を削除
+                    $value = null;
+                    // return response()->json(['message' => $valueNum], 400);
+                } else {
+                    // 未定義の場合は、(項目がない場合)は、前回の値を活かす
+                    $value = $produt->value;
+                    // return response()->json(['message' => $valueNum], 400);
+                }
             }
-            
+
+            // 棚番号
             if (isset($arr['data']['rows'][$i]['shelf_number'])) {
                 $shelf_num = $arr['data']['rows'][$i]['shelf_number'];
             } else {
-                $shelf_num = null;
+                $shelf_key = 'shelf_number';
+
+                if (array_key_exists($shelf_key, $dataCheck)) {
+                    // nullの場合は、(項目がある場合)は、棚番号を削除
+                    $shelf_num = null;
+                    // return response()->json(['message' => $valueNum], 400);
+                } else {
+                    // 未定義の場合は、(項目がない場合)は、前回の値を活かす
+                    $shelf_num = $produt->shelf_number;
+                    // return response()->json(['message' => $valueNum], 400);
+                }
             }
             if (isset($arr['data']['rows'][$i]['displayFlag'])) {
                 $displayFlag = $arr['data']['rows'][$i]['displayFlag'];
+                if (!($displayFlag === '0' or $displayFlag === '1')) {
+                    $errorLists[$i] = "[表示設定(displayFlag)は0または1の値を指定してください]  店舗コード：" . $storeId . " / 商品コード：" . $productId . "\n";
+                    continue;
+                }
             } else {
-                $errorLists[$i] = "[表示設定(displayFlag)は必須項目です]  店舗コード：" . $storeId . " / 商品コード：" . $productId . "\n";
-                continue; 
+                $df_key = 'displayFlag';
+
+                if (array_key_exists($df_key, $dataCheck)) {
+                    // nullの場合はエラー
+                    return response()->json(['message' => '400 Specify 0 or 1 for displayFlag'], 400);
+                    // return response()->json(['message' => $valueNum], 400);
+                } else {
+                    // 未定義の場合は、(項目がない場合)は、前回の値を活かす
+                    $displayFlag = $produt->selling_flag;
+                    // return response()->json(['message' => $valueNum], 400);
+                }
             }
             // 日付形式チェック
             $format_str = '%Y-%m-%d %H:%M:%S';
@@ -269,8 +334,16 @@ class CommonApiReceiveController extends Controller
                     continue;
                 }
             } else {
-                $startDate = null;
-                // $startDate = $produt->start_date;
+                $sDate_key = 'startDate';
+
+                if (array_key_exists($sDate_key, $dataCheck)) {
+                    // nullの場合は、(項目がある場合)は、棚番号を削除
+                    $startDate = null;
+                } else {
+                    // 未定義の場合は、(項目がない場合)は、前回の値を活かす
+                    $startDate = $produt->start_date;
+                }
+
             }
             if (isset($arr['data']['rows'][$i]['endDate'])) {
                 $endDate = $arr['data']['rows'][$i]['endDate'];
@@ -280,12 +353,19 @@ class CommonApiReceiveController extends Controller
                     continue;
                 }
             } else {
-                $endDate = null;
-                // $endDate = $produt->end_date;
+                $eDate_key = 'endDate';
+
+                if (array_key_exists($eDate_key, $dataCheck)) {
+                    // nullの場合は、(項目がある場合)は、棚番号を削除
+                    $endDate = null;
+                } else {
+                    // 未定義の場合は、(項目がない場合)は、前回の値を活かす
+                    $endDate = $produt->end_date;
+                }
             }
 
             // 時間設定 終了時間が開始時間より早くないかチェック
-            if(!is_null($startDate) and !is_null($endDate)){
+            if (!is_null($startDate) and !is_null($endDate)) {
                 $dateDiff = strtotime($endDate) - strtotime($startDate);
                 if ($dateDiff <= 0) {
                     $errorLists[$i] = "[セール開始日時はセール終了日時よりも前の日時を入力してください]  店舗コード：" . $storeId . " / 商品コード：" . $productId . "\n";
@@ -304,30 +384,28 @@ class CommonApiReceiveController extends Controller
                     $errorLists[$i] = "[セール価格は販売価格よりも安い値を入力してください]  店舗コード：" . $storeId . " / 商品コード：" . $productId . "\n";
                     // return response()->json(['message' => '400 セール価格は販売価格よりも安い値を入力してください'], 400);
                     continue;
-                } 
+                }
             } elseif (is_null($price) and !is_null($value)) {
                 // セール価格に値があって、販売価格がnullの場合、エラー
                 $errorLists[$i] = "[セール価格を入力する場合は、販売価格を入力してください]  店舗コード：" . $storeId . " / 商品コード：" . $productId . "\n";
                 // return response()->json(['message' => '400 セール価格を入力する場合は、販売価格を入力してください'], 400);
                 continue;
                 // 販売価格に値があって、セール価格がnullの場合は、販売価格のみ保存
-                $produt->price = $price;
+                // $produt->price = $price;
             }
 
 
-            if (!isset($arr['data']['rows'][0]['productId'])) {
-                return response()->json(['message' => '400 productId not found'], 400);
-            }
 
-            if (isset($displayFlag)) {
-                $produt->selling_flag = $displayFlag;
-            }
+            // if (isset($displayFlag)) {
+            //     $produt->selling_flag = $displayFlag;
+            // }
             $produt->start_date = $startDate;
             $produt->end_date = $endDate;
             $produt->price = $price;
             $produt->value = $value;
             $produt->shelf_number = $shelf_num;
-
+            $produt->selling_flag = $displayFlag;
+            
             $produt->save();
         }
 

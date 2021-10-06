@@ -32,7 +32,6 @@ Route::get('/publish', 'ViewOnlyController@publish');
 Route::get('/pricelist', 'ViewOnlyController@pricelist');
 // Route::get('top', 'SiteTopController@index');
 
-
 //パスワードリセット
 Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
 Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
@@ -104,8 +103,6 @@ Route::middleware('verified')->group(function () {
     Route::get('/company/download', 'CompanyController@download'); //会社証明ダウンロード用
 
 
-
-
     Route::middleware('PaymentCheck')->middleware('TesterCheck')->group(function () {
       // 会社情報がなければ、会社登録へ
       // お支払い情報設定
@@ -123,9 +120,6 @@ Route::middleware('verified')->group(function () {
     Route::middleware('CompanyCheck')->group(function () {
 
       // ストア一括編集
-      // Route::get('/stores/data', function () {
-      //   return view('/stores/data');
-      // });
       Route::get('/stores/data', 'ViewOnlyController@stores');
       Route::post('/stores/data', 'StoreCsvImportController@importStoreCSV')->name('store.importStoreCSV');
       Route::get('/stores/data/StoreTempFileDownload', 'StoreCsvExportController@StoreTempFileDownload');
@@ -155,7 +149,7 @@ Route::middleware('verified')->group(function () {
       Route::group(['middleware' => ['auth', 'can:isSeller']], function () {
         //　カテゴリ登録と削除は管理者のみ
         Route::get('/categories/create', 'CategoryController@create')->name('categories.create');
-        Route::post('/categories', 'CategoryController@store')->name('category.store');
+        Route::post('/categories', 'CategoryController@store')->name('categories.store');
         Route::DELETE('/categories/{category}', 'CategoryController@destroy')->name('categories.destroy');
       });
 
@@ -174,16 +168,19 @@ Route::middleware('verified')->group(function () {
       // ストア管理
       // Route::resource('stores', 'StoreController', ['only' => ['create', 'store']])->middleware('AddStore');
       // Route::resource('stores', 'StoreController', ['except' => ['create', 'store']]);
+      
+      
       Route::get('/stores', 'StoreController@index')->name('stores.index');
-      Route::patch('/stores/{store}', 'StoreController@update')->name('stores.update');
       Route::get('/stores/{store}/edit', 'StoreController@edit')->name('stores.edit');
-      Route::get('/stores/{store}', 'StoreController@show')->name('stores.show');
       Route::group(['middleware' => ['auth', 'can:isSeller']], function () {
         //　ストア登録と削除は管理者のみ、middlewareは課金管理
         Route::get('/stores/create', 'StoreController@create')->name('stores.create')->middleware('AddStore');
         Route::post('/stores', 'StoreController@store')->name('stores.store')->middleware('AddStore');
         Route::DELETE('/stores/{store}', 'StoreController@destroy')->name('stores.destroy');
       });
+      Route::patch('/stores/{store}', 'StoreController@update')->name('stores.update');
+      Route::get('/stores/{store}', 'StoreController@show')->name('stores.show');
+      
 
       // 商品管理
       Route::resource('items', 'ItemController', ['only' => ['create', 'store']])->middleware('AddItem');
