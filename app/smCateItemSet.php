@@ -11,7 +11,7 @@ function smCateItemSet($store_data, $smids){
     
     foreach ($store_data as $store) {
       // キーワードある場合
-      $items = ItemStore::where('store_id', $store->id)->ItemSort()->with('item')
+      $items = ItemStore::where('store_id', $store->id)->ActiveStock()->ItemSort()->with('item')
       ->whereIn('item_store.item_id', function ($query) use ($smids) {
         $query->from('items')
           ->select('items.id')
@@ -21,7 +21,7 @@ function smCateItemSet($store_data, $smids){
 
       // 件数もカウント
 
-      $count_item = ItemStore::where('store_id', $store->id)->ItemSort()->with('item')
+      $count_item = ItemStore::where('store_id', $store->id)->ActiveStock()->ItemSort()->with('item')
       ->whereIn('item_store.item_id', function ($query) use ($smids) {
         $query->from('items')
           ->select('items.id')

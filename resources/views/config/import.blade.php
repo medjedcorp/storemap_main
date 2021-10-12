@@ -366,6 +366,11 @@
                           <td>エラー</td>
                         </tr>
                         <tr>
+                          <td>400 Specify 0 or 1 for displayFlag</td>
+                          <td>displayFlagに0または1以外の値が指定されている</td>
+                          <td>エラー</td>
+                        </tr>
+                        <tr>
                           <td>403 Access denied</td>
                           <td>アクセス権限がない。apiの利用が許可されていない</td>
                           <td>エラー</td>
