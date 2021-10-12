@@ -73,11 +73,14 @@
 <section class="content">
 
   <div class="container">
-
     <div class="alert alert-success alert-dismissible">
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
       <h5><i class="icon fas fa-check"></i> ストアマップのアルファ版を公開致しました</h5>
       ストアマップは位置情報を利用して、近隣店舗で販売中の商品や価格を検索できるように設計されたサービスです。掲載を希望される場合は加盟店登録して頂き、商品の在庫や価格情報の登録が必要となります。在庫システムやPOSとの連携を広げることで、更新の手間を省けるように機能を拡張していく予定です。現在加盟店登録キャンペーン実施中で1年間無料でご利用いただけます。
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-12"><img src="{{ asset('img/kameiten.gif') }}" style="max-width: 100%;"></div>
     </div>
 
     <div class="row">
@@ -109,8 +112,8 @@
             <small class="col-sm-auto">※在庫や価格を保証するものではありません。商品情報の詳細は店舗へ直接お問い合わせください。</small>
           </div>
         </div>
+        <!-- /.row -->
       </div>
-      <!-- /.row -->
     </div>
 
     <div class="row">
@@ -730,15 +733,15 @@
     for (let i = 0; i < 22; i++) {
       $('#posSend' + i).on('click', function() {
         getPosition()
-        .then(function(value) {
-          
+          .then(function(value) {
+
             var form = $('#posSend' + i).parents('form');
             // console.log(value);
             var lat = value.coords.latitude;
             var lng = value.coords.longitude;
             console.log(lat);
             console.log(lng);
-            
+
             $('<input>').attr({
               'type': 'hidden',
               'name': 'lat',
@@ -761,35 +764,35 @@
     }
   });
 
- // 検索BOXに緯度経度追加
- // smカテゴリと一緒にしないのは、on('click'だとsubmitが発火しないため
+  // 検索BOXに緯度経度追加
+  // smカテゴリと一緒にしないのは、on('click'だとsubmitが発火しないため
   function searchBox() {
     getPosition()
-        .then(function(value) {
+      .then(function(value) {
 
-            var lat = value.coords.latitude;
-            var lng = value.coords.longitude;
-            // console.log(lat);
-            // console.log(lng);
-            
-            $('<input>').attr({
-              'type': 'hidden',
-              'name': 'lat',
-              'id': 'lat',
-              'value': lat
-            }).appendTo(document.form1);
-            $('<input>').attr({
-              'type': 'hidden',
-              'name': 'lng',
-              'id': 'lng',
-              'value': lng
-            }).appendTo(document.form1);
-            document.form1.submit();
-          })
-          .catch(function(value) {
-            // 非同期処理が失敗した場合
-            window.alert("位置情報の取得に失敗しました。位置情報の利用を許可してください。");
-          });
+        var lat = value.coords.latitude;
+        var lng = value.coords.longitude;
+        // console.log(lat);
+        // console.log(lng);
+
+        $('<input>').attr({
+          'type': 'hidden',
+          'name': 'lat',
+          'id': 'lat',
+          'value': lat
+        }).appendTo(document.form1);
+        $('<input>').attr({
+          'type': 'hidden',
+          'name': 'lng',
+          'id': 'lng',
+          'value': lng
+        }).appendTo(document.form1);
+        document.form1.submit();
+      })
+      .catch(function(value) {
+        // 非同期処理が失敗した場合
+        window.alert("位置情報の取得に失敗しました。位置情報の利用を許可してください。");
+      });
   }
 </script>
 

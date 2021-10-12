@@ -10,7 +10,7 @@ function itemSet($store_data)
 
   foreach ($store_data as $store) {
     // $items = ItemStore::where('store_id', $store->id)->first();
-    $items = ItemStore::where('store_id', $store->id)->ItemSort()->with('item')->first();
+    $items = ItemStore::where('store_id', $store->id)->ActiveStock()->ItemSort()->with('item')->first();
     if (is_null($items)) {
       // nullの場合はスキップ
       continue;
