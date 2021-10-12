@@ -30,7 +30,7 @@ class ItemStore extends Pivot
     }
     public function scopeActiveStock($query)
     {
-        return $query->where('selling_flag', '=', '1')->orWhere('stock_amount', '>', 0);
+        return $query->where('stock_amount', '>', 0);
     }
     public function scopeItemSort($query)
     {
