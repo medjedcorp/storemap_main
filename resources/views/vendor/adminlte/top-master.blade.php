@@ -39,6 +39,8 @@
         @yield('title_postfix', config('adminlte.title_postfix', ''))
     </title>
 
+    <meta name="description" content="@yield('description')">
+
     {{-- Custom stylesheets (pre AdminLTE) --}}
     @yield('adminlte_css_pre')
 
