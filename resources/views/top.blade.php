@@ -1,72 +1,18 @@
 @extends('adminlte::top-page')
 
 @section('title', 'Storemap：ストアマップ')
+@section('description', 'ストアマップ[Storemap]は近隣のお店で取扱中の商品や価格を、検索・比較できるサービスです')
 
-{{-- @section('content_header')
-<h1>Dashboard</h1>
-@stop --}}
+@section('content_header')
+<h1></h1>
+@stop
 
 @section('content_top_nav_left')
-{{-- <ul class="navbar-nav">
-  <li class="nav-item">
-    <a href="index3.html" class="nav-link">Home</a>
-  </li>
-  <li class="nav-item">
-    <a href="#" class="nav-link">Contact</a>
-  </li>
-  <li class="nav-item dropdown">
-    <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Dropdown</a>
-    <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
-      <li><a href="#" class="dropdown-item">Some action </a></li>
-      <li><a href="#" class="dropdown-item">Some other action</a></li>
-
-      <li class="dropdown-divider"></li>
-
-      <!-- Level two dropdown-->
-      <li class="dropdown-submenu dropdown-hover">
-        <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Hover for action</a>
-        <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
-          <li>
-            <a tabindex="-1" href="#" class="dropdown-item">level 2</a>
-          </li>
-
-          <!-- Level three dropdown-->
-          <li class="dropdown-submenu">
-            <a id="dropdownSubMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">level 2</a>
-            <ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow">
-              <li><a href="#" class="dropdown-item">3rd level</a></li>
-              <li><a href="#" class="dropdown-item">3rd level</a></li>
-            </ul>
-          </li>
-          <!-- End Level three -->
-
-          <li><a href="#" class="dropdown-item">level 2</a></li>
-          <li><a href="#" class="dropdown-item">level 2</a></li>
-        </ul>
-      </li>
-      <!-- End Level two -->
-    </ul>
-  </li>
-</ul> --}}
-{{-- <form class="form-inline ml-0 ml-md-3">
-  <div class="input-group input-group-sm">
-    <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-    <div class="input-group-append">
-      <button class="btn btn-navbar" type="submit">
-        <i class="fas fa-search"></i>
-      </button>
-    </div>
-  </div>
-</form> --}}
 @stop
 
 @section('content_top_nav_right')
 {{-- ヘッダー右エリア --}}
 @stop
-
-{{-- @section('content_header')
-
-@stop --}}
 
 @section('content')
 
@@ -76,11 +22,11 @@
     <div class="alert alert-success alert-dismissible">
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
       <h5><i class="icon fas fa-check"></i> ストアマップのアルファ版を公開致しました</h5>
-      ストアマップは位置情報を利用して、近隣店舗で販売中の商品や価格を検索できるように設計されたサービスです。掲載を希望される場合は加盟店登録して頂き、商品の在庫や価格情報の登録が必要となります。在庫システムやPOSとの連携を広げることで、更新の手間を省けるように機能を拡張していく予定です。現在加盟店登録キャンペーン実施中で1年間無料でご利用いただけます。
+      ストアマップは位置情報を利用して、近隣店舗で販売中の商品や価格を検索できるように設計されたサービスです。掲載を希望される場合は加盟店登録して頂き、商品の在庫や価格情報の登録が必要となります。在庫システムやPOSとの連携を広げることで、更新の手間を省けるように機能を拡張していく予定です。現在掲載店登録キャンペーン実施中で1年間無料でご利用いただけます。
     </div>
 
     <div class="row mb-3">
-      <div class="col-12"><img src="{{ asset('img/kameiten.gif') }}" style="max-width: 100%;"></div>
+      <div class="col-12"><a href="/publish"><img src="{{ asset('img/kameiten.gif') }}" style="max-width: 100%;"></a></div>
     </div>
 
     <div class="row">
@@ -89,10 +35,7 @@
         <div class="card card-info">
           <div class="card-header">
             <h3 class="d-none d-md-block card-title">
-              <i class="fas fa-map-marked-alt"></i> ストアマップは、近隣のお店の商品を検索できるサービスです
-            </h3>
-            <h3 class="d-block d-md-none card-title">
-              <i class="fas fa-map-marked-alt"></i> 近隣のお店を検索
+              <i class="fas fa-map-marked-alt"></i> 商品名 / サービス名 / JANコードから検索
             </h3>
           </div>
 
@@ -100,13 +43,41 @@
             <form action="/result" method="GET" name="form1">
               @csrf
               <div id="search_class" class="input-group input-group-lg">
-                <input type="text" class="form-control" placeholder="商品名 / サービス名 / JANコードで検索" name="keyword" value="">
+                <input type="text" class="form-control" placeholder="商品名 / サービス名 / JANコード / 商品コードを入力してください" name="keyword" value="">
                 <input type="hidden" value="" name="id">
                 <span class="input-group-append">
                   <button onclick="searchBox()" class="btn btn-primary"><i class="fas fa-search"></i> 検索</button>
                 </span>
               </div>
             </form>
+            <p class="mt-3 mb-1 text-left"><i class="fas fa-arrow-down"></i> クリックして表示 <i class="fas fa-arrow-down"></i></p>
+            <div id="hotWordArea">
+              <span><i class="fab fa-hotjar text-danger"></i> Hot Keywords:</span>
+              <form action="/result" method="GET" name="hotWord1">
+                @csrf
+                <input type="hidden" name="keyword" value="ショルダーバッグ">
+                <input type="hidden" value="" name="id">
+                <a href="javascript:hotWord1.submit()" id="hotWord1" class="btn btn-default btn-outline-secondary btn-xs">ショルダーバッグ</a>
+              </form>
+              <form action="/result" method="GET" name="hotWord2">
+                @csrf
+                <input type="hidden" name="keyword" value="トートバッグ">
+                <input type="hidden" value="" name="id">
+                <a href="javascript:hotWord2.submit()" id="hotWord2" class="btn btn-default btn-outline-secondary btn-xs">トートバッグ</a>
+              </form>
+              <form action="/result" method="GET" name="hotWord2">
+                @csrf
+                <input type="hidden" name="keyword" value="リュックサック">
+                <input type="hidden" value="" name="id">
+                <a href="javascript:hotWord3.submit()" id="hotWord3" class="btn btn-default btn-outline-secondary btn-xs">リュックサック</a>
+              </form>
+              <form action="/result" method="GET" name="hotWord2">
+                @csrf
+                <input type="hidden" name="keyword" value="ボディバッグ">
+                <input type="hidden" value="" name="id">
+                <a href="javascript:hotWord4.submit()" id="hotWord3" class="btn btn-default btn-outline-secondary btn-xs">ボディバッグ</a>
+              </form>
+            </div>
           </div>
           <div class="card-footer search-footer">
             <small class="col-sm-auto">※在庫や価格を保証するものではありません。商品情報の詳細は店舗へ直接お問い合わせください。</small>
@@ -668,6 +639,9 @@
     margin-right: .25rem;
   }
 
+  #hotWordArea form{
+    display: inline-block;
+  }
   @media (min-width: 576px) {
     .info-box .info-box-icon {
       flex: 0 0 50px;
@@ -730,7 +704,7 @@
 
   // SMカテゴリ検索時に緯度経度を追加
   $(function() {
-    for (let i = 0; i < 22; i++) {
+    for (let i = 0; i < 23; i++) {
       $('#posSend' + i).on('click', function() {
         getPosition()
           .then(function(value) {
@@ -794,6 +768,39 @@
         window.alert("位置情報の取得に失敗しました。位置情報の利用を許可してください。");
       });
   }
+
+  // HOTKEYWORDに緯度経度を追加
+  $(function() {
+    for (let i = 1; i < 10; i++) {
+      $('#hotWord' + i).on('click', function() {
+        getPosition()
+          .then(function(value) {
+
+            var form = $('#hotWord' + i).parents('form');
+            var lat = value.coords.latitude;
+            var lng = value.coords.longitude;
+
+            $('<input>').attr({
+              'type': 'hidden',
+              'name': 'lat',
+              'id': 'lat',
+              'value': lat
+            }).appendTo(form);
+            $('<input>').attr({
+              'type': 'hidden',
+              'name': 'lng',
+              'id': 'lng',
+              'value': lng
+            }).appendTo(form);
+            form.submit();
+          })
+          .catch(function(value) {
+            // 非同期処理が失敗した場合
+            window.alert("位置情報の取得に失敗しました。位置情報の利用を許可してください。");
+          });
+      });
+    }
+  });
 </script>
 
 <script type="text/javascript">

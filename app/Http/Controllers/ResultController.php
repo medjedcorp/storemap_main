@@ -242,6 +242,7 @@ class ResultController extends Controller
       $store_items = keyCateItemSet($store_data, $keyword, $smids);
     } elseif (!$smid && $keyword) {
       $store_items = keywordItemSet($store_data, $keyword);
+      // dd($store_items, $store_data, $keyword);
     } elseif ($smid && !$keyword) {
       $store_items = smCateItemSet($store_data, $smids);
     } else {
@@ -249,7 +250,8 @@ class ResultController extends Controller
     }
 
     $store_items = collect($store_items); // 配列をコレクションに変換
-
+    // dd($store_items);
+    // dd($store_items,$low_cates,$keyword, $smid, $lat, $lng, $sm_name, $psmid, $prefectures, $req_pref, $req_city, $req_ward);
     return view('result', compact('store_items', 'low_cates', 'keyword', 'smid', 'lat', 'lng', 'sm_name', 'psmid', 'prefectures', 'req_pref', 'req_city', 'req_ward'));
   }
 }

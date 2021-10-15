@@ -5,6 +5,9 @@
         {{-- Navbar brand logo --}}
         @include('adminlte::partials.common.top-brand-logo-xs')
 
+        {{-- 追加 --}}
+        <span>ストアマップは近隣のお店で取扱中の商品や価格を、検索・比較できるサービスです</span>
+
         {{-- Navbar toggler button --}}
         <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse"
                 aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" hidden>
