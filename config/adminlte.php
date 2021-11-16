@@ -195,7 +195,8 @@ return [
 
     'login_url' => 'login',
 
-    'register_url' => 'register',
+    'register_url' => 'regicom',
+    // 'register_url' => 'register',
 
     'password_reset_url' => 'password/reset',
 
@@ -270,19 +271,19 @@ return [
                     'text' => 'item_registration',
                     'url'  => 'items/create',
                     'icon' => 'nav-icon fas fa-angle-right fa-fw',
-                    'can' =>  'isStaff',
+                    'can' =>  'isFree',
                 ],
                 [
                     'text' => 'item_bulk_manager',
                     'url'  => 'items/data',
                     'icon' => 'nav-icon fas fa-angle-right fa-fw',
-                    'can' =>  'isStaff',
+                    'can' =>  'isFree',
                 ],
                 [
                     'text' => 'item_store',
                     'url'  => 'items/manage',
                     'icon' => 'nav-icon fas fa-angle-right fa-fw',
-                    'can' =>  'isStaff',
+                    'can' =>  'isFree',
                 ],
             ],
         ],
@@ -326,7 +327,7 @@ return [
                     'text' => 'category_bulk_manager',
                     'url'  => 'categories/data',
                     'icon' => 'nav-icon fas fa-angle-right fa-fw',
-                    'can' =>  'isSeller',
+                    'can' =>  'isFree',
                 ],
             ],
         ],
@@ -345,13 +346,13 @@ return [
                     'text' => 'store_registration',
                     'url'  => 'stores/create',
                     'icon' => 'nav-icon fas fa-angle-right fa-fw',
-                    'can' =>  'isSeller',
+                    'can' =>  'isFree',
                 ],
                 [
                     'text' => 'store_bulk_manager',
                     'url'  => 'stores/data',
                     'icon' => 'nav-icon fas fa-angle-right fa-fw',
-                    'can' =>  'isSeller',
+                    'can' =>  'isFree',
                 ],
             ],
         ],
@@ -438,7 +439,13 @@ return [
                     'text' => 'payment',
                     'url'  => 'payment/card',
                     'icon' => 'nav-icon far fa-credit-card fa-fw',
-                    'can' =>  'isSeller',
+                    'can' =>  'isFree',
+                ],
+                [
+                    'text' => 'accept',
+                    'url'  => 'system/accept',
+                    'icon' => 'nav-icon fab fa-expeditedssl fa-fw',
+                    'can' => 'isAdmin',
                 ],
                 [
                     'text' => 'sm_cate',

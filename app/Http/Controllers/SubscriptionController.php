@@ -32,7 +32,8 @@ class SubscriptionController extends Controller
             'add_store' => number_format($add_store)
         ];
 
-        if ($company->stripe_id) {
+        // if ($company->stripe_id) {
+        if ($company->subscribed('main')) {
             // 決済情報がある場合
             $payinfo = $company->subscription('main');
 
@@ -57,7 +58,7 @@ class SubscriptionController extends Controller
                     $plan = 'プレミアム';
                     $laprice = 0;
                 } else {
-                    $plan = 'キャンセル済み';
+                    $plan = 'フリープラン';
                     $laprice = '0';
                 }
 
@@ -98,7 +99,7 @@ class SubscriptionController extends Controller
                     $plan = 'プレミアム';
                     $laprice = $premium_price;
                 } else {
-                    $plan = 'その他';
+                    $plan = 'フリープラン';
                     $laprice = '****';
                 }
 

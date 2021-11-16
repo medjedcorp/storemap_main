@@ -14,6 +14,13 @@ return [
     |
     */
 
+    'email' => [
+        'master' => 'master@storemap.jp',
+        'support' => 'smsupport@storemap.jp',
+        'system' => 'system@storemap.jp',
+        'contact' => 'contact@storemap.jp',
+    ],
+
     'mailgun' => [
         'domain' => env('MAILGUN_DOMAIN'),
         'secret' => env('MAILGUN_SECRET'),
@@ -37,19 +44,24 @@ return [
         'basic' => env('STRIPE_BASIC_ID'),
         'premium' => env('STRIPE_PREMIUM_ID'),
         'stores' => env('STRIPE_STORES_ID'),
+        'free_price' => 0,
         'light_price' => 500,
         'basic_price' => 3000,
         'premium_price' => 5000,
         'trial' => env('STRIPE_TRIAL'),
         // 'trial' => '180',
         'add_store' => 3000,
+        'free_store' => 1,
+        'free_item' => 10,
         'light_item' => 100,
         'basic_item' => 10000,
         'premium_item' => 50000,
-        'light_storage' => 107374182, // 100MByte
+        'free_storage' => 10485760, // 10MByte
+        'light_storage' => 104857600, // 100MByte
          //'light_storage' => 1073741824, // 1GByte
         'basic_storage' => 10737418240, // 10GByte
         'premium_storage' => 53687091200, // 50GByte
+        'free_storage_domination' => '10MByte',
         'light_storage_domination' => '100MByte', // 100MByte
         'basic_storage_domination' => '10GByte', // 10GByte
         'premium_storage_domination' => '50GByte', // 50GByte

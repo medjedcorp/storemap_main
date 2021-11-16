@@ -41,11 +41,20 @@ class ItemCsvImportController extends Controller
     $light_item = config('services.stripe.light_item');
     $basic_item = config('services.stripe.basic_item');
     $premium_item = config('services.stripe.premium_item');
-    // ストア数プラン以外で、引っかかるプランを取得(店舗数)
-    $subscriptionItem = $company->subscription('main')->items->whereNotIn('stripe_plan', $stores)->first();
-    // プラン名を取得
-    $stripePlan = $subscriptionItem->stripe_plan;
+    $free_item = config('services.stripe.free_item');
 
+    // 有効な課金があるかチェック
+    if ($company->subscribed('main')) {
+      // 有効な課金がある場合は、プランを代入
+      $subscriptionItem = $company->subscription('main')->items->whereNotIn('stripe_plan', $stores)->first();
+      // プラン名を取得
+      $stripePlan = $subscriptionItem->stripe_plan;
+    } else {
+      // ない場合はnull
+      $stripePlan = null;
+    }
+
+    // 登録可能な商品数を設定
     switch ($stripePlan) {
       case $light:
         $max_item = $light_item;
@@ -57,8 +66,9 @@ class ItemCsvImportController extends Controller
         $max_item = $premium_item;
         break;
       default:
-        $max_item = 0;
+        $max_item = $free_item;
     }
+
 
     // アップロードファイルに対してのバリデート。Serviceの呼び出し
     $validator = $this->csv_service->validateUploadFile($request);
@@ -74,7 +84,8 @@ class ItemCsvImportController extends Controller
 
     // ファイルをフォルダに保存
     $csv_path = $file->storeAs(
-      'csv/' . $cid . '/import', $filename
+      'csv/' . $cid . '/import',
+      $filename
     );
     // Queueに送信
     ItemImportCsvJob::dispatch($upload_filename, $filename, $user, $csv_path, $max_item);

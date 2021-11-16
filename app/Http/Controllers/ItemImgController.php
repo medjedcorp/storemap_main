@@ -11,7 +11,7 @@ use App\Models\StoreImage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Arr;
 use DB;
-// use Log;
+// use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Response;
 use App\Models\Company;
 
@@ -39,11 +39,19 @@ class ItemImgController extends Controller
     $light_storage = config('services.stripe.light_storage');
     $basic_storage = config('services.stripe.basic_storage');
     $premium_storage = config('services.stripe.premium_storage');
+    $free_storage = config('services.stripe.free_storage');
 
-    // ストア数プラン以外で、引っかかるプランを取得(店舗数)
-    $subscriptionItem = $company->subscription('main')->items->whereNotIn('stripe_plan', $stores)->first();
+    // 有効な課金があるかチェック
+    if ($company->subscribed('main')) {
+      // ある場合はプラン名を代入
+      $subscriptionItem = $company->subscription('main')->items->whereNotIn('stripe_plan', $stores)->first();
+      $stripePlan = $subscriptionItem->stripe_plan;
+    } else {
+      $stripePlan = null;
+    }
     // プラン名を取得
-    $stripePlan = $subscriptionItem->stripe_plan;
+    // Log::debug('抽出', [$stripePlan]);
+
     // ストレージ容量を設定
     switch ($stripePlan) {
       case $light:
@@ -56,12 +64,23 @@ class ItemImgController extends Controller
         $max_size = $premium_storage;
         break;
       default:
-        $max_size = 0;
+        $max_size = $free_storage;
     }
 
     $files = $request->file();
 
     foreach ($files as $file) {
+
+      // 登録可能件数を超えた場合のエラー処理
+      // 現在の画像容量を計算
+      $item_size = ItemImage::where('company_id', $cid)->sum('size');
+      $store_size = StoreImage::where('company_id', $cid)->sum('size');
+      $total_size = $item_size + $store_size;
+
+      if ($max_size <= $total_size) {
+        return response()->json(['error' => '容量オーバーのため中止しました'],400);
+      }
+
       $file_name = $file->getClientOriginalName(); // ファイル名はアップロードされたのをそのまま使用
 
       $img_size = filesize($file); // 画像容量取得
@@ -82,17 +101,6 @@ class ItemImgController extends Controller
         // $path_as = Storage::putFileAs('public/' . $cid . '/items/', $file, $file_name);
       }
 
-      // 登録可能件数を超えた場合のエラー処理
-      // 現在の画像容量を計算
-      $item_size = ItemImage::where('company_id', $cid)->sum('size');
-      $store_size = StoreImage::where('company_id', $cid)->sum('size');
-      $total_size = $item_size + $store_size;
-
-      if ($max_size <= $total_size) {
-        // http_response_code(400);
-        // die( 'error' );  
-        return response()->json(['error' => '容量オーバーのため中止']);
-      }
 
       ItemImage::updateOrCreate(
         // カテゴリを検索

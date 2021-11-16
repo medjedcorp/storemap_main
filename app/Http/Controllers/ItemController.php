@@ -48,7 +48,8 @@ class ItemController extends Controller
     } else {
       $items = Item::select(['id', 'company_id', 'display_flag', 'barcode', 'product_code', 'product_name', 'original_price'])->where('company_id', $user->company_id)->paginate(30); // ページ作成
     }
-    $count = Item::where('company_id', $user->company_id)->get()->count();
+    // $count = Item::where('company_id', $user->company_id)->get()->count();
+    $count = Item::where('company_id', $user->company_id)->count();
     return view('items.index', [
       'items' => $items,
       'keyword' => $keyword,

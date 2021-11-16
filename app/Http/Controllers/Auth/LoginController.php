@@ -44,4 +44,16 @@ class LoginController extends Controller
         return redirect('/login')->with('danger', '※ログアウトしました');
     }
 
+    // 追加
+    protected function authenticated(Request $request, $user)
+    {
+        if(!$user->accepted) {  // 未承認の場合
+
+            \Auth::logout();
+            return redirect('/login')->withErrors([
+                'email' => 'このアカウントはまだ承認されていません'
+            ]);
+
+        }
+    }
 }

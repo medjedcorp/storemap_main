@@ -20,6 +20,7 @@ class CreateCompaniesTable extends Migration
             // $table->string('company_code',60)->unique();
             $table->string('company_name',85);
             $table->string('company_kana',85)->nullable();
+            // $table->decimal('corporate_number',13)->nullable();
             $table->char('company_postcode',8);
             $table->string('prefecture');
             $table->string('company_city',30);

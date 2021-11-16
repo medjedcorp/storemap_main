@@ -107,7 +107,7 @@ class CateImportCsvJob implements ShouldQueue
 
         // エラーログをテキストで出力
         $err_num = 1;
-        $error = errorlist($error_list);
+        // $error = errorlist($error_list); ?いるやつ？
         foreach($error_list as $key => $val)
           {
             $key++;

@@ -68,10 +68,10 @@ class HomeController extends Controller
         if ($company->subscribedToPlan($light_id, 'main')) {
             $plan = 'ライトプラン';
             $maxItems = config('services.stripe.light_item');
-            $maxImages =  config('services.stripe.light_storage');
+            $maxImages =  config('services.stripe.light_storage'); // 104857600
             $storageTxt =  config('services.stripe.light_storage_domination');
             $nowImagesTxt = round(($nowItemImages + $nowStoreImages) / 1000000, 2);
-            $zanTxt = round(($maxImages - $nowImages) / 1000000, 2);
+            $zanTxt = round(($maxImages - $nowImages) / 1000000, 2). ' Mbyte';
         } elseif ($company->subscribedToPlan($basic_id, 'main')) {
             $plan = 'ベーシックプラン';
             $maxItems = config('services.stripe.basic_item');
@@ -86,16 +86,26 @@ class HomeController extends Controller
             $maxImages =  config('services.stripe.premium_storage');
             $storageTxt =  config('services.stripe.premium_storage_domination');
             $nowImagesTxt = round(($nowItemImages + $nowStoreImages) / 1000000000, 2);
-            $zanTxt = round(($maxImages - $nowImages) / 1000000000, 2);
+            $zanTxt = round(($maxImages - $nowImages) / 1000000000, 2) . ' Gbyte';
         } else {
-            $plan = 'その他';
-            $maxItems = '不明';
-            $storageTxt = '不明';
+            $plan = 'フリープラン';
+            $maxItems = config('services.stripe.free_item');
+            $maxImages =  config('services.stripe.free_storage'); // 10485760	
+            $storageTxt =  config('services.stripe.free_storage_domination');
+            $nowImagesTxt = round(($nowItemImages + $nowStoreImages) / 1048576, 2);
+            $zanTxt = round(($maxImages - $nowImages) / 1048576, 2) . ' Mbyte';
         }
 
-        if ($company->subscription('main')->onTrial()) {
+        if ($company->hasDefaultPaymentMethod()) {
+            $trial = $company->subscription('main')->onTrial();
+        } else {
+            $trial = null;
+        }
+
+        if ($trial) {
             // 試用期間中の場合は日付を返す
             $trial_ends = $company->subscription('main')->trial_ends_at;
+
         } else {
             $trial_ends = '';
         }
@@ -103,12 +113,14 @@ class HomeController extends Controller
         $nowStores = Store::where('company_id', $user->company_id)->count();
         $nowItems = Item::where('company_id', $user->company_id)->count();
 
+        // dd($nowStores,$nowItems,$maxStores,$maxItems );
+
         $pgsStores = $nowStores / $maxStores * 100;
         $pgsItems = $nowItems / $maxItems * 100;
         $pgsImages = $nowImages / $maxImages * 100;
-        
 
-        return view('home', compact('topics', 'features', 'promotions', 'maintenances', 'others', 'plan', 'maxItems', 'maxImages', 'maxStores', 'nowStores', 'nowItems', 'nowImages', 'pgsStores', 'pgsItems', 'pgsImages', 'storageTxt', 'nowImagesTxt', 'zanTxt' , 'trial_ends'));
+
+        return view('home', compact('topics', 'features', 'promotions', 'maintenances', 'others', 'plan', 'maxItems', 'maxImages', 'maxStores', 'nowStores', 'nowItems', 'nowImages', 'pgsStores', 'pgsItems', 'pgsImages', 'storageTxt', 'nowImagesTxt', 'zanTxt', 'trial_ends'));
         // return view('home', ['topics' => $topics]);
     }
 }

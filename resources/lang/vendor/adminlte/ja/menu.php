@@ -51,6 +51,7 @@ return [
     'sm_apitoken'                   => '受信用API',
     'sr_api_import'                   => 'スマレジAPI連携',
     'system'                   => 'システム管理',
+    'accept'                   => 'ユーザ承認',
     'sm_cate'                   => 'ストアマップカテゴリ',
     'prefecture'                   => '都道府県情報編集',
     'calendar'                   => 'カレンダー',

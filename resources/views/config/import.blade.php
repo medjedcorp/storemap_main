@@ -422,7 +422,7 @@
   }
 
   #api_copy {
-    width: 35%;
+    width: 50%;
     border: none;
   }
 </style>

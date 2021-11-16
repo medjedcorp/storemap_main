@@ -54,7 +54,8 @@ class CompanyController extends Controller
     $company = new Company;
     $company->company_name = $request->company_name;
     $company->company_kana = $request->company_kana;
-    // $company->company_code = $request->company_code;
+    $company->corporate_number = $request->corporate_number;
+    $company->president_name = $request->president_name;
     $company->company_postcode = $request->company_postcode;
     $company->prefecture = $request->prefecture;
     $company->company_city = $request->company_city;
@@ -118,7 +119,8 @@ class CompanyController extends Controller
     $user->company_id = $last_insert_id;
     $user->save();
 
-    return redirect("/payment/card")->with('success', '※会社情報を登録しました。不正利用防止と本人確認のため、最初にお支払いカード情報の登録をお願い致します。');
+    // return redirect("/payment/card")->with('success', '※会社情報を登録しました。不正利用防止と本人確認のため、最初にお支払いカード情報の登録をお願い致します。');
+    return redirect("/home")->with('success', '※ご登録ありがとうございます。会社情報を登録しました。');
   }
 
   /**
@@ -170,6 +172,8 @@ class CompanyController extends Controller
 
     $company->company_name = $request->company_name;
     $company->company_kana = $request->company_kana;
+    $company->corporate_number = $request->corporate_number;
+    $company->president_name = $request->president_name;
     $company->company_postcode = $request->company_postcode;
     $company->prefecture = $request->prefecture;
     $company->company_city = $request->company_city;

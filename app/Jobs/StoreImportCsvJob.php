@@ -172,7 +172,7 @@ class StoreImportCsvJob implements ShouldQueue
           $fname = $cid . '/csv/error/' . 'stores_' . date('YmdHis') . '.txt';
           Storage::disk('public')->put($fname, "");
           $path = url('storage/' . $fname);
-          $txt_list = '登録可能店舗数の上限を超えたため、登録に失敗しました。現在の登録可能件数：' . $quantity . '店';
+          $txt_list = '登録可能店舗数の上限を超えたため、処理を中断しました';
           Storage::disk('public')->append($fname, $txt_list);
           // エラーメール送信処理
           Mail::to($to)->send(new CsvErrorMail($name, $path, $this->upload_filename));

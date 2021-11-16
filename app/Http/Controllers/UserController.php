@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage; //ファイルアクセス
 use Illuminate\Auth\Events\Registered; // 追加登録のメール送信
 use Gate;
+// use App\Events\Registered;
 // use Session;
 
 class UserController extends Controller
@@ -78,9 +79,11 @@ class UserController extends Controller
     }
     
     $user->company_id = $cid->company_id;
+    $user->accepted = 1;
     $user->save();
 
-    event(new Registered($user));
+    $user->sendEmailVerificationNotification();
+    // event(new Registered($user));
     //   if ($user->fill($request->all())->save()) {
     //     // メール確認の為の仮登録完了メール送信
     //     event(new Registered($user));

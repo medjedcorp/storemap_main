@@ -20,7 +20,7 @@ class SubscriptionController extends Controller
         $user = $request->user();
         $company = Company::where('id', $user->company_id)->first();
 
-        if (!$company->subscribed('main') and !$company->hasDefaultPaymentMethod()) {
+        // if (!$company->subscribed('main') and !$company->hasDefaultPaymentMethod()) {
 
             $payment_method = $request->payment_method;
             $plan = $request->plan;
@@ -45,8 +45,8 @@ class SubscriptionController extends Controller
                     'message' => 'カード情報を入力してください',
                 ], 404);
             }
-            // $company->createAsStripeCustomer();
-            
+
+            // トライアルなし
             // $company->newSubscription('main', [$plan, $stores_id])->quantity($stores_num, $stores_id)->create($payment_method, [
             // トライアルあり
             $company->newSubscription('main', [$plan, $stores_id])->quantity($stores_num, $stores_id)->trialDays($trial)->create($payment_method, [
@@ -57,7 +57,10 @@ class SubscriptionController extends Controller
                 // 'days_until_due' => 30,
             ]);
             $company->load('subscriptions');
-        }
+        // }
+
+        $user->role = 'seller';
+        $user->save();
 
         $company->status = 1;
         $company->save();
@@ -75,11 +78,15 @@ class SubscriptionController extends Controller
         $company = Company::where('id', $user->company_id)->first();
         
         $company->subscription('main')->cancel(); // 30日有効期限つきキャンセル
-        // $company->subscription('main')->cancelNow();
+        // $company->subscription('main')->cancelNow(); // 即座にキャンセル
         $company->status = 0;
+        $company->api_flag = 0;
         $company->save();
 
         // \Slack::channel('cancel')->send('あー！「'.$company->company_name.'(comapny_id:'.$company->id.')」さんが課金をキャンセルしちゃったよ。');
+
+        $user->role = 'free';
+        $user->save();        
 
         return $this->status();
     }
@@ -93,6 +100,8 @@ class SubscriptionController extends Controller
         $company->subscription('main')->resume();
 
         // \Slack::channel('recharge')->send('あっ、「'.$company->company_name.'(comapny_id:'.$company->id.')」さんが再課金してくれたよ。');
+        $user->role = 'seller';
+        $user->save();
 
         return $this->status();
     }

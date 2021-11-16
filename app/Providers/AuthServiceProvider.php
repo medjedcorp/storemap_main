@@ -41,11 +41,14 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('isSeller', function ($user) {
             return ($user->role == 'seller' or $user->role == 'tester' or $user->role == 'admin');
         });
+        Gate::define('isFree', function ($user) {
+            return ($user->role == 'staff' or $user->role == 'seller' or $user->role == 'tester' or $user->role == 'admin' or $user->role == 'free');
+        });
         Gate::define('isStaff', function ($user) {
-            return ($user->role == 'staff' or $user->role == 'seller' or $user->role == 'tester' or $user->role == 'admin');
+            return ($user->role == 'staff' or $user->role == 'seller' or $user->role == 'tester' or $user->role == 'admin' or $user->role == 'free');
         });
         Gate::define('isUser', function ($user) {
-            return ($user->role == 'user' or $user->role == 'staff' or $user->role == 'tester' or $user->role == 'seller' or $user->role == 'admin');
+            return ($user->role == 'user' or $user->role == 'staff' or $user->role == 'tester' or $user->role == 'seller' or $user->role == 'admin' or $user->role == 'free');
         });
         Gate::define('guest', function () {
             return Auth::guest() == 'true';

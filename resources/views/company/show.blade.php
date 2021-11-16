@@ -124,7 +124,7 @@
                 </dd>
               </dl>
             </p>
-            @can('isSeller')
+            @can('isFree')
             <a href="{{ route('company.edit' , $company->id ) }}" class="btn btn-info"><i class="fas fa-edit"></i>
               会社情報を編集する</a>
             @endcan

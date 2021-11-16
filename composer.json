@@ -57,15 +57,16 @@
             "database/factories"
         ],
         "files": [
-            "app/storeItemSet.php",
-            "app/keywordItemSet.php",
-            "app/stocksSet.php",
-            "app/pricesSet.php",
-            "app/smCateItemSet.php",
-            "app/keyCateItemSet.php",
-            "app/itemSet.php",
-            "app/distanceSet.php",
-            "app/csvErrorList.php"
+            "app/lib/storeItemSet.php",
+            "app/lib/keywordItemSet.php",
+            "app/lib/stocksSet.php",
+            "app/lib/pricesSet.php",
+            "app/lib/smCateItemSet.php",
+            "app/lib/keyCateItemSet.php",
+            "app/lib/itemSet.php",
+            "app/lib/distanceSet.php",
+            "app/lib/csvErrorList.php",
+            "app/lib/productCount.php"
         ]
     },
     "autoload-dev": {

@@ -19,7 +19,7 @@
   <div class="container-fluid">
     <div class="row">
       <!-- left column -->
-      <div class="col-12 col-md-10 col-xl-8">
+      <div class="col-12 col-md-11 col-xl-10">
         <!-- Horizontal Form -->
         <div class="card card-outline card-primary">
           <div class="card-header">
@@ -58,6 +58,17 @@
                 </div>
               </div>
               @endif
+              <div class="form-group row">
+                <label for="corporate_number" class="col-sm-2 col-form-label">法人番号</label>
+                <div class="col-sm-10">
+                  @if($errors->has('corporate_number'))
+                  <input type="text" class="form-control is-invalid" name="corporate_number" id="corporate_number" placeholder="不明な場合は国税庁法人番号公表サイトよりお調べください。個人事業主の方は不要です" value="{{old('corporate_number')}}" aria-describedby="corporate_number-error" aria-invalid="true">
+                  <span id="corporate_number-error" class="error invalid-feedback">{{$errors->first('corporate_number')}}</span>
+                  @else
+                  <input type="text" class="form-control" id="corporate_number" name="corporate_number" placeholder="不明な場合は国税庁法人番号公表サイトよりお調べください。個人事業主の方は不要です" value="{{old('corporate_number')}}">
+                  @endif
+                </div>
+              </div>
               <div class="form-group row">
                 <label for="company_postcode" class="col-sm-2 col-form-label">@lang('common.add_postcode')
                   @include('partials.required')</label>

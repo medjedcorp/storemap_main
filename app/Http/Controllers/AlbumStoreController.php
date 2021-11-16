@@ -117,7 +117,7 @@ class AlbumStoreController extends Controller
     $user = Auth::user();
     $cid = $user->company_id;
 
-    Gate::authorize('isSeller'); // gate staffは削除不可
+    Gate::authorize('isFree'); // gate staffは削除不可
 
     $img_id = $request->img_id;
     foreach ($img_id as $img) {
