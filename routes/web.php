@@ -28,6 +28,7 @@ use Illuminate\Http\Request;
 Route::get('/', 'SiteTopController@index');
 Route::get('/corporate', 'ViewOnlyController@corporate');
 Route::get('/privacy', 'ViewOnlyController@privacy');
+Route::get('/terms', 'ViewOnlyController@terms');
 Route::get('/publish', 'ViewOnlyController@publish');
 Route::get('/pricelist', 'ViewOnlyController@pricelist');
 // Route::get('top', 'SiteTopController@index');
@@ -42,6 +43,10 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 Route::get('contact', 'ContactController@index')->name('contact.index');
 Route::post('contact/confirm', 'ContactController@confirm')->name('contact.confirm');
 Route::post('contact/thanks', 'ContactController@send')->name('contact.send');
+
+Route::get('regicom', 'RegistCompnayController@index')->name('regicom.index');
+Route::post('regicom/thanks', 'RegistCompnayController@confirm')->name('regicom.confirm');
+// Route::post('regicom/thanks', 'ContactController@thanks')->name('regicom.thanks');
 
 Route::get('/result', 'ResultController@show');
 // Route::get('/result/{pref}', 'ResultController@pref');
@@ -95,7 +100,7 @@ Route::middleware('verified')->group(function () {
     Route::post('/company', 'CompanyController@store', ['onphp artisan config:cachely' => ['store']])->name('company.store');
     // Route::resource('company', 'CompanyController', ['only' => ['edit', 'update', 'show']]);
     Route::get('/company/{id}', 'CompanyController@show')->name('company.show')->middleware('TesterCheck');
-    Route::group(['middleware' => ['auth', 'can:isSeller']], function () {
+    Route::group(['middleware' => ['auth', 'can:isFree']], function () {
       Route::get('/company/{id}/edit', 'CompanyController@edit')->name('company.edit')->middleware('TesterCheck');
       Route::patch('/company/{id}', 'CompanyController@update')->name('company.update')->middleware('TesterCheck');
     });
@@ -106,7 +111,7 @@ Route::middleware('verified')->group(function () {
     Route::middleware('PaymentCheck')->middleware('TesterCheck')->group(function () {
       // 会社情報がなければ、会社登録へ
       // お支払い情報設定
-      Route::group(['middleware' => ['auth', 'can:isSeller']], function () {
+      Route::group(['middleware' => ['auth', 'can:isFree']], function () {
         Route::get('/payment/card', 'SubscriptionController@index')->name('payment.card');
         Route::get('/payment/ajax/status', 'Ajax\SubscriptionController@status');
         Route::post('/payment/ajax/subscribe', 'Ajax\SubscriptionController@subscribe');
@@ -146,7 +151,7 @@ Route::middleware('verified')->group(function () {
       Route::get('/categories', 'CategoryController@index')->name('categories.index');
       Route::patch('/categories/{category}', 'CategoryController@update')->name('categories.update');
       Route::get('/categories/{category}/edit', 'CategoryController@edit')->name('categories.edit');
-      Route::group(['middleware' => ['auth', 'can:isSeller']], function () {
+      Route::group(['middleware' => ['auth', 'can:isFree']], function () {
         //　カテゴリ登録と削除は管理者のみ
         Route::get('/categories/create', 'CategoryController@create')->name('categories.create');
         Route::post('/categories', 'CategoryController@store')->name('categories.store');
@@ -172,7 +177,7 @@ Route::middleware('verified')->group(function () {
       
       Route::get('/stores', 'StoreController@index')->name('stores.index');
       Route::get('/stores/{store}/edit', 'StoreController@edit')->name('stores.edit');
-      Route::group(['middleware' => ['auth', 'can:isSeller']], function () {
+      Route::group(['middleware' => ['auth', 'can:isFree']], function () {
         //　ストア登録と削除は管理者のみ、middlewareは課金管理
         Route::get('/stores/create', 'StoreController@create')->name('stores.create')->middleware('AddStore');
         Route::post('/stores', 'StoreController@store')->name('stores.store')->middleware('AddStore');
@@ -336,6 +341,10 @@ Route::middleware('verified')->group(function () {
         Route::get('/topics/{id}/edit', 'TopicsController@edit')->name('topics.edit');
         Route::put('/topics/{id}', 'TopicsController@update')->name('topics.update');
         Route::delete('/topics/{id}', 'TopicsController@destroy')->name('topics.destroy');
+
+        Route::get('system/accept', 'Admin\UserAcceptController@index');
+        Route::get('ajax/user_accept', 'Ajax\UserAcceptController@index');
+        Route::post('ajax/user_accept/accept', 'Ajax\UserAcceptController@accept');
       });
     });
   });

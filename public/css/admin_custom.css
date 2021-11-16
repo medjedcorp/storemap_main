@@ -1,11 +1,20 @@
 @charset "UTF-8";
-
-html{
+html {
     font-size: 15px;
 }
+
 body {
     font-family: Helvetica, 'Helvetica Neue', 'Mplus 1p', 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', Meiryo, メイリオ, Osaka, 'MS PGothic' !important;
-  }
+}
+
+h1 {
+    font-weight: bold;
+    font-size:1.6rem;
+}
+
+.badge-danger{
+    vertical-align: text-bottom;
+}
 .custom-select-sm {
     font-size: 90%;
 }
@@ -13,9 +22,11 @@ body {
 .inline_form {
     display: inline-block;
 }
-.custom-file-label::after{
+
+.custom-file-label::after {
     content: "参照する";
 }
+
 .table thead tr th a {
     color: #000;
 }
@@ -47,9 +58,7 @@ body {
     font-weight: bold;
 }
 
-.cal-primary:hover,
-.cal-primary:focus,
-.cal-primary:active {
+.cal-primary:hover, .cal-primary:focus, .cal-primary:active {
     background: linear-gradient(#000000, #000000);
     background-color: #007bff;
     /* !important; */
@@ -71,12 +80,10 @@ body {
     font-weight: bold;
 }
 
-.cal-success:hover,
-.cal-success:focus,
-.cal-success:active {
+.cal-success:hover, .cal-success:focus, .cal-success:active {
     background: linear-gradient(#000000, #000000);
     background-color: #28a745;
-    /* !important; */ 
+    /* !important; */
     /* for IE */
     color: #ffffff !important;
     opacity: .65;
@@ -178,6 +185,7 @@ ul#fast-color-chooser li input:checked+label {
 }
 
 /* 画像 */
+
 .albumImg {
     max-width: 100px;
     max-height: 100px;
@@ -213,11 +221,11 @@ ul#fast-color-chooser li input:checked+label {
     border-bottom: 2px solid #dee2e6;
 }
 
-#select-course{
+#select-course {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-#payment_plan .bc_checked{
+#payment_plan .bc_checked {
     background-color: #17a2b8;
     color: #fff;
 }

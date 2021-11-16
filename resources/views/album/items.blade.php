@@ -195,14 +195,18 @@
     error: function(file, response) {
       file.previewElement.classList.add('dz-error');
       $(file.previewElement).find('.dz-error-message').text(response);
-      // alert(response);
+      alert("容量オーバーです。画像の登録に失敗しました。");
+      location.reload();
+      response.preventDefault();
     },
     maxfilesreached: function(file, response) {
-      alert("※Error：画像枚数オーバー。１度にアップできる画像は５００枚までです。５００枚までの画像を登録します。");
+      alert("※Error：１度にアップできる画像は５００枚までです。登録可能な範囲で登録します。");
       response.preventDefault();
     },
     queuecomplete: function(file, response) {
+      // console.log(response.error);
       alert("アップロードが完了しました");
+
       location.reload();
     },
   };

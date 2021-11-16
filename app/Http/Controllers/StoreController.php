@@ -312,7 +312,7 @@ class StoreController extends Controller
     public function destroy($id)
     {
         $store = Store::find($id);
-        Gate::authorize('isSeller'); // gate staffは削除不可
+        Gate::authorize('isFree'); // gate staffは削除不可
         $this->authorize('delete', $store);
         $store->delete();
         return redirect("/stores")->with([

@@ -60,7 +60,7 @@
                                     </th>
                                     <th>@sortablelink('category_name', trans('category.register.cate_name'))</th>
                                     <th class="text-nowrap">@sortablelink('display_flag', trans('category.index.display'))</th>
-                                    @can('isSeller')
+                                    @can('isFree')
                                     <th class="text-nowrap">@lang('common.edit')</th>
                                     <th class="text-nowrap">@lang('common.delete')</th>
                                     @endcan
@@ -79,7 +79,7 @@
                                         @lang('common.public')
                                         @endif
                                     </td>
-                                    @can('isSeller')
+                                    @can('isFree')
                                     <td class="text-nowrap">
                                         <button class="btn btn-block btn-primary btn-sm" onclick="location.href='{{ route('categories.edit' , $category->id ) }}'">
                                             <i class="fas fa-edit"></i>

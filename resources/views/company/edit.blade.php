@@ -64,6 +64,28 @@
               </div>
               @endif
               <div class="form-group row">
+                <label for="corporate_number" class="col-sm-2 col-form-label">法人番号</label>
+                <div class="col-sm-10">
+                  @if($errors->has('corporate_number'))
+                  <input type="text" class="form-control is-invalid" name="corporate_number" id="corporate_number" value="{{old('corporate_number', isset($company->corporate_number) ? $company->corporate_number : '') }}" aria-describedby="corporate_number-error" aria-invalid="true">
+                  <span id="corporate_number-error" class="error invalid-feedback">{{$errors->first('corporate_number')}}</span>
+                  @else
+                  <input type="text" class="form-control" id="corporate_number" name="corporate_number" value="{{old('corporate_number', isset($company->corporate_number) ? $company->corporate_number : '') }}">
+                  @endif
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="president_name" class="col-sm-2 col-form-label">代表者名 @include('partials.required')</label>
+                <div class="col-sm-10">
+                  @if($errors->has('president_name'))
+                  <input type="text" class="form-control is-invalid" name="president_name" id="president_name" value="{{old('president_name', isset($company->president_name) ? $company->president_name : '') }}" aria-describedby="president_name-error" aria-invalid="true">
+                  <span id="president_name-error" class="error invalid-feedback">{{$errors->first('president_name')}}</span>
+                  @else
+                  <input type="text" class="form-control" id="president_name" name="president_name" value="{{old('president_name', isset($company->president_name) ? $company->president_name : '') }}">
+                  @endif
+                </div>
+              </div>
+              <div class="form-group row">
                 <label for="company_postcode" class="col-sm-2 col-form-label">@lang('company.register.postcode') @include('partials.required')</label>
                 <div class="col-sm-10">
                   @if($errors->has('company_postcode'))
@@ -256,7 +278,6 @@
                   @endif
                 </div>
               </div>
-
             </div>
             <!-- /.card-body -->
             <div class="card-footer">

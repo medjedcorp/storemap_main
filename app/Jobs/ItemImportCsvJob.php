@@ -230,6 +230,7 @@ class ItemImportCsvJob implements ShouldQueue
       // $csv_path = '/public/storage/' . $fname;
       CsvFileDeleteJob::dispatch($path)->delay(now()->addDays(3));
     } else {
+      $countError = false;
       // 成功時の処理
       foreach ($csv as $row_data => $v) {
         // Log::debug($v['color_id']);
@@ -271,14 +272,12 @@ class ItemImportCsvJob implements ShouldQueue
           $fname = $cid . '/csv/error/' . 'items_' . date('YmdHis') . '.txt';
           Storage::disk('public')->put($fname, "");
           $path = url('storage/' . $fname);
-          $txt_list = '登録可能商品数の上限を超えたため、登録に失敗しました。現在の登録可能件数：' . $max_item . '件';
+          $txt_list = '登録可能商品数の上限を超えたため、処理を中断しました';
           Storage::disk('public')->append($fname, $txt_list);
-          // エラーメール送信処理
-          Mail::to($to)->send(new CsvErrorMail($name, $path, $this->upload_filename));
+
           // 3日後にファイル削除
-          // $csv_path = '/public/' . $fname;
-          // CsvFileDeleteJob::dispatch($csv_path)->delay(now()->addDays(3));
           CsvFileDeleteJob::dispatch($path)->delay(now()->addDays(3));
+          $countError = true;
           break;
         }
         // dd($gid,$cateid);
@@ -328,7 +327,7 @@ class ItemImportCsvJob implements ShouldQueue
           // Log::debug($bar);
           // var_dump($bar);
           $item->barcode = $bar;
-          
+
           // $item->barcode = $v['barcode'];
         }
         if (isset($v['category_code'])) {
@@ -488,8 +487,14 @@ class ItemImportCsvJob implements ShouldQueue
         // 中間テーブルに関連づける
         $iid->store()->syncWithoutDetaching($store);
       }
-      // 成功メール送信
-      Mail::to($to)->send(new CsvSuccessMail($name, $this->upload_filename));
+
+      if ($countError) {
+        // 登録件数オーバーの場合エラーメール送信処理
+        Mail::to($to)->send(new CsvErrorMail($name, $path, $this->upload_filename));
+      } else {
+        // 成功メール送信
+        Mail::to($to)->send(new CsvSuccessMail($name, $this->upload_filename));
+      }
     }
   }
 }

@@ -59,7 +59,7 @@
                                     <th class="text-nowrap">@sortablelink('store_phone_number', trans('common.phone_num'))</th>
                                     <th class="text-nowrap">@sortablelink('pause_flag', trans('store.pause_flag'))</th>
                                     <th class="text-nowrap">@lang('common.calendar')</th>
-                                    @can('isSeller')
+                                    @can('isFree')
                                     <th class="text-nowrap">@lang('common.info')</th>
                                     <th class="text-nowrap">@lang('common.delete')</th>
                                     @endcan
@@ -89,7 +89,7 @@
                                             <i class="fas fa-info-circle"></i>
                                             @lang('common.info')</button>
                                     </td>
-                                    @can('isSeller')
+                                    @can('isFree')
                                     <td class="text-nowrap">
                                         <form method="POST" action="{{ route('stores.destroy' , $store->id ) }}" class="h-adr">
                                             @method('DELETE')

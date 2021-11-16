@@ -143,7 +143,7 @@ class CategoryController extends Controller
   {
     $category = Category::find($id);
 
-    Gate::authorize('isSeller'); // gate staffは削除不可
+    Gate::authorize('isFree'); // gate staffは削除不可
 
     $this->authorize('delete', $category); // policy
 

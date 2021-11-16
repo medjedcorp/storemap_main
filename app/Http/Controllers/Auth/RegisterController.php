@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
-use Illuminate\Auth\Events\Registered; // 追加登録のメール送信
+// use Illuminate\Auth\Events\Registered; // 追加登録のメール送信
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -56,7 +56,7 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'role' => ['required', 'in:seller,user'], // 追加
+            'role' => ['required', 'in:seller,user,free'], // 追加
         ]);
     }
 
@@ -66,8 +66,9 @@ class RegisterController extends Controller
         // dd($data);
         $data_value = $data['role'];
         $user_value = 'user';
-        $seller_value = 'seller';
-        if (($data_value == $user_value) or ($data_value == $seller_value)) {
+        // $seller_value = 'seller';
+        $free_value = 'free';
+        if (($data_value == $user_value) or ($data_value == $free_value)) {
             return User::create([
                 'name' => $data['name'],
                 'email' => $data['email'],
@@ -80,21 +81,21 @@ class RegisterController extends Controller
     }
 
     // 追加
-    public function showUserRegistrationForm()
-    {
-        if (property_exists($this, 'registerView')) {
-            return view($this->registerView);
-        }
-        // 一般用のログイン画面へ飛ばす
-        return view('vendor.adminlte.auth.user-register');
-    }
+    // public function showUserRegistrationForm()
+    // {
+    //     if (property_exists($this, 'registerView')) {
+    //         return view($this->registerView);
+    //     }
+    //     // 一般用のログイン画面へ飛ばす
+    //     return view('vendor.adminlte.auth.user-register');
+    // }
     // 追加
-    public function showSellerRegistrationForm()
-    {
-        if (property_exists($this, 'registerView')) {
-            return view($this->registerView);
-        }
-        // セラー用のログイン画面へ飛ばす
-        return view('vendor.adminlte.auth.seller-register');
-    }
+    // public function showSellerRegistrationForm()
+    // {
+    //     if (property_exists($this, 'registerView')) {
+    //         return view($this->registerView);
+    //     }
+    //     // セラー用のログイン画面へ飛ばす
+    //     return view('vendor.adminlte.auth.seller-register');
+    // }
 }

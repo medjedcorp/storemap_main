@@ -104,6 +104,14 @@ class CatalogController extends Controller
     {
         $user = Auth::user();
 
+        // 自作関数productCountを呼び出し。上限チェック
+        $resultItem = productCount($user);
+        // dd($result);
+        if(!$resultItem){
+            // dd($result);
+            return back()->with('warning', '登録出来る商品数の上限を超えています。');
+        }
+
         // コピー元の商品情報を取得
         $base_item = Item::find($request->id);
         $base_company_id = $base_item->company_id;
@@ -115,11 +123,11 @@ class CatalogController extends Controller
         $bcode = Item::where('company_id', $user->company_id)->where('barcode', $base_item->barcode)->exists();
 
         if ($pcode) {
-            return back()->with('result', '同じ商品コードの登録があります');
+            return back()->with('warning', '同じ商品コードの登録があります');
         }
 
         if ($bcode) {
-            return back()->with('result', '同じJANコードの登録があります');
+            return back()->with('warning', '同じJANコードの登録があります');
         }
 
         // 商品情報をコピー

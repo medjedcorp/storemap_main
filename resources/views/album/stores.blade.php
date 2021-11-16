@@ -197,10 +197,13 @@
     error: function(file, response) {
       file.previewElement.classList.add('dz-error');
       $(file.previewElement).find('.dz-error-message').text(response);
+      alert("容量オーバーです。画像の登録に失敗しました。");
+      location.reload();
+      response.preventDefault();
     },
     maxfilesreached: function(file, response) {
       // maxFilesをオーバーした場合、アラートを表示
-      alert("※Error：画像枚数オーバー。１度にアップできる画像は５００枚までです。５００枚までの画像を登録します。");
+      alert("※Error：１度にアップできる画像は５００枚までです。登録可能な範囲で登録します。");
       // 処理を中断。これがないとオーバーした分のエラーポップアップが表示されます。
       response.preventDefault();
     },

@@ -91,18 +91,9 @@
     {{-- Register link --}}
     @if($register_url)
         <p class="my-0">
-            <a href="{{ route('seller.register.show') }}">
+            <a href="{{ $register_url }}">
                 掲載店新規登録
             </a>
         </p>
     @endif
-    {{-- Register link 
-    @if($register_url)
-        <p class="my-0">
-            <a href="{{ $register_url }}">
-                {{ __('adminlte::adminlte.register_a_new_membership') }}
-            </a>
-        </p>
-    @endif
-    --}}
 @stop

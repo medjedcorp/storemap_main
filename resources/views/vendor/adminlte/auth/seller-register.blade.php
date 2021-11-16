@@ -84,7 +84,7 @@
         </div>
         @endif
     </div>
-    <input type="hidden" name="role" value="seller">
+    <input type="hidden" name="role" value="free">
     {{-- Register button --}}
     <button type="submit" class="btn btn-block {{ config('adminlte.classes_auth_btn', 'btn-flat btn-primary') }}">
         <span class="fas fa-user-plus"></span>

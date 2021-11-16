@@ -6,8 +6,8 @@
 @if ($level === 'error')
 # @lang('Whoops!')
 @else
-{{-- # @lang('Hello!') --}}
-# こんにちは。
+# @lang('Hello!')
+{{-- # お知らせ --}}
 @endif
 @endif
 

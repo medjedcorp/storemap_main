@@ -32,6 +32,7 @@
             </h3>
           </div>
           @include('partials.success')
+          @include('partials.warning')
           <div class="card-body">
             <dl class="row company-show">
               <dt class="col-sm-3">@lang('catalog.index.maker_name')</dt>
@@ -108,7 +109,7 @@
             </dl>
           </div>
           <div class="card-footer">
-            @can('isSeller')
+            @can('isFree')
             <div class="form-row d-flex justify-content-between">
               @if (isset($copy_id))
               <button type="submit" onclick="location.href='{{ route('items.edit', $copy_id->id) }}'" class="btn btn-info mr-1 ml-3"><i class="fa fa-pencil-square-o"></i> @lang('catalog.show.copy_look')</button>

@@ -38,11 +38,18 @@ class StoreImgController extends Controller
     $light_storage = config('services.stripe.light_storage');
     $basic_storage = config('services.stripe.basic_storage');
     $premium_storage = config('services.stripe.premium_storage');
+    $free_storage = config('services.stripe.free_storage');
 
-    // ストア数プラン以外で、引っかかるプランを取得(店舗数)
-    $subscriptionItem = $company->subscription('main')->items->whereNotIn('stripe_plan', $stores)->first();
-    // プラン名を取得
-    $stripePlan = $subscriptionItem->stripe_plan;
+    // 有効な課金があるかチェック
+    if ($company->subscribed('main')) {
+      // 有効な課金がある場合は、プランを代入
+      $subscriptionItem = $company->subscription('main')->items->whereNotIn('stripe_plan', $stores)->first();
+      $stripePlan = $subscriptionItem->stripe_plan;
+    } else {
+      // ない場合はnull
+      $stripePlan = null;
+    }
+
     // ストレージ容量を設定
     switch ($stripePlan) {
       case $light:
@@ -55,17 +62,12 @@ class StoreImgController extends Controller
         $max_size = $premium_storage;
         break;
       default:
-        $max_size = 0;
+        $max_size = $free_storage;
     }
 
     $files = $request->file();
 
     foreach ($files as $file) {
-      $file_name = $file->getClientOriginalName(); // ファイル名はアップロードされたのをそのまま使用
-
-      $img_size = filesize($file);
-      $img_info = getimagesize($file); // 横幅、縦幅などを取得
-
       // 登録可能件数を超えた場合のエラー処理
       // 現在の画像容量を計算
       $item_size = ItemImage::where('company_id', $cid)->sum('size');
@@ -73,10 +75,14 @@ class StoreImgController extends Controller
       $total_size = $item_size + $store_size;
 
       if ($max_size <= $total_size) {
-        // http_response_code(400);
-        // die( 'error' );  
-        return response()->json(['error' => '容量オーバーのため中止']);
+        return response()->json(['error' => '容量オーバーのため中止しました'],400);
       }
+
+      $file_name = $file->getClientOriginalName(); // ファイル名はアップロードされたのをそのまま使用
+
+      $img_size = filesize($file);
+      $img_info = getimagesize($file); // 横幅、縦幅などを取得
+
 
       // 日本語や全角がある場合は強制リネーム
       $file_name1 = strlen($file_name);
@@ -86,7 +92,7 @@ class StoreImgController extends Controller
         //日本語文字列が含まれている
         $file_ext = $file->getClientOriginalExtension();
         $file_name = 's' . $cid . '_' . date('YmdHis') . '.' . $file_ext;
-        Storage::putFileAs('public/' . $cid. '/stores/', $file, $file_name); // ストレージに保存
+        Storage::putFileAs('public/' . $cid . '/stores/', $file, $file_name); // ストレージに保存
         // $path_as = Storage::putFileAs('public/' . $cid$cid . '/stores/', $file, $file_name); // ストレージに保存
         // Storage::disk('uploads')->put("stores/$cid",  $file, $file_name);
       } else {

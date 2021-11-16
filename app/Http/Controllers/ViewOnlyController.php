@@ -39,6 +39,10 @@ class ViewOnlyController extends Controller
     {
       return view('privacy');
     }
+    public function terms()
+    {
+      return view('terms');
+    }
     public function publish()
     {
       return view('publish');
