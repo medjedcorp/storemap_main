@@ -28,6 +28,7 @@ use Illuminate\Http\Request;
 Route::get('/', 'SiteTopController@index');
 Route::get('/corporate', 'ViewOnlyController@corporate');
 Route::get('/privacy', 'ViewOnlyController@privacy');
+Route::get('/terms', 'ViewOnlyController@terms');
 Route::get('/publish', 'ViewOnlyController@publish');
 Route::get('/pricelist', 'ViewOnlyController@pricelist');
 // Route::get('top', 'SiteTopController@index');

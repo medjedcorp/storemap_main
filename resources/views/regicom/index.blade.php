@@ -254,11 +254,11 @@
                 <div class="form-check">
                   @if($errors->has('p_policy'))
                   <input type="checkbox" class="form-check-input" id="p_policy" name="p_policy" autocomplete="off" readonly="readonly">
-                  <label class="form-check-label" for="p_policy">利用規約・プライバシーポリシーに同意する</label>
+                  <label class="form-check-label" for="p_policy"> <a href="/terms" target="_blank">[利用規約」</a>と、<a href="/privacy" target="_blank">[プライバシーポリシー]</a>に同意する</label>
                   <p class="error text-red">{{$errors->first('p_policy')}}</p>
                   @else
                   <input type="checkbox" class="form-check-input" id="p_policy" name="p_policy" autocomplete="off" readonly="readonly">
-                  <label class="form-check-label" for="p_policy">利用規約・プライバシーポリシーに同意する</label>
+                  <label class="form-check-label" for="p_policy"><a href="/terms" target="_blank">[利用規約]</a>と、<a href="/privacy" target="_blank">[プライバシーポリシー]</a>に同意する</label>
                   @endif
                </div>
               </div>
