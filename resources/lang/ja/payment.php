@@ -2,7 +2,7 @@
 
 return [
   'title' => 'お支払い情報を入力',
-  'first_input' => '最初にお支払い情報の登録をお願い致します',
+  'first_input' => 'お支払い情報の登録をお願い致します',
   'card_num'  => 'カード番号',
   'security_code' => 'セキュリティコード',
   'expiration_date' => '有効期限',

@@ -4,11 +4,11 @@
 
 @section('content_header')
 <div class="container-fluid">
-  <div class="row mb-2">
-    <div class="col-sm-12">
-      <h1 class="m-0"><i class="far fa-credit-card"></i> {{ $company->company_name }} さま / @lang('payment.title')</h1>
-    </div><!-- /.col -->
-  </div><!-- /.row -->
+    <div class="row mb-2">
+        <div class="col-sm-12">
+            <h1 class="m-0"><i class="far fa-credit-card"></i> {{ $company->company_name }} さま / @lang('payment.title')</h1>
+        </div><!-- /.col -->
+    </div><!-- /.row -->
 </div>
 @stop
 
@@ -18,12 +18,30 @@
         @include('partials.warning')
         @include('partials.success')
         <div id="select-course" class="row">
-            <div class="col-6 col-md-3">
+            <div class="col-md-6 col-12">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h5 class="m-0">フリー</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="callout callout-secondary">
+                            <h3><small class="h6 mr-1">月額</small>{{number_format(config('services.stripe.free_price')) }}<small class="h6 ml-1">円</small></h3>
+                            <small>※無料で使ってみたいお店向け</small>
+                        </div>
+                        <ul>
+                            <li>{{number_format(config('services.stripe.free_item'))}}商品まで登録可能</li>
+                            <li>画像容量{{config('services.stripe.free_storage_domination')}}まで利用可能</li>
+                            <li>1店舗は追加課金なしで利用可能</li>
+                            <li>初期費用無料</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-12">
                 <div class="card card-info">
                     <div class="card-header">
                         <h5 class="m-0">ライト</h5>
                     </div>
-
                     <div class="card-body">
                         <div class="callout callout-info">
                             <h3><small class="h6 mr-1">月額</small>{{$price_list['light']}}<small class="h6 ml-1">円</small></h3>
@@ -39,7 +57,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-6 col-md-3">
+            <div class="col-md-4 col-sm-6 col-12">
                 <div class="card card-warning">
                     <div class="card-header">
                         <h5 class="m-0">ベーシック</h5>
@@ -60,7 +78,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-6 col-md-3">
+            <div class="col-md-4 col-sm-6 col-12">
                 <div class="card card-success">
                     <div class="card-header">
                         <h5 class="m-0">プレミアム</h5>
@@ -81,7 +99,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-6 col-md-3">
+            <div class="col-md-4 col-sm-6 col-12">
                 <div class="card card-danger">
                     <div class="card-header">
                         <h5 class="m-0">追加店舗
@@ -95,7 +113,7 @@
                         <ul>
                             <li>1店舗ごとに+{{$price_list['add_store']}}円/月</li>
                             <li>{{$trial_date}}日の無料お試し期間</li>
-                            <li>最初の1店舗はプラン内の料金に含まれています。2店舗以上運用の場合、必要になります</li>
+                            <li>最初の1店舗は基本プラン内の料金に含まれています。<br>2店舗以上で運用の場合、必要になります</li>
                             <li>初期費用無料</li>
                         </ul>
                     </div>
@@ -139,9 +157,9 @@
                                                         <h6>店舗数を選択：</h6>
                                                         <select class="form-control" v-model.number="storeNum" @change="changeStore">
                                                             <option disabled value="">選択してください</option>
-                                                            @for ($i = 0; $i < 100; $i++) <option value="{{ $i }}">
-                                                                {{ $i + 1 }}</option>
-                                                                @endfor
+                                                            @for ($i = 0; $i < 100; $i++) 
+                                                                <option value="{{ $i }}">{{ $i + 1 }}</option>
+                                                            @endfor
                                                         </select>
                                                     </div>
                                                     <div class="form-group">
@@ -181,8 +199,9 @@
                                                         <div class="form-group">
                                                             <select class="form-control" v-model.number="storeNum" @change="changeStore">
                                                                 <option disabled value="">選択してください</option>
-                                                                @for ($i = 0; $i < 100; $i++) <option value="{{ $i }}">{{ $i + 1 }}</option>
-                                                                    @endfor
+                                                                @for ($i = 0; $i < 100; $i++) 
+                                                                    <option value="{{ $i }}">{{ $i + 1 }}</option>
+                                                                @endfor
                                                             </select><br>
                                                             <button class="btn btn-success" type="button" @click="changePlan"><i class="far fa-check-circle"></i> プランを変更する</button>
                                                         </div>
@@ -192,13 +211,13 @@
                                                             現在のカード情報(下４桁)： <b><span v-text="details.card_last_four"></span></b>
                                                         </div>
                                                         <div class="form-group">
-                                                        <h6>カード名義人名：</h6>
+                                                            <h6>カード名義人名：</h6>
                                                         </div>
                                                         <div class="form-group">
                                                             <input type="text" class="form-control" v-model="cardHolderName" placeholder="名義人（半角ローマ字）">
                                                         </div>
                                                         <div class="form-group">
-                                                        <h6>カード番号・有効期限・セキュリティコード：</h6>
+                                                            <h6>カード番号・有効期限・セキュリティコード：</h6>
                                                         </div>
                                                         <div class="form-group">
                                                             <div id="update-card" class="bg-white"></div><br>
@@ -423,262 +442,263 @@
 
 <script>
     var options = {
-            position: 'top-center',
-            duration: 20000,
-            fullWidth: false,
-            type: 'error'
+        position: 'top-center',
+        duration: 20000,
+        fullWidth: false,
+        type: 'error'
     }
     var successOptions = {
-            position: 'top-center',
-            duration: 20000,
-            fullWidth: false,
-            type: 'success'
+        position: 'top-center',
+        duration: 20000,
+        fullWidth: false,
+        type: 'success'
     }
 
     // 数値を通貨書式「#,###,###」に変換するフィルター
     Vue.filter('number_format', function(val) {
         return val.toLocaleString();
     });
-            
+
     Vue.use(Toasted);
 
+    // 整形して改行入るとバグるので注意
     new Vue({
-    el: '#app',
-    data: {
-        stripe: null,
-        stripeCard: null,
-        publicKey: '{{ config('services.stripe.key') }}',
-        status: '',
-        cardHolderName: '',
-        details: {},
-        plan: '',
-        planOptions: {!! json_encode(config('services.stripe.plans')) !!},
-        storeNum: '',
-        loading: false,
-        addStore: {{ config('services.stripe.add_store') }},
-        // addStore: 1000,
-        lightPlan: {{ config('services.stripe.light_price') }},
-        // lightPlan: 1000,
-        basicPlan: {{ config('services.stripe.basic_price') }},
-        // basicPlan: 3000,
-        prePlan: {{ config('services.stripe.premium_price') }},
-        // prePlan: 5000,
-        storeShow: true,
-        planShow: true,
-        existenceShow: true
-    },
-    methods: {
-        async subscribe(e) {
-            const paymentMethod = await this.getPaymentMethod(e.target);
-            const url = '/payment/ajax/subscribe';
-            const params = {
-                payment_method: paymentMethod,
-                plan: this.plan,
-                storeNum: this.storeNum
-            };
-            
-            this.loading = true;
-
-            axios.post(url, params)
-              .then(response => {
-              location.reload();
-              this.setStatus;
-              this.$toasted.show('ありがとうございます。画面が更新されるまでお待ちください。', successOptions);
-            }).catch(error=>{
-                //失敗した時の処理
-                // this.$toasted.show('処理に失敗しました。入力内容をご確認下さい。', options);
-                this.$toasted.show(error.response.data.message, options);
-            })
-            .finally(() => {
-                this.loading = false;  // 最終的に必ず実行
-            });
+        el: '#app',
+        data: {
+            stripe: null,
+            stripeCard: null,
+            publicKey: '{{ config('services.stripe.key') }}',
+            status: '',
+            cardHolderName: '',
+            details: {},
+            plan: '',
+            planOptions: {!! json_encode(config('services.stripe.plans')) !!},
+            storeNum: '',
+            loading: false,
+            addStore: {{ config('services.stripe.add_store') }},
+            // addStore: 1000,
+            lightPlan: {{ config('services.stripe.light_price') }},
+            // lightPlan: 1000,
+            basicPlan: {{ config('services.stripe.basic_price') }},
+            // basicPlan: 3000,
+            prePlan: {{ config('services.stripe.premium_price') }},
+            // prePlan: 5000,
+            storeShow: true,
+            planShow: true,
+            existenceShow: true
         },
-        cancel() {
-            const url = '/payment/ajax/cancel';
+        methods: {
+            async subscribe(e) {
+                const paymentMethod = await this.getPaymentMethod(e.target);
+                const url = '/payment/ajax/subscribe';
+                const params = {
+                    payment_method: paymentMethod,
+                    plan: this.plan,
+                    storeNum: this.storeNum
+                };
 
-            this.loading = true;
+                this.loading = true;
 
-            axios.post(url)
-                .then(this.setStatus)
-                .catch(error=>{
-                //失敗した時の処理
-                    // this.$toasted.show(error.message, options);
-                    this.$toasted.show('処理に失敗しました。入力内容をご確認下さい。', options);
-                    // console.log(error);
-                })
-                .finally(() => {
-                    this.loading = false;  // 最終的に必ず実行
-                });
-        },
-        resume() {
-            const url = '/payment/ajax/resume';
-            this.loading = true;
-            axios.post(url)
-                .then(this.setStatus)
-                .catch(error=>{
-                //失敗した時の処理
-                    // this.$toasted.show(error.message, options);
-                    this.$toasted.show('処理に失敗しました。入力内容をご確認下さい。', options);
-                    // console.log(error);
-                })
-                .finally(() => {
-                    this.loading = false;  // 最終的に必ず実行
-                });
-        },
-        changePlan() {
-            const url = '/payment/ajax/change_plan';
-            const params = {
-                plan: this.plan,
-                storeNum: this.storeNum
-            };
-            // console.log(this.plan);
-            this.loading = true;  // 最終的に必ず実行
+                axios.post(url, params)
+                    .then(response => {
+                        location.reload();
+                        this.setStatus;
+                        this.$toasted.show('ありがとうございます。画面が更新されるまでお待ちください。', successOptions);
+                    }).catch(error => {
+                        //失敗した時の処理
+                        // this.$toasted.show('処理に失敗しました。入力内容をご確認下さい。', options);
+                        this.$toasted.show(error.response.data.message, options);
+                    })
+                    .finally(() => {
+                        this.loading = false; // 最終的に必ず実行
+                    });
+            },
+            cancel() {
+                const url = '/payment/ajax/cancel';
 
-            axios.post(url, params)
-                // .then(this.setStatus)
-                .then(response => {
-                    this.setStatus;
-                    this.$toasted.show('変更に成功しました。画面が更新されるまでお待ちください。', successOptions);
-                })
-                .catch(error=>{
-                //失敗した時の処理
-                    // this.$toasted.show('処理に失敗しました。入力内容をご確認下さい。', options);
-                    this.$toasted.show(error.response.data.message, options);
-                    // console.log(error);
-                })
-                .finally(() => {
-                    this.loading = false;  // 最終的に必ず実行
-                    location.reload();
-                });
-        },
-        async updateCard(e) {
+                this.loading = true;
 
-            const paymentMethod = await this.getPaymentMethod(e.target);
-            const url = '/payment/ajax/update_card';
-            const params = {
-                payment_method: paymentMethod
-            };
+                axios.post(url)
+                    .then(this.setStatus)
+                    .catch(error => {
+                        //失敗した時の処理
+                        // this.$toasted.show(error.message, options);
+                        this.$toasted.show('処理に失敗しました。入力内容をご確認下さい。', options);
+                        // console.log(error);
+                    })
+                    .finally(() => {
+                        this.loading = false; // 最終的に必ず実行
+                    });
+            },
+            resume() {
+                const url = '/payment/ajax/resume';
+                this.loading = true;
+                axios.post(url)
+                    .then(this.setStatus)
+                    .catch(error => {
+                        //失敗した時の処理
+                        // this.$toasted.show(error.message, options);
+                        this.$toasted.show('処理に失敗しました。入力内容をご確認下さい。', options);
+                        // console.log(error);
+                    })
+                    .finally(() => {
+                        this.loading = false; // 最終的に必ず実行
+                    });
+            },
+            changePlan() {
+                const url = '/payment/ajax/change_plan';
+                const params = {
+                    plan: this.plan,
+                    storeNum: this.storeNum
+                };
+                // console.log(this.plan);
+                this.loading = true; // 最終的に必ず実行
 
-            this.loading = true;
+                axios.post(url, params)
+                    // .then(this.setStatus)
+                    .then(response => {
+                        this.setStatus;
+                        this.$toasted.show('変更に成功しました。画面が更新されるまでお待ちください。', successOptions);
+                    })
+                    .catch(error => {
+                        //失敗した時の処理
+                        // this.$toasted.show('処理に失敗しました。入力内容をご確認下さい。', options);
+                        this.$toasted.show(error.response.data.message, options);
+                        // console.log(error);
+                    })
+                    .finally(() => {
+                        this.loading = false; // 最終的に必ず実行
+                        location.reload();
+                    });
+            },
+            async updateCard(e) {
 
-            axios.post(url, params)
-                .then(response => {
-                    location.reload();
-                }).catch(error=>{
-                //失敗した時の処理
-                this.$toasted.show('処理に失敗しました。入力内容をご確認下さい。', options);
-                // this.$toasted.show(error.message, options);
-                    // console.log(error);
-                })
-                .finally(() => {
-                    this.loading = false;  // 最終的に必ず実行
-                });
-        },
-        setStatus(response) {
-            this.status = response.data.status;
-            this.details = response.data.details;
-        },
-        async getPaymentMethod(target) {
+                const paymentMethod = await this.getPaymentMethod(e.target);
+                const url = '/payment/ajax/update_card';
+                const params = {
+                    payment_method: paymentMethod
+                };
 
-            const clientSecret = target.dataset.secret;
-            const {
-                setupIntent,
-                error
-            } = await this.stripe.confirmCardSetup(
-                clientSecret, {
-                    payment_method: {
-                        card: this.stripeCard,
-                        billing_details: {
-                            name: this.cardHolderName
+                this.loading = true;
+
+                axios.post(url, params)
+                    .then(response => {
+                        location.reload();
+                    }).catch(error => {
+                        //失敗した時の処理
+                        this.$toasted.show('処理に失敗しました。入力内容をご確認下さい。', options);
+                        // this.$toasted.show(error.message, options);
+                        // console.log(error);
+                    })
+                    .finally(() => {
+                        this.loading = false; // 最終的に必ず実行
+                    });
+            },
+            setStatus(response) {
+                this.status = response.data.status;
+                this.details = response.data.details;
+            },
+            async getPaymentMethod(target) {
+
+                const clientSecret = target.dataset.secret;
+                const {
+                    setupIntent,
+                    error
+                } = await this.stripe.confirmCardSetup(
+                    clientSecret, {
+                        payment_method: {
+                            card: this.stripeCard,
+                            billing_details: {
+                                name: this.cardHolderName
+                            }
                         }
                     }
+                );
+
+                if (error) {
+                    // this.$toasted.show(error.message, options);
+                    // this.$toasted.show('処理に失敗しました。入力内容をご確認下さい。', options);
+                    // console.log(error);
+                } else {
+                    return setupIntent.payment_method;
                 }
-            );
 
-            if (error) {
-                // this.$toasted.show(error.message, options);
-                // this.$toasted.show('処理に失敗しました。入力内容をご確認下さい。', options);
-                // console.log(error);
-            } else {
-                return setupIntent.payment_method;
-            }
-
+            },
+            changeStore: function changeStore(e) {
+                this.existenceShow = false;
+                this.storeShow = false;
+            },
+            showPlan: function showPlan(e) {
+                this.existenceShow = false;
+                this.planShow = false;
+            },
         },
-        changeStore: function changeStore(e){
-            this.existenceShow = false;
-            this.storeShow = false;
+        computed: {
+            isSubscribed() {
+                return (this.status === 'subscribed' || this.status === 'cancelled');
+            },
+            isCancelled() {
+                return (this.status === 'cancelled');
+            },
+            planName: function() {
+                return this.planOptions[this.plan];
+            },
+            planPrice: function() {
+                var courseVal = '';
+                switch (this.planOptions[this.plan]) {
+                    case 'ライト':
+                        courseVal = this.lightPlan;
+                        break;
+                    case 'ベーシック':
+                        courseVal = this.basicPlan;
+                        break;
+                    case 'プレミアム':
+                        courseVal = this.prePlan;
+                        break;
+                }
+                return courseVal;
+            },
+            storePrice: function() {
+                return this.storeNum * this.addStore;
+            },
+            storeAdd: function() {
+                return this.storeNum + 1;
+            },
+            // 合計金額（税込）を返す算出プロパティ
+            totalPrice: function() {
+                // 基本料金（税込）とオプション料金（税込）の合計を返す
+                return (this.planPrice + this.storePrice);
+            },
         },
-        showPlan: function showPlan(e){
-            this.existenceShow = false;
-            this.planShow = false;
-        },
-    },
-    computed: {
-        isSubscribed() {
-            return (this.status === 'subscribed' || this.status === 'cancelled');
-        },
-        isCancelled() {
-            return (this.status === 'cancelled');
-        },
-        planName: function() {
-            return this.planOptions[this.plan];
-        },
-        planPrice: function() {
-            var courseVal = '';
-            switch (this.planOptions[this.plan]) {
-                case 'ライト':
-                    courseVal = this.lightPlan;
-                    break;
-                case 'ベーシック':
-                    courseVal = this.basicPlan;
-                    break;
-                case 'プレミアム':
-                    courseVal = this.prePlan;
-                    break;
-            }
-            return courseVal;
-        },
-        storePrice: function () {
-            return this.storeNum * this.addStore;
-        },
-        storeAdd: function () {
-            return this.storeNum + 1 ;
-        },
-        // 合計金額（税込）を返す算出プロパティ
-        totalPrice: function() {
-        // 基本料金（税込）とオプション料金（税込）の合計を返す
-            return (this.planPrice + this.storePrice);
-        },
-    },
-    watch: {
-        status(value) {
-            Vue.nextTick(() => {
-                const selector = (value === 'unsubscribed') ? '#new-card' : '#update-card';
-                this.stripeCard = this.stripe.elements().create('card', {
-                    hidePostalCode: true
+        watch: {
+            status(value) {
+                Vue.nextTick(() => {
+                    const selector = (value === 'unsubscribed') ? '#new-card' : '#update-card';
+                    this.stripeCard = this.stripe.elements().create('card', {
+                        hidePostalCode: true
+                    });
+                    this.stripeCard.mount(selector);
                 });
-                this.stripeCard.mount(selector);
-            });
+            },
         },
-    },
-    mounted() {
-        this.stripe = Stripe(this.publicKey);
-        const url = '/payment/ajax/status';
+        mounted() {
+            this.stripe = Stripe(this.publicKey);
+            const url = '/payment/ajax/status';
 
-        this.loading = true;
+            this.loading = true;
 
-        axios.get(url)
-            .then(this.setStatus)
-            .catch(error=>{
-                //失敗した時の処理
-                // this.$toasted.show(error.message, options);
-                this.$toasted.show('処理に失敗しました。入力内容をご確認下さい。', options);
-                // console.log(error);
-            })
-            .finally(() => {
-                this.loading = false;  // 最終的に必ず実行
-            });
-    }
-});
+            axios.get(url)
+                .then(this.setStatus)
+                .catch(error => {
+                    //失敗した時の処理
+                    // this.$toasted.show(error.message, options);
+                    this.$toasted.show('処理に失敗しました。入力内容をご確認下さい。', options);
+                    // console.log(error);
+                })
+                .finally(() => {
+                    this.loading = false; // 最終的に必ず実行
+                });
+        }
+    });
 </script>
 @stop
