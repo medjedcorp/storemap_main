@@ -170,6 +170,9 @@ Route::middleware('verified')->group(function () {
         Route::DELETE('/users/{user}', 'UserController@destroy')->name('users.destroy')->middleware('TesterCheck');
       });
 
+      // トピックスの表示のみ
+      Route::get('/topics/{id}', 'TopicsController@show')->name('topics.show');
+
       // ストア管理
       // Route::resource('stores', 'StoreController', ['only' => ['create', 'store']])->middleware('AddStore');
       // Route::resource('stores', 'StoreController', ['except' => ['create', 'store']]);
@@ -337,7 +340,6 @@ Route::middleware('verified')->group(function () {
         // トピックスの作成
         Route::get('/topics/create', 'TopicsController@create')->name('topics.create');
         Route::post('/topics', 'TopicsController@store')->name('topics.store');
-        Route::get('/topics/{id}', 'TopicsController@show')->name('topics.show');
         Route::get('/topics/{id}/edit', 'TopicsController@edit')->name('topics.edit');
         Route::put('/topics/{id}', 'TopicsController@update')->name('topics.update');
         Route::delete('/topics/{id}', 'TopicsController@destroy')->name('topics.destroy');
