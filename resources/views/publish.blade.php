@@ -259,7 +259,7 @@
               </div>
             </div>
             <div class="col-md-12">
-              <a href="/seller-register" class="btn btn-block bg-gradient-danger btn-lg mb-3" style="line-height: 3.5rem;"><span class="h2 font-weight-bold" style="vertical-align: middle;"><i class="fas fa-file-signature"></i> 新規登録はこちら</span></a>
+              <a href="/regicom" class="btn btn-block bg-gradient-danger btn-lg mb-3" style="line-height: 3.5rem;"><span class="h2 font-weight-bold" style="vertical-align: middle;"><i class="fas fa-file-signature"></i> 新規登録はこちら</span></a>
             </div>
             <div class="col-md-12">
               <a href="/contact" class="btn btn-block btn-primary btn-lg mb-3"><i class="far fa-envelope"></i> お問い合わせ</a>

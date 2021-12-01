@@ -14,10 +14,7 @@ class AddAcceptedToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->boolean('accepted')
-                ->default(false)
-                ->comment('管理者承認')
-                ->after('remember_token');
+            $table->boolean('accepted')->default(false)->comment('管理者承認')->after('remember_token');
         });
     }
 

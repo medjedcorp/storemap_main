@@ -426,6 +426,13 @@ return [
                             'can' =>  'isSeller',
                         ],
                         [
+                            'text' => 'sr_api_update',
+                            'url'  => 'config/sr-update',
+                            'icon' => 'nav-icon fas fa-angle-right fa-fw',
+                            'can' => 'basic',
+                            'can' =>  'isSeller',
+                        ],
+                        [
                             'text' => 'sr_api_import',
                             'url'  => 'config/sr-import',
                             'icon' => 'nav-icon fas fa-angle-right fa-fw',
