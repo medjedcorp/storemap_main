@@ -54,6 +54,6 @@ class SmarejiCsvImportController extends Controller
     // 60分後にファイル削除
     CsvFileDeleteJob::dispatch($csv_path)->delay(now()->addMinutes(60));
 
-    return redirect('/config/sr-import')->with('success', 'CSVデータを読み込みました。処理結果はメールでお知らせ致します');
+    return redirect('/config/sr-update')->with('success', 'CSVデータを読み込みました。処理結果はメールでお知らせ致します');
   }
 }

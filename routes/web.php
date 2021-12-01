@@ -304,12 +304,15 @@ Route::middleware('verified')->group(function () {
       // ベーシックプラン以上利用可能
       Route::group(['middleware' => ['auth', 'can:basic']], function () {
         Route::group(['middleware' => ['auth', 'can:isSeller']], function () {
-          // スマレジAPI
-          Route::get('/config/sr-import', 'SmaregiController@show')->name('sr.product_ref');
-          // Route::post('/config/sr-import/store', 'SmaregiController@store')->name('sr.tokensave');
-          // Route::post('/config/sr-import/stores_id', 'SmaregiController@storesId')->name('sr.storeSave');
-          Route::post('/config/sr-import/data', 'SmarejiCsvImportController@importCSV')->name('sr.importCSV');
-          Route::get('/config/sr-import/stfdownload', 'SmaregiController@SmarejiTempFileDownload');
+          // スマレジ在庫価格更新API
+          Route::get('/config/sr-update', 'SmaregiUpdateController@show')->name('sr.product_ref');
+          Route::post('/config/sr-update/data', 'SmarejiCsvImportController@importCSV')->name('sr.importCSV');
+          Route::get('/config/sr-update/stfdownload', 'SmaregiUpdateController@SmarejiTempFileDownload');
+
+          // スマレジ商品情報取り込みAPI
+          Route::get('/config/sr-import', 'SmaregiImportController@show')->name('sr.product_import');
+          Route::post('/config/sr-import/store', 'SmaregiImportController@store')->name('sr.tokensave');
+          // Route::post('/config/sr-import/stores_id', 'SmaregiImportController@storesId')->name('sr.storeSave');
 
           // 汎用API
           Route::get('/config/import', 'CommonApiShowController@show');
