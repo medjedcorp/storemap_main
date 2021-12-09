@@ -31,10 +31,10 @@
             <h3 class="card-title">@lang('category.edit.card_title')</h3>
           </div>
           <!-- /.card-header -->
-          @include('partials.errors')
-          @include('partials.success')
           <!-- form start -->
           <div class="card-body">
+            @include('partials.errors')
+            @include('partials.success')
             <div class="form-group row">
               <label for="category_code" class="col-sm-2 col-form-label">@lang('category.register.cate_code') @include('partials.required')</label>
               <div class="col-sm-10">
@@ -97,23 +97,23 @@
 @stop
 
 @section('right-sidebar')
-    <div class="os-padding text-sm">
-        <div class="os-viewport os-viewport-native-scrollbars-invisible" style="overflow-y: scroll;">
-            <div class="os-content" style="padding: 16px; height: 100%; width: 100%;">
-                <h5>商品カテゴリの編集</h5>
-                <hr class="mb-2">
-                <p>商品カテゴリの編集ができます。</p>
-                <dl>
-                  <dt>カテゴリコード </dt>
-                  <dd>カテゴリコードを入力してください。半角英数とハイフン(-)のみ利用可能です。</dd>
-                  <dt>カテゴリ名</dt>
-                  <dd>カテゴリ名を入力してください。</dd>
-                  <dt>表示設定</dt>
-                  <dd>カテゴリごとに「表示」か「非表示」を設定できます。非表示を選択した場合、店舗画面でカテゴリが非表示になります。</dd>
-                </dl>
-            </div>
-        </div>
+<div class="os-padding text-sm">
+  <div class="os-viewport os-viewport-native-scrollbars-invisible" style="overflow-y: scroll;">
+    <div class="os-content" style="padding: 16px; height: 100%; width: 100%;">
+      <h5>商品カテゴリの編集</h5>
+      <hr class="mb-2">
+      <p>商品カテゴリの編集ができます。</p>
+      <dl>
+        <dt>カテゴリコード </dt>
+        <dd>カテゴリコードを入力してください。半角英数とハイフン(-)のみ利用可能です。</dd>
+        <dt>カテゴリ名</dt>
+        <dd>カテゴリ名を入力してください。</dd>
+        <dt>表示設定</dt>
+        <dd>カテゴリごとに「表示」か「非表示」を設定できます。非表示を選択した場合、店舗画面でカテゴリが非表示になります。</dd>
+      </dl>
     </div>
+  </div>
+</div>
 @stop
 
 @section('footer')

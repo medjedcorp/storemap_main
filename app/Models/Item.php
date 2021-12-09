@@ -10,7 +10,8 @@ class Item extends Model
 {
   use Sortable; // 追加
 
-  protected $guarded =  ['id', 'company_id'];
+  protected $guarded =  ['id'];
+  // protected $guarded =  ['id', 'company_id'];
 
   public $sortable = ['product_code', 'product_name', 'original_price', 'barcode', 'display_flag', 'updated_at']; // 追加
 

@@ -28,11 +28,11 @@
           <div class="card-header">
             <h3 class="card-title"> @lang('user.pass.card_title')</h3>
           </div>
-          @include('partials.danger')
-          @include('partials.warning')
-          @include('partials.success')
           <!-- /.card-header -->
           <div class="card-body">
+            @include('partials.danger')
+            @include('partials.warning')
+            @include('partials.success')
             <form method="POST" action="{{route('changepassword')}}">
               @csrf
               <div class="form-group">

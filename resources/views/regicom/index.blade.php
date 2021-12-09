@@ -43,7 +43,6 @@
           <div class="card-header">
             <h3 class="card-title">企業情報</h3>
           </div>
-          @include('partials.errors')
           <!-- /.card-header -->
           <!-- form start -->
           <form method="post" action="{{ route('regicom.confirm') }}" enctype="multipart/form-data" class="inline_form h-adr">
@@ -51,6 +50,7 @@
             @method('POST')
             <span class="p-country-name" style="display:none;">Japan</span>
             <div class="card-body">
+            @include('partials.errors')
               <div class="form-group row">
                 <label for="company_name" class="col-sm-2 col-form-label">会社名 @include('partials.required')</label>
                 <div class="col-sm-10">

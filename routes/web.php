@@ -74,7 +74,8 @@ Route::get('calendar/{sid}', 'CalendarController@index')->name('calendar.index')
 Route::get('calendar/load-events/{sid}', 'EventController@loadEvents')->name('routeLoadEvents');
 
 // 追記
-Route::get('seller-register', 'Auth\RegisterController@showSellerRegistrationForm')->name('seller.register.show');
+// Route::get('seller-register', 'Auth\RegisterController@showSellerRegistrationForm')->name('seller.register.show');
+Route::get('seller-register', 'RegistCompnayController@index');
 // 既存のregisterをseller-registerへ
 Route::get('user-register', 'Auth\RegisterController@showUserRegistrationForm')->name('user.register.show');
 
@@ -312,6 +313,8 @@ Route::middleware('verified')->group(function () {
           // スマレジ商品情報取り込みAPI
           Route::get('/config/sr-import', 'SmaregiImportController@show')->name('sr.product_import');
           Route::post('/config/sr-import/store', 'SmaregiImportController@store')->name('sr.tokensave');
+          Route::post('/config/sr-import/product', 'SmaregiImportController@productStore')->name('sr.productStore');
+          Route::post('/config/sr-import/allproduct', 'SmaregiImportController@productAllStore')->name('sr.productAllStore');
           // Route::post('/config/sr-import/stores_id', 'SmaregiImportController@storesId')->name('sr.storeSave');
 
           // 汎用API

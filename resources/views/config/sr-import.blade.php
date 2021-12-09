@@ -19,20 +19,20 @@
 @stop
 
 @section('content')
+@include('partials.danger')
+@include('partials.success')
 <section class="content">
-  <div class="container-fluid">
+  <div id="wrap" class="container-fluid">
     <div class="row">
-      <div class="col-12">
+      <div class="col-6">
         <div class="card card-outline card-primary">
           <div class="card-header ui-sortable-handle" style="cursor: move;">
             <h3 class="card-title">
-              <i class="fas fa-handshake mr-1"></i>
-              商品連携ID設定
+              <i class="fas fa-compress-alt"></i>
+              商品取込用スマレジID設定
             </h3>
           </div>
           <div class="card-body">
-            @include('partials.danger')
-            @include('partials.success')
             <form id="srTokenSave" method="POST" action="{{route('sr.tokensave')}}" enctype="multipart/form-data" class="d-block">
               @csrf
               @method('POST')
@@ -67,55 +67,114 @@
                 @endif
               </button>
             </form>
-
-            @if(isset($ext_id) and isset($ext_token))
-            <hr>
-            <form id="productRef" method="get" action="{{route('sr.product_import')}}" enctype="multipart/form-data" class="d-block">
-              @csrf
-              @method('get')
-              <input type="hidden" name="product" form="productRef" value="true">
-              <input type="hidden" name="contract_id" form="productRef" value="{{$ext_id}}">
-              <input type="hidden" name="access_token" form="productRef" value="{{$ext_token}}">
-              <button type="submit" class="btn btn-primary"><i class="fa fa-check-square"></i>
-                商品データを取得する</button>
-            </form>
-            @endif
-
-            @isset($productLists)
-            <hr>
-            <form id="productUpdate" method="get" action="{{route('sr.product_update')}}" enctype="multipart/form-data" class="d-block">
-              @csrf
-              @method('get')
-              <input type="hidden" name="productUpdate" form="productUpdate" value="{{$productLists}}">
-              <button type="submit" class="btn btn-primary"><i class="fa fa-check-square"></i>
-                商品情報を更新する</button>
-            </form>
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>スマレジID</th>
-                  <th>JAN</th>
-                  <th>商品名</th>
-                  <th>定価</th>
-                </tr>
-              </thead>
-              <tbody>
-                @foreach($productLists as $productList => $product)
-                <tr>
-                  <td>{{$product->productId}}</td>
-                  <td>{{$product->productCode}}</td>
-                  <td>{{$product->productName}}</td>
-                  <td>{{$product->price}}</td>
-                </tr>
-                @endforeach
-              </tbody>
-            </table>
-            @endisset
-
           </div><!-- /.card-body -->
 
         </div>
       </div>
+
+      <div class="col-6">
+        <div class="card card-outline card-primary">
+          <div class="card-header ui-sortable-handle" style="cursor: move;">
+            <h3 class="card-title">
+              <i class="fas fa-cloud-download-alt"></i>
+              取込品番設定(個別)
+            </h3>
+          </div>
+          <div class="card-body">
+            <form id="productImport" method="post" action="{{route('sr.productStore')}}" enctype="multipart/form-data" class="d-block">
+              @csrf
+              @method('POST')
+              <input type="hidden" name="product" form="productImport" value="true">
+              <input type="hidden" name="ext_id" form="productImport" value="{{$ext_id}}">
+              <input type="hidden" name="ext_token" form="productImport" value="{{$ext_token}}">
+              <div class="form-group">
+                @if($errors->has('pcoderadio') || count($errors) > 0)
+                <div class="custom-control custom-radio">
+                  <input class="custom-control-input" form="productImport" type="radio" id="pcodeRadio0" name="pcoderadio" value="0" {{ old('pcoderadio', old('pcoderadio')) === '0' ? 'checked' : ''}}>
+                  <label for="pcodeRadio0" class="custom-control-label">登録 <small style="font-weight:normal;">※登録済みの商品は更新されません</small></label>
+                </div>
+                <div class="custom-control custom-radio">
+                  <input class="custom-control-input" form="productImport" type="radio" id="pcodeRadio1" name="pcoderadio" value="1" {{ old('pcoderadio', old('pcoderadio'))=== '1' ? 'checked' : ''}}>
+                  <label for="pcodeRadio1" class="custom-control-label">更新 <small style="font-weight:normal;">※登録済みの商品も更新されます</small></label>
+                </div>
+                @else
+                <div class="custom-control custom-radio">
+                  <input class="custom-control-input" form="productImport" type="radio" id="pcodeRadio0" name="pcoderadio" value="0" checked>
+                  <label for="pcodeRadio0" class="custom-control-label">登録 <small style="font-weight:normal;">※登録済みの商品は変更されません</small></label>
+                </div>
+                <div class="custom-control custom-radio">
+                  <input class="custom-control-input" form="productImport" type="radio" id="pcodeRadio1" name="pcoderadio" value="1">
+                  <label for="pcodeRadio1" class="custom-control-label">更新 <small style="font-weight:normal;">※登録済みの商品も変更されます</small></label>
+                </div>
+                @endif
+                @if($errors->has('pcoderadio'))
+                <span id="pcoderadio-error" class="error text-danger">{{$errors->first('pcoderadio')}}</span>
+                @endif
+              </div>
+              <div class="form-group">
+                <label>JANコード</label>
+
+                @if($errors->has('jancode'))
+                <textarea id="jancode" class="form-control is-invalid" name="jancode" rows="3" aria-describedby="jancode-error" aria-invalid="true" placeholder="スマレジに登録済みの、取り込みたい商品のJANコードを改行して入力してください。一度に取り込める商品数は１００点までになります。">{{old('jancode', isset($jancode) ? $jancode : '') }}</textarea>
+                <span id="jancode-error" class="error invalid-feedback">{{$errors->first('jancode')}}</span>
+                @else
+                <textarea id="jancode" class="form-control" name="jancode" rows="3" placeholder="スマレジに登録済みの、取り込みたい商品のJANコードを改行して入力してください。一度に取り込める商品数は１００点までになります。"></textarea>
+                @endif
+
+              </div>
+              <button type="submit" class="btn btn-primary"><i class="fa fa-check-square"></i>
+                商品データを取得する</button>
+            </form>
+          </div><!-- /.card-body -->
+        </div>
+      </div>
+
+      <div class="col-12">
+        <div class="card card-outline card-primary">
+          <div class="card-header ui-sortable-handle" style="cursor: move;">
+            <h3 class="card-title">
+              <i class="fas fa-cloud-download-alt"></i>
+              取込品番設定(全商品)
+            </h3>
+          </div>
+          <div class="card-body">
+            <form id="productAllImport" method="post" action="{{route('sr.productAllStore')}}" enctype="multipart/form-data" class="d-block" name="productAllImport">
+              @csrf
+              @method('POST')
+              <input type="hidden" name="product" form="productAllImport" value="true">
+              <input type="hidden" name="ext_id" form="productAllImport" value="{{$ext_id}}">
+              <input type="hidden" name="ext_token" form="productAllImport" value="{{$ext_token}}">
+              <div class="form-group">
+                @if($errors->has('allradio') || count($errors) > 0)
+                <div class="custom-control custom-radio">
+                  <input class="custom-control-input" form="productAllImport" type="radio" id="allRadio0" name="allradio" value="0" {{ old('allradio', old('allradio')) === '0' ? 'checked' : ''}}>
+                  <label for="allRadio0" class="custom-control-label">登録 <small style="font-weight:normal;">※登録済みの商品は更新されません</small></label>
+                </div>
+                <div class="custom-control custom-radio">
+                  <input class="custom-control-input" form="productAllImport" type="radio" id="AllRadio1" name="allradio" value="1" {{ old('allradio', old('allradio'))=== '1' ? 'checked' : ''}}>
+                  <label for="AllRadio1" class="custom-control-label">更新 <small style="font-weight:normal;">※登録済みの商品も更新されます</small></label>
+                </div>
+                @else
+                <div class="custom-control custom-radio">
+                  <input class="custom-control-input" form="productAllImport" type="radio" id="allRadio0" name="allradio" value="0" checked>
+                  <label for="allRadio0" class="custom-control-label">登録 <small style="font-weight:normal;">※登録済みの商品は変更されません</small></label>
+                </div>
+                <div class="custom-control custom-radio">
+                  <input class="custom-control-input" form="productAllImport" type="radio" id="AllRadio1" name="allradio" value="1">
+                  <label for="AllRadio1" class="custom-control-label">更新 <small style="font-weight:normal;">※登録済みの商品も変更されます</small></label>
+                </div>
+                @endif
+                @if($errors->has('allradio'))
+                <span id="allradio-error" class="error text-danger">{{$errors->first('allradio')}}</span>
+                @endif
+              </div>
+              <button type="submit" class="btn btn-primary" id="btnFetch"><i class="fa fa-check-square"></i>
+                全ての商品データを取得する</button>
+            </form>
+          </div><!-- /.card-body -->
+        </div>
+      </div>
+
 
       <div class="col-12">
         <div class="card card-outline card-info">
@@ -225,6 +284,9 @@
     margin-bottom: 1.5rem;
   }
 </style>
+<style>
+
+</style>
 @stop
 
 @section('js')
@@ -233,5 +295,19 @@
   $(document).ready(function() {
     bsCustomFileInput.init()
   })
+</script>
+
+<script>
+  $(document).ready(function() {
+    $("#btnFetch").click(function() {
+      // disable button
+      $(this).prop("disabled", true);
+      // add spinner to button
+      $(this).html(
+        `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...しばらくお待ちください`
+      );
+      $("form").submit();
+    });
+  });
 </script>
 @stop

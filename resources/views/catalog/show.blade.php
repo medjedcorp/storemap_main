@@ -31,9 +31,9 @@
               <i class="fas fa-book"></i> @lang('catalog.show.card_title')
             </h3>
           </div>
-          @include('partials.success')
-          @include('partials.warning')
           <div class="card-body">
+            @include('partials.success')
+            @include('partials.warning')
             <dl class="row company-show">
               <dt class="col-sm-3">@lang('catalog.index.maker_name')</dt>
               <dd class="col-sm-9">{{ $item->company->company_name }}</dd>

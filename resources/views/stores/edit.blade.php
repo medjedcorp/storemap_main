@@ -32,9 +32,9 @@
             <h3 class="card-title"><i class="fas fa-store"></i> {{$store->store_name}} の @lang('store.edit.card_title')</h3>
           </div>
           <!-- /.card-header -->
-          @include('partials.errors')
           <!-- form start -->
           <div class="card-body h-adr">
+          @include('partials.errors')
             <div class="form-group row">
               <span class="p-country-name" style="display:none;">Japan</span>
               <label for="store_code" class="col-sm-2 col-form-label">

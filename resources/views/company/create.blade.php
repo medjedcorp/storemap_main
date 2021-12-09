@@ -26,14 +26,14 @@
             <h3 class="card-title"><i class="far fa-building"></i> @lang('company.register.card_title')</h3>
           </div>
           <!-- /.card-header -->
-          @include('partials.errors')
-          @include('partials.warning')
           <!-- form start -->
           <form method="POST" action="{{route('company.store')}}" enctype="multipart/form-data" class="h-adr">
             <span class="p-country-name" style="display:none;">Japan</span>
             @csrf
             @method('POST')
             <div class="card-body">
+            @include('partials.errors')
+          @include('partials.warning')
               <div class="form-group row">
                 <label for="company_name" class="col-sm-2 col-form-label">@lang('company.register.c_name') @include('partials.required')</label>
                 <div class="col-sm-10">

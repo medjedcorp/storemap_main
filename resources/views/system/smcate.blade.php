@@ -40,10 +40,10 @@
           <div class="card-header">
             <h3 class="card-title"><i class="fa fa-upload"></i> @lang('system.smc.update_card_title')</h3>
           </div>
-          @include('partials.danger')
-          @include('partials.success')
           <!-- /.card-header -->
           <div class="card-body">
+          @include('partials.danger')
+          @include('partials.success')
             <p>@lang('system.smc.update_title')</p>
             <form method="post" action="{{ route('system.importSmCateCSV') }}" class="h-adr" enctype="multipart/form-data">
               @csrf

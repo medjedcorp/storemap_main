@@ -30,12 +30,13 @@
           <div class="card-header">
             <h3 class="card-title">お問い合わせ内容</h3>
           </div>
-          @include('partials.errors')
+        
           <!-- /.card-header -->
           <!-- form start -->
           <form method="post" action="{{ route('contact.confirm') }}" enctype="multipart/form-data" class="inline_form">
             @csrf
             <div class="card-body">
+            @include('partials.errors')
               <div class="form-group">
                 <label for="inputEmail">@lang('common.email')</label>
                 @if($errors->has('email'))
