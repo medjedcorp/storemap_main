@@ -49,11 +49,9 @@
               </li>
             </ul>
           </div>
-
+          <div class="card-body">
           @include('partials.errors')
           @include('partials.success')
-
-          <div class="card-body">
             <h5 class="mt-2 mb-4">@lang('item.seller.explain')</h5>
             @foreach ($stores as $store)
             <hr>

@@ -31,7 +31,6 @@
             <h3 class="card-title"><i class="fas fa-building"></i> @lang('company.edit.card_title')</h3>
           </div>
           <!-- /.card-header -->
-          @include('partials.errors')
           <!-- form start -->
           <form method="post" action="{{ route('company.update' , $company->id ) }}" enctype="multipart/form-data" class="h-adr">
             <span class="p-country-name" style="display:none;">Japan</span>
@@ -39,6 +38,7 @@
             @method('patch')
             <input type="hidden" name="id" value="{{$company->id}}">
             <div class="card-body">
+            @include('partials.errors')
               <div class="form-group row">
                 <label for="company_name" class="col-sm-2 col-form-label">@lang('company.register.c_name') @include('partials.required')</label>
                 <div class="col-sm-10">

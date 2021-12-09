@@ -29,9 +29,9 @@
           <div class="card-header">
             <h5 class="m-0"><i class="fas fa-building"></i> {{ $company->company_name }} の @lang('company.show.company_info')</h5>
           </div>
+          <div class="card-body">
           @include('partials.success')
           @include('partials.warning')
-          <div class="card-body">
             <p class="card-text">
               <dl class="row company-show">
                 <dt class="col-sm-2 h6 card-title">@lang('company.register.c_name')</dt>

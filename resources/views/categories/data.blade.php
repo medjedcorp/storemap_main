@@ -47,10 +47,10 @@
           <div class="card-header">
             <h3 class="card-title"><i class="fa fa-upload"></i> @lang('category.data.upload_card_title')</h3>
           </div>
-          @include('partials.danger')
-          @include('partials.success')
           <!-- /.card-header -->
           <div class="card-body">
+            @include('partials.danger')
+            @include('partials.success')
             <p>@lang('category.data.upload_title')<br>@lang('csv.upload_size')</p>
             <form method="post" action="{{ route('cate.importCateCSV') }}" class="h-adr" enctype="multipart/form-data">
               @csrf

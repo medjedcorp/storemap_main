@@ -36,12 +36,9 @@
               </li>
             </ul>
           </div>
-
+          <div class="card-body">
           @include('partials.errors')
           @include('partials.success')
-
-          <div class="card-body">
-
             <div class="form-group row">
               <label for="product_code" class="col-sm-2 col-form-label">@lang('item.product_code') @include('partials.required')</label>
               <div class="col-sm-10">

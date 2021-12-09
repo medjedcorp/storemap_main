@@ -33,8 +33,8 @@
               {{ $store->store_name }}の @lang('store.view.card_title')
             </h3>
           </div>
-          @include('partials.success')
           <div class="card-body">
+          @include('partials.success')
             <dl class="row company-show">
               <dt class="col-sm-3">@lang('store.register.store_name')</dt>
               <dd class="col-sm-9">{{ $store->store_name }}</dd>

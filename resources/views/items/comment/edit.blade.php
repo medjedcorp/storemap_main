@@ -49,11 +49,9 @@
               </li>
             </ul>
           </div>
-
+          <div class="card-body">
           @include('partials.errors')
           @include('partials.success')
-
-          <div class="card-body">
             <table class="table">
               <thead>
                 <tr>

@@ -41,6 +41,10 @@ class ExtensionValidator extends Validator
     {
         return (bool) preg_match('/^[a-zA-Z0-9]+$/', $value);
     }
+    public function validateSmBar($attribute, $value, $parameters)
+    {
+        return (bool) preg_match('/^[0-9]|\n|\r\n|\r+$/', $value);
+    }
     // public function validateUqcate($attribute, $value, $parameters)
     // {
     //     return (bool) Rule::unique('categories')->ignore($this->input('category_code'))->where(function ($query) {

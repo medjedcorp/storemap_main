@@ -31,11 +31,11 @@
             <h3 class="card-title">@lang('store.register.card_title')</h3>
           </div>
           <!-- /.card-header -->
+          <!-- form start -->
+          <div class="card-body h-adr">
           @include('partials.errors')
           @include('partials.warning')
           @include('partials.success')
-          <!-- form start -->
-          <div class="card-body h-adr">
             <div class="form-group row">
               <span class="p-country-name" style="display:none;">Japan</span>
               <label for="store_code" class="col-sm-2 col-form-label">

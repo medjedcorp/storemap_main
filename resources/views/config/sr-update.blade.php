@@ -75,10 +75,10 @@
               商品連携用CSVのアップロード
             </h3>
           </div>
-          @include('partials.danger')
-          @include('partials.success')
           <!-- /.card-header -->
           <div class="card-body">
+            @include('partials.danger')
+            @include('partials.success')
             <p><strong>スマレジと価格及び在庫数の連携が可能です。</strong>
               <br>・スマレジの商品IDを、ストアマップの外部商品ID(ext_product_code)に登録する必要があります
               <br>・ストアマップの商品コード、外部商品ID(ext_product_code)を入力したcsvをアップロードしてください。
@@ -156,7 +156,7 @@
                 </ul>
                 以上の項目が設定できれば、連携が始まります。
               </dd>
-              
+
             </dl>
           </div>
           <!-- /.card-body -->

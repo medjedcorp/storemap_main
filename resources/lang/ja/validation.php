@@ -21,6 +21,7 @@ return [
     'alpha_dash'           => ':attributeは英数字とハイフンのみにしてください。',
     'alpha_num'            => ':attributeは英数字のみにしてください。',
     'alpha_numeric'            => ':attributeは半角英数字のみにしてください。',
+    'sm_bar'            => ':attributeは数字のみにしてください',
     'array'                => ':attributeは配列にしてください。',
     'before'               => ':attributeは:date以前の日付にしてください。',
     'before_or_equal'      => ':attributeは:date以前の日付にしてください。',          // 追加

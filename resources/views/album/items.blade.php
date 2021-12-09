@@ -49,7 +49,6 @@
 
           <div class="card-body">
             @include('partials.danger')
-
             <div class="row">
               <div class="col-sm-4">
                 <h1 class="h3 mt-2 mb-2">@lang('album.item.title')</h1>
@@ -177,7 +176,7 @@
     paramName: 'images',
     resizeWidth: 750,
     resizeHeight: 750,
-    resizeQuality: 1,
+    resizeQuality: .9,
     timeout: 10000, /*milliseconds*/
     maxFiles: 500, // アップできる枚数
     acceptedFiles: '.jpg, .jpeg, .gif, .png',
