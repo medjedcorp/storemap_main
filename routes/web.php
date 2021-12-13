@@ -171,14 +171,11 @@ Route::middleware('verified')->group(function () {
         Route::DELETE('/users/{user}', 'UserController@destroy')->name('users.destroy')->middleware('TesterCheck');
       });
 
-      // トピックスの表示のみ
-      Route::get('/topics/{id}', 'TopicsController@show')->name('topics.show');
-
       // ストア管理
       // Route::resource('stores', 'StoreController', ['only' => ['create', 'store']])->middleware('AddStore');
       // Route::resource('stores', 'StoreController', ['except' => ['create', 'store']]);
-      
-      
+
+
       Route::get('/stores', 'StoreController@index')->name('stores.index');
       Route::get('/stores/{store}/edit', 'StoreController@edit')->name('stores.edit');
       Route::group(['middleware' => ['auth', 'can:isFree']], function () {
@@ -189,7 +186,7 @@ Route::middleware('verified')->group(function () {
       });
       Route::patch('/stores/{store}', 'StoreController@update')->name('stores.update');
       Route::get('/stores/{store}', 'StoreController@show')->name('stores.show');
-      
+
 
       // 商品管理
       Route::resource('items', 'ItemController', ['only' => ['create', 'store']])->middleware('AddItem');
@@ -354,6 +351,9 @@ Route::middleware('verified')->group(function () {
         Route::get('ajax/user_accept', 'Ajax\UserAcceptController@index');
         Route::post('ajax/user_accept/accept', 'Ajax\UserAcceptController@accept');
       });
+      
+      // トピックスの表示のみ
+      Route::get('/topics/{id}', 'TopicsController@show')->name('topics.show');
     });
   });
 });

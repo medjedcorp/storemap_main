@@ -208,6 +208,7 @@
               <div class="tab-pane" id="other">
                 @isset($others)
                 <ul class="nav flex-column">
+                  {{-- 
                   @foreach ($others as $other)
                   <li class="nav-item">
                     <a href="{{ route('topics.show' , $other->id ) }}" class="nav-link">
@@ -225,6 +226,7 @@
                     </a>
                   </li>
                   @endforeach
+                  --}}
                 </ul>
                 @endisset
               </div>
