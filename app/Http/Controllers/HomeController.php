@@ -119,8 +119,9 @@ class HomeController extends Controller
         $pgsItems = $nowItems / $maxItems * 100;
         $pgsImages = $nowImages / $maxImages * 100;
 
+        $companyName = $company->company_name;
 
-        return view('home', compact('topics', 'features', 'promotions', 'maintenances', 'others', 'plan', 'maxItems', 'maxImages', 'maxStores', 'nowStores', 'nowItems', 'nowImages', 'pgsStores', 'pgsItems', 'pgsImages', 'storageTxt', 'nowImagesTxt', 'zanTxt', 'trial_ends'));
+        return view('home', compact('topics', 'features', 'promotions', 'maintenances', 'others', 'plan', 'maxItems', 'maxImages', 'maxStores', 'nowStores', 'nowItems', 'nowImages', 'pgsStores', 'pgsItems', 'pgsImages', 'storageTxt', 'nowImagesTxt', 'zanTxt', 'trial_ends', 'companyName'));
         // return view('home', ['topics' => $topics]);
     }
 }
