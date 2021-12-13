@@ -6,7 +6,7 @@
 <div class="container-fluid">
   <div class="row mb-2">
     <div class="col-sm-7">
-      <h1 class="m-0">{{ $topic->title }}の詳細</h1>
+      <h1 class="m-0">{{ $topic->title }}の詳細 ってなんで？</h1>
     </div><!-- /.col -->
     <div class="col-sm-5">
       <ol class="breadcrumb float-sm-right">
@@ -48,12 +48,12 @@
                                 @default
                                     <h4><span class="badge badge-danger">エラー</span></h4>
                             @endswitch
-                            <strong>[{{ $topic->updated_at->format('Y.m.d') }}] {{ $topic->title }}</strong>
+                           <strong>[{{ $topic->updated_at->format('Y.m.d') }}] {{ $topic->title }}</strong>
                         </h3>
                     </div>
                   <div class="card-body">
                     <p class="mb-3">
-                        {!! nl2br(e($topic->content)) !!}
+                      {!! nl2br(e($topic->content)) !!}
                     </p>
                   </div><!-- /.card-body -->
                   @can('isAdmin')
@@ -74,8 +74,6 @@
                 </div>
                 <!-- /.nav-tabs-custom -->
               </div>
-
-
         </div>
     </div>
 </section>
@@ -92,7 +90,5 @@
 @stop
 
 @section('js')
-<script>
-    console.log('Hi!');
-</script>
+
 @stop
