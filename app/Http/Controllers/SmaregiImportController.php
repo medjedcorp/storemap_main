@@ -152,6 +152,10 @@ class SmaregiImportController extends Controller
       if (empty($result[0]->supplierProductNo)) {
         // 品番登録がない場合はJANの値を品番に入力
         $productCode = $result[0]->productCode;
+        if($results[0]->displayFlag === "0"){
+          // 表示しない設定の商品はスキップ
+          continue;
+        }
       } else {
           // 品番登録がある場合は品番を入力
           $productCode = $result[0]->supplierProductNo;
@@ -302,15 +306,21 @@ class SmaregiImportController extends Controller
 
     $stream = (string) $response->getBody();
     $contents = json_decode($stream);
+
+    //　エラーの場合
+    if ($response->clientError()) {
+      // dd($contents);
+      return redirect('/config/sr-import')->with('danger', '※登録に失敗しました。エラー内容：'. $contents->error_description);
+    }
+    
+    // 全部で何件登録が必要か確認して、ページ数を算出
     $totalCount = $contents->total_count;
     $totalPage = ceil($totalCount / 1000);
-    if ($response->clientError()) {
-      return redirect('/config/sr-import')->with('danger', '※登録に失敗しました');
-    }
 
     // dd($totalPage);
     // dd($contents);
 
+    // ページ数の分だけ繰り返し処理して商品データを登録していく
     for ($i = 1; $i <= $totalPage; $i++) {
       $params = [
         'page' => $i,
@@ -334,9 +344,19 @@ class SmaregiImportController extends Controller
         if (empty($results[$j])){
           continue;
         }
+        // dd($results[$j]);
+        // 表示しない設定の商品はスキップ
+        // if($results[$j]->displayFlag === "0"){
+        //   continue;
+        // }
+
         if (empty($results[$j]->supplierProductNo)) {
           // 品番登録がない場合はJANの値を品番に入力
           $productCode = $results[$j]->productCode;
+          if($results[$j]->displayFlag === "0"){
+            // 表示しない設定の商品はスキップ
+            continue;
+          }
         } else {
           // 品番登録がある場合は品番を入力
           $productCode = $results[$j]->supplierProductNo;
