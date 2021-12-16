@@ -16,6 +16,7 @@ use Gate;
 use Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Response;
+use Illuminate\Validation\Rule; //ルール使うのに必要
 
 class SmaregiImportController extends Controller
 {
@@ -54,7 +55,7 @@ class SmaregiImportController extends Controller
     $this->authorize('update', $company); // policy
     // validation
     $rules = [
-      'ext_id'   => ['nullable', 'AlphaNumeric'],
+      'ext_id'   => ['nullable', Rule::unique('companies')->ignore($request->ext_id), 'AlphaNumeric'],
       'ext_token'  => ['nullable', 'AlphaNumeric']
     ];
     $this->validate($request, $rules);

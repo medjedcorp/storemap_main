@@ -235,7 +235,7 @@
                                         </div>
                                         <div class="card">
                                             <div class="card-body">
-                                                <h5>初回{{$trial_date}}日間は無料でご利用頂けます</h5>
+                                                <h5>サイト登録後 {{$trial_date}}日間は、ベーシックプランと同じ内容を無料でご利用いただけます</h5>
                                                 <hr>
                                                 <strong>決済代行会社：</strong> Stripe<br>
                                                 <strong>有効期限について：</strong> 有効期限が切れる７日前にメールでお知らせ致します。<br>
@@ -298,8 +298,10 @@
                                             </div>
                                         </span>
                                         @else
-                                        <p class="lead">初回お見積り({{$trial_date}}日間無料)</p>
+                                        <p class="lead">お見積り<span class="text-sm">(サイト登録後 {{$trial_date}}日間は、ベーシックプランと同じ内容を無料でご利用いただけます)</span></p>
+                                        @if($trial)
                                         <h6>無料期間：{{$trial}}まで</h6>
+                                        @endif
                                         <div class="table-responsive">
                                             <table class="table">
                                                 <tbody>

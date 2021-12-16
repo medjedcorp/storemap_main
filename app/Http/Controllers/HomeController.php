@@ -12,6 +12,7 @@ use App\Models\ItemStore;
 use App\Models\ItemImage;
 use App\Models\StoreImage;
 use Laravel\Cashier\Cashier;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
@@ -48,6 +49,12 @@ class HomeController extends Controller
         $company = Company::where('id', $user->company_id)->first();
         // $payinfo = $company->subscription('main');
 
+        // 登録後１年以内かを判定するための準備
+        $newCusDay = config('services.newCustomerDays');
+        $nowDateTime = new Carbon(); // 現在の日付
+        $createDateTime = new Carbon($company->created_at); // 登録日
+        $maxDateTime = $createDateTime->addDays($newCusDay); // 登録から１年後の日付
+
         // 最大店舗数取得
         // 課金にstores_idがある場合、店舗ない場合は項目なしになる
         if ($company->subscribedToPlan($stores_id, 'main')) {
@@ -71,7 +78,7 @@ class HomeController extends Controller
             $maxImages =  config('services.stripe.light_storage'); // 104857600
             $storageTxt =  config('services.stripe.light_storage_domination');
             $nowImagesTxt = round(($nowItemImages + $nowStoreImages) / 1000000, 2);
-            $zanTxt = round(($maxImages - $nowImages) / 1000000, 2). ' Mbyte';
+            $zanTxt = round(($maxImages - $nowImages) / 1000000, 2) . ' Mbyte';
         } elseif ($company->subscribedToPlan($basic_id, 'main')) {
             $plan = 'ベーシックプラン';
             $maxItems = config('services.stripe.basic_item');
@@ -88,12 +95,22 @@ class HomeController extends Controller
             $nowImagesTxt = round(($nowItemImages + $nowStoreImages) / 1000000000, 2);
             $zanTxt = round(($maxImages - $nowImages) / 1000000000, 2) . ' Gbyte';
         } else {
-            $plan = 'フリープラン';
-            $maxItems = config('services.stripe.free_item');
-            $maxImages =  config('services.stripe.free_storage'); // 10485760	
-            $storageTxt =  config('services.stripe.free_storage_domination');
-            $nowImagesTxt = round(($nowItemImages + $nowStoreImages) / 1048576, 2);
-            $zanTxt = round(($maxImages - $nowImages) / 1048576, 2) . ' Mbyte';
+
+            if ($nowDateTime > $maxDateTime) {
+                $plan = 'フリープラン';
+                $maxImages =  config('services.stripe.free_storage'); // 10485760	
+                $maxItems = config('services.stripe.free_item');
+                $storageTxt =  config('services.stripe.free_storage_domination');
+                $nowImagesTxt = round(($nowItemImages + $nowStoreImages) / 1048576, 2);
+                $zanTxt = round(($maxImages - $nowImages) / 1048576, 2) . ' Mbyte';
+            } else {
+                $plan = 'フリープラン(トライアル)';
+                $maxImages =  config('services.stripe.basic_storage');
+                $maxItems = config('services.stripe.basic_item');
+                $storageTxt =  config('services.stripe.basic_storage_domination');
+                $nowImagesTxt = round(($nowItemImages + $nowStoreImages) / 1000000000, 2);
+                $zanTxt = round(($maxImages - $nowImages) / 1000000000, 2) . ' Gbyte';
+            }
         }
 
         if ($company->hasDefaultPaymentMethod()) {
@@ -105,9 +122,14 @@ class HomeController extends Controller
         if ($trial) {
             // 試用期間中の場合は日付を返す
             $trial_ends = $company->subscription('main')->trial_ends_at;
-
         } else {
-            $trial_ends = '';
+            // フリープランの試用期間中
+            if ($nowDateTime > $maxDateTime) {
+                // 通常時
+                $trial_ends = '';
+            } else {
+                $trial_ends = $maxDateTime;
+            }
         }
 
         $nowStores = Store::where('company_id', $user->company_id)->count();

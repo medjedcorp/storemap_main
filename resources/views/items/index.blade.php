@@ -4,17 +4,17 @@
 
 @section('content_header')
 <div class="container-fluid">
-  <div class="row mb-2">
-    <div class="col-sm-7">
-      <h1 class="m-0">{{$c_name}} / @lang('item.index.title')</h1>
-    </div><!-- /.col -->
-    <div class="col-sm-5">
-      <ol class="breadcrumb float-sm-right">
-        <li class="breadcrumb-item"><a href="/home">Home</a></li>
-        <li class="breadcrumb-item active">@lang('item.index.title')</li>
-      </ol>
-    </div><!-- /.col -->
-  </div><!-- /.row -->
+    <div class="row mb-2">
+        <div class="col-sm-7">
+            <h1 class="m-0">{{$c_name}} / @lang('item.index.title')</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-5">
+            <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                <li class="breadcrumb-item active">@lang('item.index.title')</li>
+            </ol>
+        </div><!-- /.col -->
+    </div><!-- /.row -->
 </div>
 @stop
 
@@ -47,10 +47,13 @@
                         </div>
                     </div>
                     <!-- /.card-header -->
-                    <div class="card-body table-responsive p-0">
+                    <div class="card-body">
                         @include('partials.success')
                         @include('partials.danger')
-                        <table class="table table-hover">
+                    <!-- </div>
+                    <div class="card-body table-responsive p-0"> -->
+                        <table class="table table-bordered">
+                        <!-- <table class="table table-hover"> -->
                             <thead>
                                 <tr>
                                     <th class="text-nowrap">@sortablelink('product_code', trans('item.product_code'))</th>
@@ -127,19 +130,19 @@
 @stop
 
 @section('right-sidebar')
-    <div class="os-padding text-sm">
-        <div class="os-viewport os-viewport-native-scrollbars-invisible" style="overflow-y: scroll;">
-            <div class="os-content" style="padding: 16px; height: 100%; width: 100%;">
-                <h5>商品情報一覧</h5>
-                <hr class="mb-2">
-                <p>現在登録中の商品情報を一覧で表示できます。</p>
-                <p>商品情報の削除は管理者ユーザーのみが利用可能です。管理権限の設定は、担当者管理＞担当者一覧より設定できます。</p>
-                <p>商品名や商品コードなど項目をクリックすることで、並び替えが可能です。</p>
-                <p>検索ウィンドウに商品名や、JANコードを入力するこで、登録商品の検索が出来ます。</p>
-                <p>編集画面より、在庫や価格の管理、取扱店舗の設定が可能です。</p>
-            </div>
+<div class="os-padding text-sm">
+    <div class="os-viewport os-viewport-native-scrollbars-invisible" style="overflow-y: scroll;">
+        <div class="os-content" style="padding: 16px; height: 100%; width: 100%;">
+            <h5>商品情報一覧</h5>
+            <hr class="mb-2">
+            <p>現在登録中の商品情報を一覧で表示できます。</p>
+            <p>商品情報の削除は管理者ユーザーのみが利用可能です。管理権限の設定は、担当者管理＞担当者一覧より設定できます。</p>
+            <p>商品名や商品コードなど項目をクリックすることで、並び替えが可能です。</p>
+            <p>検索ウィンドウに商品名や、JANコードを入力するこで、登録商品の検索が出来ます。</p>
+            <p>編集画面より、在庫や価格の管理、取扱店舗の設定が可能です。</p>
         </div>
     </div>
+</div>
 @stop
 
 @section('footer')

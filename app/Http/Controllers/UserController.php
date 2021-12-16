@@ -72,6 +72,8 @@ class UserController extends Controller
     $user->email = $request->email;
     // パスワードハッシュ化
     $user->password = \Hash::make($request['password']);
+    
+    // smsupport@storemap.jpがユーザー追加したら全部テスター
     if($cid->email === 'smsupport@storemap.jp'){
       $user->role = 'tester';
     } else {

@@ -24,6 +24,20 @@ class SubscriptionController extends Controller
         $basic_price = config('services.stripe.basic_price');
         $premium_price = config('services.stripe.premium_price');
         $add_store = config('services.stripe.add_store');
+        $newCusDay = config('services.newCustomerDays');
+
+        $nowDateTime = new Carbon(); // 現在の日付
+        $diff_day = $company->created_at->diffInDays(Carbon::now());
+        // $created_at = $company->created_at->diffInDays(Carbon::now());
+
+        // 365日以内か判定
+        if ($diff_day > 365) {
+            $trial = null;
+        } else {
+            $trial_ends = $company->created_at->addDays($newCusDay);
+            $trial = $trial_ends->format('Y年m月d日');
+        }
+        // dd($diff_day, $trial, $trial_ends, $created_at, $company);
 
         $price_list = [
             'light' => number_format($light_price),
@@ -38,10 +52,7 @@ class SubscriptionController extends Controller
             $payinfo = $company->subscription('main');
 
             if (!$company->hasDefaultPaymentMethod()) {
-                // 登録はあるけど、支払い方法を持っていない場合。
-                $time = new Carbon(Carbon::now());
-                $trialtime = $time->addDay($trial_date);
-                $trial = $trialtime->format('Y年m月d日');
+                // 支払い方法を持っていない場合。
                 return view('payment.card', compact('company', 'intent', 'trial', 'trial_date', 'price_list'));
             }
 
@@ -136,9 +147,6 @@ class SubscriptionController extends Controller
             }
         } else {
             // 決済情報がない場合
-            $time = new Carbon(Carbon::now());
-            $trialtime = $time->addDay($trial_date);
-            $trial = $trialtime->format('Y年m月d日');
             return view('payment.card', compact('company', 'intent', 'trial', 'trial_date', 'price_list'));
         }
     }
