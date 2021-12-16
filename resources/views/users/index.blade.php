@@ -50,11 +50,13 @@
 
                     </div>
                     <!-- /.card-header -->
-                    <div class="card-body table-responsive p-0">
+                    <div class="card-body">
+                    <!-- <div class="card-body table-responsive p-0"> -->
                         @include('partials.success')
                         @include('partials.warning')
                         @include('partials.danger')
-                        <table class="table table-hover">
+                        <table class="table table-bordered">
+                        <!-- <table class="table table-hover"> -->
                             <thead>
                                 <tr>
                                     <th>@sortablelink('name', trans('user.index.name'))</th>

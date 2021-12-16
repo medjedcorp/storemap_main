@@ -47,11 +47,12 @@
                         </div>
                     </div>
                     <!-- /.card-header -->
-                    <div class="card-body table-responsive p-0">
+                    <div class="card-body">
                         @include('partials.success')
                         @include('partials.danger')
                         @include('partials.warning')
-                        <table class="table table-hover">
+                        <table class="table table-bordered">
+                        <!-- <table class="table table-hover"> -->
                             <thead>
                                 <tr>
                                     <th class="text-nowrap">@sortablelink('store_code', trans('store.index.store_code'))</th>

@@ -6,7 +6,7 @@
 <div class="container-fluid">
   <div class="row mb-2">
     <div class="col-12">
-      <h1 class="m-0">Home</h1>
+      <h1 class="m-0">{{ $companyName }} 様 / Home</h1>
     </div><!-- /.col -->
   </div><!-- /.row -->
 </div>
@@ -18,7 +18,7 @@
     <h5 class="mt-4 mb-2">登録情報<code> -status- </code></h5>
     <div class="row">
       <!-- /.col -->
-      <div class="col-md-3 col-sm-6 col-12">
+      <div class="col-sm-6 col-12">
         <div class="info-box bg-success">
           <span class="info-box-icon"><i class="fas fa-file-signature"></i></span>
           <div class="info-box-content">
@@ -41,7 +41,7 @@
         </div>
         <!-- /.info-box -->
       </div>
-      <div class="col-md-3 col-sm-6 col-12">
+      <div class="col-sm-6 col-12">
         <div class="info-box bg-info">
           <span class="info-box-icon"><i class="fas fa-shopping-basket"></i></span>
           <div class="info-box-content">
@@ -60,7 +60,7 @@
       </div>
 
       <!-- /.col -->
-      <div class="col-md-3 col-sm-6 col-12">
+      <div class="col-sm-6 col-12">
         <div class="info-box bg-warning">
           <span class="info-box-icon"><i class="fas fa-store-alt"></i></span>
           <div class="info-box-content">
@@ -78,7 +78,7 @@
         <!-- /.info-box -->
       </div>
       <!-- /.col -->
-      <div class="col-md-3 col-sm-6 col-12">
+      <div class="col-sm-6 col-12">
         <div class="info-box bg-danger">
           <span class="info-box-icon"><i class="far fa-images"></i></span>
           <div class="info-box-content">
@@ -208,7 +208,6 @@
               <div class="tab-pane" id="other">
                 @isset($others)
                 <ul class="nav flex-column">
-                  {{-- 
                   @foreach ($others as $other)
                   <li class="nav-item">
                     <a href="{{ route('topics.show' , $other->id ) }}" class="nav-link">
@@ -226,7 +225,6 @@
                     </a>
                   </li>
                   @endforeach
-                  --}}
                 </ul>
                 @endisset
               </div>

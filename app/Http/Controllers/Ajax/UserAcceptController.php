@@ -15,7 +15,7 @@ class UserAcceptController extends Controller
     public function index()
     {
 
-        $users = Company::Join('users', 'users.company_id', '=', 'companies.id')->whereIn('users.role', ['free', 'admin'])->orderBy('users.created_at', 'desc')->get();
+        $users = Company::Join('users', 'users.company_id', '=', 'companies.id')->whereIn('users.role', ['free', 'admin', 'new'])->orderBy('users.created_at', 'desc')->get();
 
         // 必要に応じてここで検索
 

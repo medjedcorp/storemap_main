@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        // 
+        RoleChange::class
     ];
 
     /**
@@ -24,6 +24,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $schedule->command('command:RoleChange')->daily();
         // $schedule->command('inspire')->hourly();
         // $schedule->call(function () {
         //     DB::table('recent_users')->delete();
@@ -38,6 +39,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('backup:run')->twiceDaily(1, 13);
         // $schedule->command('backup:run')->everyFiveMinutes();
         // $schedule->command('backup:run')->everyMinute();
+        
     }
 
     /**

@@ -119,7 +119,7 @@ class RegistCompnayController extends Controller
         // パスワードハッシュ化
         $user->password = \Hash::make($request->password);
         // $user->password = \Hash::make($request['password']);
-        $user->role = 'free';
+        $user->role = 'new'; // roleにnewを付与
         $user->company_id = $last_insert_id;
         $user->save();
 

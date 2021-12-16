@@ -27,43 +27,7 @@ class StoreImgController extends Controller
     $user = Auth::user();
     $cid = $user->company_id;
     // Log::debug($request);
-
-    $company = Company::where('id', $cid)->first();
-    // プランを取得
-    $stores = config('services.stripe.stores');
-    $light = config('services.stripe.light');
-    $basic = config('services.stripe.basic');
-    $premium = config('services.stripe.premium');
-    // 登録可能商品点数を取得
-    $light_storage = config('services.stripe.light_storage');
-    $basic_storage = config('services.stripe.basic_storage');
-    $premium_storage = config('services.stripe.premium_storage');
-    $free_storage = config('services.stripe.free_storage');
-
-    // 有効な課金があるかチェック
-    if ($company->subscribed('main')) {
-      // 有効な課金がある場合は、プランを代入
-      $subscriptionItem = $company->subscription('main')->items->whereNotIn('stripe_plan', $stores)->first();
-      $stripePlan = $subscriptionItem->stripe_plan;
-    } else {
-      // ない場合はnull
-      $stripePlan = null;
-    }
-
-    // ストレージ容量を設定
-    switch ($stripePlan) {
-      case $light:
-        $max_size = $light_storage;
-        break;
-      case $basic:
-        $max_size = $basic_storage;
-        break;
-      case $premium:
-        $max_size = $premium_storage;
-        break;
-      default:
-        $max_size = $free_storage;
-    }
+    $max_size = maxImgCap($user);
 
     $files = $request->file();
 

@@ -11,7 +11,7 @@ use App\Models\StoreImage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Arr;
 use DB;
-// use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Response;
 use App\Models\Company;
 
@@ -28,44 +28,8 @@ class ItemImgController extends Controller
     $user = Auth::user();
     $cid = $user->company_id;
     // Log::debug($request);
-
-    $company = Company::where('id', $cid)->first();
-    // プランを取得
-    $stores = config('services.stripe.stores');
-    $light = config('services.stripe.light');
-    $basic = config('services.stripe.basic');
-    $premium = config('services.stripe.premium');
-    // 登録可能商品点数を取得
-    $light_storage = config('services.stripe.light_storage');
-    $basic_storage = config('services.stripe.basic_storage');
-    $premium_storage = config('services.stripe.premium_storage');
-    $free_storage = config('services.stripe.free_storage');
-
-    // 有効な課金があるかチェック
-    if ($company->subscribed('main')) {
-      // ある場合はプラン名を代入
-      $subscriptionItem = $company->subscription('main')->items->whereNotIn('stripe_plan', $stores)->first();
-      $stripePlan = $subscriptionItem->stripe_plan;
-    } else {
-      $stripePlan = null;
-    }
-    // プラン名を取得
-    // Log::debug('抽出', [$stripePlan]);
-
-    // ストレージ容量を設定
-    switch ($stripePlan) {
-      case $light:
-        $max_size = $light_storage;
-        break;
-      case $basic:
-        $max_size = $basic_storage;
-        break;
-      case $premium:
-        $max_size = $premium_storage;
-        break;
-      default:
-        $max_size = $free_storage;
-    }
+    $max_size = maxImgCap($user);
+    // Log::debug($max_size);
 
     $files = $request->file();
 

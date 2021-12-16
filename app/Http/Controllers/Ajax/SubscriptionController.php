@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Company;
 use Laravel\Cashier\Cashier;
+use Carbon\Carbon;
 use Log;
 
 class SubscriptionController extends Controller
@@ -20,35 +21,46 @@ class SubscriptionController extends Controller
         $user = $request->user();
         $company = Company::where('id', $user->company_id)->first();
 
+        // 経過日数の計算。登録後1年以上か判定するため
+        $diff_day = Company::where('id', $user->company_id)->value('created_at')->diffInDays(Carbon::now());
+        // Log::debug($diff_day);
         // if (!$company->subscribed('main') and !$company->hasDefaultPaymentMethod()) {
 
-            $payment_method = $request->payment_method;
-            $plan = $request->plan;
-            $stores_num = $request->storeNum;
+        $payment_method = $request->payment_method;
+        $plan = $request->plan;
+        $stores_num = $request->storeNum;
 
-            // if(!$plan or !$stores_num or !$payment_method){
-            //     abort(404); // 503
-            // }
-            // Log::debug($stores_num);
+        // if(!$plan or !$stores_num or !$payment_method){
+        //     abort(404); // 503
+        // }
+        // Log::debug($stores_num);
 
-            if(!$plan){                
-                return response()->json([
-                    'message' => 'プランを選択してください',
-                ], 404);
-            } elseif($stores_num === null) {
-                // 0件の場合は除外するから、nullだけtrue
-                return response()->json([
-                    'message' => '店舗数を選択してください',
-                ], 404);
-            } elseif(!$payment_method) {
-                return response()->json([
-                    'message' => 'カード情報を入力してください',
-                ], 404);
-            }
+        if (!$plan) {
+            return response()->json([
+                'message' => 'プランを選択してください',
+            ], 404);
+        } elseif ($stores_num === null) {
+            // 0件の場合は除外するから、nullだけtrue
+            return response()->json([
+                'message' => '店舗数を選択してください',
+            ], 404);
+        } elseif (!$payment_method) {
+            return response()->json([
+                'message' => 'カード情報を入力してください',
+            ], 404);
+        }
 
+        if ($diff_day > 365) {
             // トライアルなし
-            // $company->newSubscription('main', [$plan, $stores_id])->quantity($stores_num, $stores_id)->create($payment_method, [
+            $company->newSubscription('main', [$plan, $stores_id])->quantity($stores_num, $stores_id)->create($payment_method, [
+                'name' => $company->company_name,
+                'description' => $company->id,
+                'email' => $user->email,
+            ]);
+        } else {
             // トライアルあり
+            $newCusDay = config('services.newCustomerDays');
+            $trial = $newCusDay - $diff_day;
             $company->newSubscription('main', [$plan, $stores_id])->quantity($stores_num, $stores_id)->trialDays($trial)->create($payment_method, [
                 'name' => $company->company_name,
                 'description' => $company->id,
@@ -56,7 +68,18 @@ class SubscriptionController extends Controller
                 // 'collection_method' => 'send_invoice',
                 // 'days_until_due' => 30,
             ]);
-            $company->load('subscriptions');
+        }
+        // トライアルなし
+        // $company->newSubscription('main', [$plan, $stores_id])->quantity($stores_num, $stores_id)->create($payment_method, [
+        // トライアルあり
+        // $company->newSubscription('main', [$plan, $stores_id])->quantity($stores_num, $stores_id)->trialDays($trial)->create($payment_method, [
+        //     'name' => $company->company_name,
+        //     'description' => $company->id,
+        //     'email' => $user->email,
+        //     // 'collection_method' => 'send_invoice',
+        //     // 'days_until_due' => 30,
+        // ]);
+        $company->load('subscriptions');
         // }
 
         $user->role = 'seller';
@@ -68,7 +91,6 @@ class SubscriptionController extends Controller
         // \Slack::channel('billing')->send('あっ、「'.$company->company_name.'(comapny_id:'.$company->id.')」さんが課金してくれたよ！');
 
         return $this->status();
-
     }
 
     // 課金をキャンセル
@@ -76,7 +98,7 @@ class SubscriptionController extends Controller
     {
         $user = $request->user();
         $company = Company::where('id', $user->company_id)->first();
-        
+
         $company->subscription('main')->cancel(); // 30日有効期限つきキャンセル
         // $company->subscription('main')->cancelNow(); // 即座にキャンセル
         $company->status = 0;
@@ -85,8 +107,19 @@ class SubscriptionController extends Controller
 
         // \Slack::channel('cancel')->send('あー！「'.$company->company_name.'(comapny_id:'.$company->id.')」さんが課金をキャンセルしちゃったよ。');
 
-        $user->role = 'free';
-        $user->save();        
+        // 登録後１年以内かを判定するための準備
+        $newCusDay = config('services.newCustomerDays');
+        $nowDateTime = new Carbon(); // 現在の日付
+        $createDateTime = new Carbon($company->created_at); // 登録日
+        $maxDateTime = $createDateTime->addDays($newCusDay); // 登録から$newCusDayの日付
+
+        // 一年以内ならnew、一年以上ならfree
+        if ($nowDateTime > $maxDateTime) {
+            $user->role = 'free';
+        } else {
+            $user->role = 'new';
+        }
+        $user->save();
 
         return $this->status();
     }
@@ -116,11 +149,11 @@ class SubscriptionController extends Controller
         $company = Company::where('id', $user->company_id)->first();
         $stores_num = $request->storeNum;
 
-        if(!$plan){                
+        if (!$plan) {
             return response()->json([
                 'message' => 'プランを選択してください',
             ], 404);
-        } elseif(!$stores_num < 0) {
+        } elseif (!$stores_num < 0) {
             return response()->json([
                 'message' => '店舗数の指定に誤りがあります',
             ], 404);
@@ -164,9 +197,9 @@ class SubscriptionController extends Controller
             $subscription = $company->subscriptions->first(function ($value) {
                 return ($value->name === 'main');
             })->only('ends_at');
-  
+
             // ストア数のプランをconfigより取得
-            $stores = config('services.stripe.stores'); 
+            $stores = config('services.stripe.stores');
             // ストア数プラン以外で、引っかかるプランを取得(店舗数)
             $subscriptionItem = $company->subscription('main')->items->whereNotIn('stripe_plan', $stores)->first();
             // ストア数のプランを取得
@@ -183,7 +216,7 @@ class SubscriptionController extends Controller
                 'quantity' => $quantity + 1
             ];
         }
-        
+
         return [
             'status' => $status,
             'details' => $details
