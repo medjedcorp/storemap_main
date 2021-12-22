@@ -26,12 +26,13 @@
                     <div class="card-body">
                         <div class="callout callout-secondary">
                             <h3><small class="h6 mr-1">月額</small>{{number_format(config('services.stripe.free_price')) }}<small class="h6 ml-1">円</small></h3>
-                            <small>※無料で使ってみたいお店向け</small>
+                            <small>※無料で使ってみたいお店向け（※初回登録後１年間はベーシックプランと同じ機能が使えるキャンペーン中）</small>
                         </div>
                         <ul>
-                            <li>{{number_format(config('services.stripe.free_item'))}}商品まで登録可能</li>
-                            <li>画像容量{{config('services.stripe.free_storage_domination')}}まで利用可能</li>
+                            <li>{{number_format(config('services.stripe.free_item'))}}商品まで登録可能（※初回登録後1年間は{{number_format(config('services.stripe.basic_item'))}}まで登録可能）</li>
+                            <li>画像容量{{config('services.stripe.free_storage_domination')}}まで利用可能（※初回登録後1年間は{{config('services.stripe.basic_storage_domination')}}まで利用可能）</li>
                             <li>1店舗は追加課金なしで利用可能</li>
+                            <li>※初回登録後1年間はAPIの利用が可能</li>
                             <li>初期費用無料</li>
                         </ul>
                     </div>
