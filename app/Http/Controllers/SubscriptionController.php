@@ -111,7 +111,7 @@ class SubscriptionController extends Controller
                     $laprice = $premium_price;
                 } else {
                     $plan = 'フリープラン';
-                    $laprice = '****';
+                    $laprice = 0;
                 }
 
                 $store_price = $add_store;
