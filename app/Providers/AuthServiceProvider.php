@@ -74,7 +74,10 @@ class AuthServiceProvider extends ServiceProvider
                 // プラン名を取得
                 // ストア数プラン以外で、引っかかるプランを取得(店舗数)
                 $stripePlan = $company->subscription('main')->items->whereNotIn('stripe_plan', $stores)->pluck('stripe_plan')->first();
-                return ($stripePlan === $basic or $stripePlan === $premium);
+                return ($stripePlan === $basic or $stripePlan === $premium or $user->role === 'new');
+            } elseif(is_null($company->stripe_id)) {
+                // newはOK
+                return ($user->role === 'new');
             } else {
                 return false;
             }

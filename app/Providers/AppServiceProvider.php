@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind('App\Services\CsvFileImportService');
         $this->app->bind('App\Services\SmCategoryCsvImportService');
         $this->app->bind('App\Services\StoreCsvImportService');
-
+        $this->app->bind('App\Services\PrefectureCsvImportService');
         Cashier::ignoreMigrations();
     }
 
