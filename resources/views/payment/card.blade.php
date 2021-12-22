@@ -264,7 +264,7 @@
                                                     <tr>
                                                         <th>合計(税込):</th>
                                                         <td></td>
-                                                        <td class="text-right">{{ $stores_price + $laprice }}&nbsp;円</td>
+                                                        <td class="text-right">{{ $stores_price . $laprice }}&nbsp;円</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
