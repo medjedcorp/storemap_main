@@ -134,9 +134,7 @@ class RegistCompnayController extends Controller
         // パスワードは除外
         unset($inputs['password']);
 
-        dd($user->company_name,$last_insert_id );
-        \Slack::channel('registration')->send('あっ、「'.$user->company_name.'(comapny_id:'.$last_insert_id.')」から企業登録申請があったよ！');
-
+        \Slack::channel('register')->send('あっ、「'.$user->company_name.'(comapny_id:'.$last_insert_id.')」から企業登録申請があったよ！');
         //入力内容確認ページのviewに変数を渡して表示
         return view('regicom.thanks', [
             'inputs' => $inputs,
