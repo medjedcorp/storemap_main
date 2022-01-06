@@ -124,7 +124,7 @@ return [
     'cipher' => 'AES-256-CBC',
 
     // 追記
-    'slack_note_url' => env('SLACK_NOTE_URL'),
+    // 'slack_note_url' => env('SLACK_NOTE_URL'),
     'slack_log_url' => env('LOG_SLACK_WEBHOOK_URL'),
 
     /*
