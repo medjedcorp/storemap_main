@@ -88,7 +88,6 @@ class SubscriptionController extends Controller
                     $stores_price = 0;
                 }
 
-
                 if ($company->subscription('main')->onTrial()) {
                     // 試用期間中の場合は日付を返す
                     $trial_ends = $company->subscription('main')->trial_ends_at;

@@ -37,8 +37,17 @@
             </ul>
           </div>
           <div class="card-body">
-          @include('partials.errors')
-          @include('partials.success')
+            @include('partials.errors')
+            @include('partials.success')
+            @can('isAdmin')
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label">company_id @include('partials.required') </label>
+              <div class="col-sm-10">
+                <input form="item_form" type="text" class="form-control" id="company_id" name="company_id" placeholder="company_idを入力" value="{{ old('company_id') }}">
+                <small class="text-red">※Adminのみの項目</small>
+              </div>
+            </div>
+            @endcan
             <div class="form-group row">
               <label for="product_code" class="col-sm-2 col-form-label">@lang('item.product_code') @include('partials.required')</label>
               <div class="col-sm-10">
@@ -281,7 +290,6 @@
                 @else
                 <input form="item_form" type="text" class="form-control" id="group_code" name="group_code" placeholder="@lang('item.group_code_pholder')" value="{{ old('group_code')  }}">
                 @endif
-
               </div>
             </div>
             <div id="smcate" class="form-group row">
@@ -359,6 +367,9 @@
                   <option value=""></option>
                   @endif
                 </select>
+                @can('isAdmin')
+                  <small class="text-red">※Adminは顧客商品新規登録時、指定不可</small>
+                @endcan
               </div>
             </div>
             <div class="form-group row">
@@ -368,6 +379,9 @@
                 <button type="button" class="btn btn-info" data-toggle="modal" data-target="#imgModal">
                   <i class="fas fa-cloud-upload-alt"></i> @lang('item.upload')
                 </button>
+                @can('isAdmin')
+                  <small class="text-red">※Adminは顧客商品新規登録時、指定不可</small>
+                @endcan
               </div>
             </div>
             <div class="form-group row">
@@ -502,7 +516,7 @@
             <form method="POST" action="{{ route('items.store') }}" enctype="multipart/form-data" class="h-adr inline_form" id="item_form">
               @csrf
               @method('POST')
-              <input form="item_form" type="hidden" name="company_id" value="{{$company->id}}">
+              <!-- <input form="item_form" type="hidden" name="company_id" value="{{$company->id}}"> -->
               <button form="item_form" type="submit" class="btn btn-primary"><i class="fa fa-check-square"></i> @lang('item.register.submit')</button>
             </form>
             <button class="btn btn-default float-right" onclick="location.href='{{ route('items.index')}}'"><i class="fa fa-reply"></i> @lang('common.back')</button>
@@ -603,20 +617,9 @@
 <link rel="stylesheet" href="{{ asset('css/dropzone.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/admin_custom.css') }}">
 <link rel="stylesheet" href="{{ asset('css/wSelect.css') }}">
-{{-- <style type="text/css">
-  @foreach($colors as $color)
-  .color_{{$loop->index}}:first-letter {color:{{$color->color_code}};}
-@endforeach
-</style> --}}
 @stop
 
 @section('js')
-{{-- <script>
-  $(function() {
-    const h1 = $('select#id1 option[value="1"]').text();
-
-  })
-</script> --}}
 <script src="{{ asset('js/smcate.js') }}"></script>
 <script src="{{ asset('js/wSelect.min.js') }}"></script>
 <script type="text/javascript">
@@ -637,7 +640,9 @@
     paramName: 'images',
     resizeWidth: 750,
     resizeHeight: 750,
-    resizeQuality: 1,
+    resizeQuality: .9,
+    timeout: 10000, /*milliseconds*/
+    maxFiles: 500, // アップできる枚数
     acceptedFiles: '.jpg, .jpeg, .gif, .png',
     headers: {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

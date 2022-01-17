@@ -91,13 +91,21 @@
                 @endif
               </div>
             </div>
+            @can('isAdmin')
+                <div class="form-group row">
+                  <label class="col-sm-2 col-form-label">company_id @include('partials.required') </label>
+                  <div class="col-sm-10">
+                    <input form="category_form" type="text" class="form-control" id="company_id" name="company_id" placeholder="company_idを入力" value="{{ old('company_id') }}">
+                    <small class="text-red">※Adminのみの項目</small>
+                  </div>
+                </div>
+            @endcan
           </div>
           <!-- /.card-body -->
           <div class="card-footer">
             <form id="category_form" method="POST" action="{{route('categories.store')}}" enctype="multipart/form-data" class="h-adr inline_form">
               @csrf
               @method('POST')
-              <input id="category_form" type="hidden" name="company_id" value="{{$company_id}}">
               <button type="submit" class="btn btn-primary"><i class="fa fa-check-square"></i> @lang('category.register.submit')</button>
             </form>
             <button class="btn btn-default float-right" onclick="location.href='{{ route('categories.index') }}'"><i class="fa fa-reply"></i> @lang('common.cancel')</button>

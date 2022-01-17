@@ -42,7 +42,7 @@ class ItemImportCsvJob implements ShouldQueue
    * 600 = 10分
    * @var int
    */
-  // public $timeout = 60;
+  public $timeout = 600;
   // public $timeout = 1200;
 
   protected $user;
@@ -51,19 +51,21 @@ class ItemImportCsvJob implements ShouldQueue
   protected $csv_service;
   protected $csv_path;
   protected $max_item;
+  protected $company;
 
   /**
    * Create a new job instance.
    *
    * @return void
    */
-  public function __construct($upload_filename, $filename, $user, $csv_path, $max_item)
+  public function __construct($upload_filename, $filename, $user, $csv_path, $max_item, $company)
   {
     $this->upload_filename = $upload_filename;
     $this->filename = $filename;
     $this->user = $user;
     $this->csv_path = $csv_path;
     $this->max_item = $max_item;
+    $this->company = $company;
   }
 
   /**
@@ -77,7 +79,8 @@ class ItemImportCsvJob implements ShouldQueue
     $cid  = $this->user->company_id;
     $name = $this->user->name;
     $to   = $this->user->email;
-    $max_item   = $this->max_item;
+    $max_item = $this->max_item;
+    $company = $this->company;
 
     $messages = [
       'barcode.regex' => 'barcodeは英数字で入力してください',
@@ -151,7 +154,7 @@ class ItemImportCsvJob implements ShouldQueue
           // 'string',
           'regex:/^[a-zA-Z0-9\s]+$/',
           'max:20',
-          Rule::unique('items', 'barcode')->ignore($pcode, 'product_code')->where('company_id', $this->user->company_id),
+          Rule::unique('items', 'barcode')->ignore($pcode, 'product_code')->where('company_id', $this->company->id),
           // Rule::unique({テーブル名またはModel})->ignore({チェックする値}, {カラム名})
         ],
         'product_code' => 'required|regex:/^[-a-zA-Z0-9]+$/|max:40',
@@ -169,7 +172,7 @@ class ItemImportCsvJob implements ShouldQueue
         'category_code' =>  [
           'sometimes', 'nullable', 'regex:/^[-a-zA-Z0-9]+$/', 'max:30',
           Rule::exists('categories')->where(function ($query) {
-            $query->where('company_id',  $this->user->company_id); // カテゴリコードが登録されてるか確認
+            $query->where('company_id',  $this->company->id); // カテゴリコードが登録されてるか確認
           }),
         ],
         'color_id' => 'sometimes|nullable|integer|exists:colors,id',
@@ -194,10 +197,17 @@ class ItemImportCsvJob implements ShouldQueue
 
       // 追加バリデーション バリデーション前に起動します
       $validator->after(function ($validator) use ($row) {
-        $company = DB::table('companies')->where('id', $this->user->company_id)->first();
-        if ($company->gs1_company_prefix && $row['global_flag'] == 1) {
+        // $company = DB::table('companies')->where('id', $this->company->id)->first();
+        if (array_key_exists('company_id', $row)) {
+          if ($row['company_id'] != $this->company->id) {
+            $validator->errors()->add('company_id', '※注意！csvのcompany_idと、サイト入力時のcompany_idが異なります');
+          }
+        }
+        if ($this->company->gs1_company_prefix && !array_key_exists('global_flag', $row)) {
+          $validator->errors()->add('global_flag', '会社設定でメーカーを選択しているため、global_flagは必須です');
+        } elseif ($this->company->gs1_company_prefix && $row['global_flag'] === 1) {
           // カンパニーのGS1事業者コードを取得
-          $bar_start = $company->gs1_company_prefix;
+          $bar_start = $this->company->gs1_company_prefix;
           // GS1事業者コードと入力されたJANの最初の値が一致するかバリデーション。エラーの場合はエラー表示
           if (!Str::startsWith($row['barcode'], $bar_start)) {
             $validator->errors()->add('barcode', 'global_flagが1の場合は、GS1事業者コード(' . $bar_start . ')から始まるbarcodeの値を登録してください');
@@ -233,7 +243,10 @@ class ItemImportCsvJob implements ShouldQueue
       $countError = false;
       // 成功時の処理
       foreach ($csv as $row_data => $v) {
-        // Log::debug($v['color_id']);
+
+        if ($this->user->role === 'admin') {
+          $cid = $v['company_id'];
+        }
 
         if (isset($v['category_code'])) {
           $cateid = Category::where('company_id', $cid)->where('category_code', $v['category_code'])->first();
@@ -286,7 +299,11 @@ class ItemImportCsvJob implements ShouldQueue
           // group_codeテーブルに値を保存
           $gcd = new GroupCode;
           $gcd->group_code = $v['group_code'];
-          $gcd->company_id = $this->user->company_id;
+          if ($this->user->role === 'admin') {
+            $gcd->company_id = $v['company_id'];
+          } else {
+            $gcd->company_id = $this->user->company_id;
+          }
           $gcd->save();
 
           // 保存したIDを取得
@@ -362,25 +379,11 @@ class ItemImportCsvJob implements ShouldQueue
           $item->global_flag = $v['global_flag'];
         }
 
-        // \Slack::channel('error')->send($v['color_id']);
-        // \Slack::channel('error')->send($colorid);
-        // \Slack::send($v['color_id']);
-        // \Slack::send($colorid);
-        // Log::debug($v['color_id']);
-        // Log::debug($colorid);
-        // Log::debug($cateid);
-        // Log::debug($category_code);
         if (isset($v['color_id'])) {
-          // \Slack::channel('error')->send('認識してるよ');
-          // Log::debug($v['color_id']);
-          // $item->color_id = $v['color_id']; // 値がない場合は空
           $item->color_id = optional($colorid)->id; // 値がない場合は空
           // Log::debug($item->color_id);
           // \Slack::channel('error')->send($item->color_id);
-          // \Slack::channel('error')->send($item->color_id);
         }
-        // $item->color_id = optional($v['color_id']);
-        // $item->color_id = $v['color_id'];
 
         if (isset($v['tag'])) {
           $item->tag = $v['tag'];
@@ -398,14 +401,6 @@ class ItemImportCsvJob implements ShouldQueue
           $item->storemap_category_id = $v['storemap_category_id'];
         }
         // dd($item);
-        // $item->storemap_category_id = $v['storemap_category_id'];
-        // if ($item->storemap_category_id == null && empty($v['storemap_category_id'])) {
-        //   // dd($item);
-        //   $item->storemap_category_id = 1234;
-        // } 
-        // if (isset($v['storemap_category_id'])) {
-        //   $item->storemap_category_id = $v['storemap_category_id'];
-        // } 
 
         if (isset($v['item_img1'])) {
           $item->item_img1 = $v['item_img1'];
@@ -446,39 +441,6 @@ class ItemImportCsvJob implements ShouldQueue
 
         // Log::debug($item);
         // dd($item);
-        // $item = Item::updateOrCreate(
-        //   // カテゴリを検索
-        //   ['company_id' => $cid, 'product_code' => $v['product_code']],
-        //   // データがない場合は新規登録、ある場合は更新
-        //   [
-        //     'company_id' => $cid,
-        //     'product_code' => $v['product_code'],
-        //     'product_name' => $v['product_name'],
-        //     'brand_name' => $brand_name,
-        //     'barcode' => $barcode,
-        //     'category_id' => optional($cateid)->id, // 値がない場合は空
-        //     'original_price' => $original_price,
-        //     'display_flag' => $v['display_flag'],
-        //     'description' => $description,
-        //     'global_flag' => $g_flag,
-        //     'color_id' => $color_id,
-        //     'tag' => $tag,
-        //     'group_code_id' => optional($gid)->id, // 値がない場合は空
-        //     'item_status' => $v['item_status'],
-        //     'storemap_category_id' => $smid, // optional使えない厳密にnullを入れる必要あるっぽい
-        //     // 'sku_item_image' => $v['sku_item_image'], //画像名
-        //     'item_img1' => $item_img1, //画像名
-        //     'item_img2' => $item_img2, //画像名
-        //     'item_img3' => $item_img3, //画像名
-        //     'item_img4' => $item_img4, //画像名
-        //     'item_img5' => $item_img5, //画像名
-        //     'item_img6' => $item_img6, //画像名
-        //     'item_img7' => $item_img7, //画像名
-        //     'item_img8' => $item_img8, //画像名
-        //     'item_img9' => $item_img9, //画像名
-        //     'item_img10' => $item_img10, //画像名
-        //   ]
-        // );
 
         $last_insert_id = $item->id;
         $iid = Item::find($last_insert_id);

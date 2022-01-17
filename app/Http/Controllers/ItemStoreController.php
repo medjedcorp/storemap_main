@@ -23,7 +23,7 @@ class ItemStoreController extends Controller
     $this->authorize('view', $item); // 権限設定
 
     $user = Auth::user();
-    $stores = Store::where('company_id', $user->company_id)->orderBy('store_name', 'asc')->get();
+    $stores = Store::where('company_id', $item->company_id)->orderBy('store_name', 'asc')->get();
     return view('items.seller.edit', compact('item', 'user', 'stores'));
   }
 
@@ -35,7 +35,7 @@ class ItemStoreController extends Controller
     $this->authorize('update', $item); // 権限設定
 
     // storeテーブルからidのみ取得
-    $store = Store::where('company_id', $user->company_id)->pluck('id');
+    $store = Store::where('company_id', $item->company_id)->pluck('id');
     // selling_flagの値はstoreid
     $flag = $request->selling_flag;
     // 取得したstoreidはオブジェクトなので、配列に変換する。jsonにして戻す。
@@ -163,30 +163,4 @@ class ItemStoreController extends Controller
     }
     return back()->with('success', '店舗コメントを更新しました');
   }
-
-
-
-  // public function item_update(ItemRequest $request, $id)
-  // {
-  //     $item = Item::find($request->id);
-  //     $user = Auth::user();
-  //     $item->company_id = $user->company_id;
-  //     $item->barcode = $request->barcode;
-  //     $item->product_code = $request->product_code;
-  //     $item->product_name = $request->product_name;
-  //     $item->category_id = $request->category_id;
-  //     $item->display_flag = $request->display_flag;
-  //     $item->original_price = $request->original_price;
-  //     $item->description = $request->description;
-  //     $item->size = $request->size;
-  //     $item->color = $request->color;
-  //     $item->tag = $request->tag;
-  //     $item->group_code_id = $request->group_code_id;
-  //     $item->global_category_id = $request->global_category_id;
-  //     $store->item_status = $request->item_status;
-  //     $store->industry_id = $request->industry_id;
-  //     $store->sku_item_image = $request->sku_item_image;
-  //     $item->save();
-  //     return redirect()->action('Seller\ItemController@edit', [$item->id]);
-  // }
 }

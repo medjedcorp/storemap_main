@@ -15,13 +15,19 @@ use Illuminate\Support\Facades\Storage; //ファイルアクセス
 class CategoryCsvExportController extends Controller
 {
 
-  public function download()
+  public function download(Request $request)
   {
     // カテゴリDBからデータを選別
     $user = Auth::user();
     $cid = $user->company_id;
-    // 取得する列を選択
-    $categories = Category::where('company_id', '=', $cid)->select(['category_code', 'category_name', 'display_flag'])->get();
+    if ($user->role === "admin") {
+      $cid = $request->company_id;
+      $categories = Category::where('company_id', '=', $cid)->select(['company_id', 'category_code', 'category_name', 'display_flag'])->get();
+    } else {
+      // 取得する列を選択
+      $categories = Category::where('company_id', '=', $cid)->select(['category_code', 'category_name', 'display_flag'])->get();
+    }
+
 
 
     $count = count($categories);

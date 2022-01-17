@@ -34,7 +34,8 @@
           <!-- /.card-header -->
           <!-- form start -->
           <div class="card-body h-adr">
-          @include('partials.errors')
+            @include('partials.errors')
+            @include('partials.danger')
             <div class="form-group row">
               <span class="p-country-name" style="display:none;">Japan</span>
               <label for="store_code" class="col-sm-2 col-form-label">
@@ -400,7 +401,9 @@
             <form id="store_form" method="POST" action="{{ route('stores.update', $store->id) }}" enctype="multipart/form-data" class="inline_form">
               @csrf
               @method('PATCH')
+              @can('isAdmin')
               <input form="store_form" type="hidden" name="company_id" value="{{$company_id}}">
+              @endcan
               <input form="store_form" type="hidden" name="id" value="{{$store->id}}">
               <button type="submit" class="btn btn-primary"><i class="fa fa-check-square"></i> @lang('store.edit.submit')</button>
             </form>
@@ -446,67 +449,67 @@
 @stop
 
 @section('right-sidebar')
-    <div class="os-padding text-sm">
-        <div class="os-viewport os-viewport-native-scrollbars-invisible" style="overflow-y: scroll;">
-            <div class="os-content" style="padding: 16px; height: 100%; width: 100%;">
-                <h5>店舗の編集</h5>
-                <hr class="mb-2">
-                <p>登録済み店舗情報の編集ができます。</p>
-                <dl>
-                  <dt>店舗コード</dt>
-                  <dd>店舗を識別するためのコードを入力してください。(半角英数のみ)</dd>
-                  <dt>店舗名</dt>
-                  <dd>店舗名を入力してください。</dd>
-                  <dt>店舗名かな</dt>
-                  <dd>店舗名をひらがなで入力してください。</dd>
-                  <dt>郵便番号</dt>
-                  <dd>店舗所在地の郵便番号をハイフンありで入力してください。</dd>
-                  <dt>都道府県</dt>
-                  <dd>店舗所在地の都道府県名を入力してください。</dd>
-                  <dt>市区町村</dt>
-                  <dd>店舗所在地の市区町村を入力してください。</dd>
-                  <dt>町名・番地</dt>
-                  <dd>店舗所在地の町名・番地を入力してください。</dd>
-                  <dt>ビル、マンション名</dt>
-                  <dd>店舗所在地のビル、マンション名を入力してください。</dd>
-                  <dt>電話番号</dt>
-                  <dd>店舗の電話番号を入力してください。</dd>
-                  <dt>FAX番号</dt>
-                  <dd>店舗のFAX番号を入力してください。</dd>
-                  <dt>店舗メールアドレス</dt>
-                  <dd>店舗のe-mailアドレスを入力してください。</dd>
-                  <dt>店舗ホームページ</dt>
-                  <dd>店舗のホームページのURLを入力してください。</dd>
-                  <dt>チラシ画像名</dt>
-                  <dd>店舗のチラシがある場合は、店舗画像にアップロードしたファイル名を入力することでサイト上に表示されます。</dd>
-                  <dt>店内見取図画像名</dt>
-                  <dd>店内の見取り図画像がある場合は、店舗画像にアップロードしたファイル名を入力することでサイト上に表示されます。</dd>
-                  <dt>店舗状態</dt>
-                  <dd>サイト上に店舗を「表示」するか、「非表示」にするかを選択出来ます。</dd>
-                  <dt>店舗からのお知らせ</dt>
-                  <dd>店舗からのお知らせを登録できます。登録することでサイト上に表示されます。</dd>
-                  <dt>決済方法</dt>
-                  <dd>お店で使える決済方法を登録設定することで設定することですることでサイト上に表示されます。</dd>
-                  <dt>アクセス</dt>
-                  <dd>お店への行き方や場所の詳細などを登録できます。登録することでサイト上に表示されます。</dd>
-                  <dt>営業時間</dt>
-                  <dd>お店の営業時間を登録できます。登録することでサイト上に表示されます。</dd>
-                  <dt>定休日</dt>
-                  <dd>お店の定休日を登録できます。登録することでサイト上に表示されます。</dd>
-                  <dt>駐車場</dt>
-                  <dd>お店の駐車場情報を登録できます。登録することでサイト上に表示されます。</dd>
-                  <dt>緯度・経度</dt>
-                  <dd>緯度・経度の値は住所を変更した場合、自動で変更されます。地図上に表示されるお店の位置がずれる場合は、「編集する」をクリックして、手動で緯度・経度を入力してください。</dd>
-                  <dt>店舗画像</dt>
-                  <dd>店舗画像のアップロードが出来ます。アップロードした画像は、「画像管理＞店舗画像管理」より確認できます。アップロードした画像を、店舗画像1～5枚目に登録することで、サイト上に表示されます。</dd>
-                  <dt>店舗画像1枚目～店舗画像5枚目</dt>
-                  <dd>アップロード済みの画像ファイル名を入力してください。登録することでサイト上に表示されます。</dd>
-                  <dt>業種設定</dt>
-                  <dd>店舗の業種設定が可能です。設定することで、エンドユーザーが業種を選択して絞り込みを行ったとき、サイト上に表示することができます。</dd>
-                </dl>
-            </div>
-        </div>
+<div class="os-padding text-sm">
+  <div class="os-viewport os-viewport-native-scrollbars-invisible" style="overflow-y: scroll;">
+    <div class="os-content" style="padding: 16px; height: 100%; width: 100%;">
+      <h5>店舗の編集</h5>
+      <hr class="mb-2">
+      <p>登録済み店舗情報の編集ができます。</p>
+      <dl>
+        <dt>店舗コード</dt>
+        <dd>店舗を識別するためのコードを入力してください。(半角英数のみ)</dd>
+        <dt>店舗名</dt>
+        <dd>店舗名を入力してください。</dd>
+        <dt>店舗名かな</dt>
+        <dd>店舗名をひらがなで入力してください。</dd>
+        <dt>郵便番号</dt>
+        <dd>店舗所在地の郵便番号をハイフンありで入力してください。</dd>
+        <dt>都道府県</dt>
+        <dd>店舗所在地の都道府県名を入力してください。</dd>
+        <dt>市区町村</dt>
+        <dd>店舗所在地の市区町村を入力してください。</dd>
+        <dt>町名・番地</dt>
+        <dd>店舗所在地の町名・番地を入力してください。</dd>
+        <dt>ビル、マンション名</dt>
+        <dd>店舗所在地のビル、マンション名を入力してください。</dd>
+        <dt>電話番号</dt>
+        <dd>店舗の電話番号を入力してください。</dd>
+        <dt>FAX番号</dt>
+        <dd>店舗のFAX番号を入力してください。</dd>
+        <dt>店舗メールアドレス</dt>
+        <dd>店舗のe-mailアドレスを入力してください。</dd>
+        <dt>店舗ホームページ</dt>
+        <dd>店舗のホームページのURLを入力してください。</dd>
+        <dt>チラシ画像名</dt>
+        <dd>店舗のチラシがある場合は、店舗画像にアップロードしたファイル名を入力することでサイト上に表示されます。</dd>
+        <dt>店内見取図画像名</dt>
+        <dd>店内の見取り図画像がある場合は、店舗画像にアップロードしたファイル名を入力することでサイト上に表示されます。</dd>
+        <dt>店舗状態</dt>
+        <dd>サイト上に店舗を「表示」するか、「非表示」にするかを選択出来ます。</dd>
+        <dt>店舗からのお知らせ</dt>
+        <dd>店舗からのお知らせを登録できます。登録することでサイト上に表示されます。</dd>
+        <dt>決済方法</dt>
+        <dd>お店で使える決済方法を登録設定することで設定することですることでサイト上に表示されます。</dd>
+        <dt>アクセス</dt>
+        <dd>お店への行き方や場所の詳細などを登録できます。登録することでサイト上に表示されます。</dd>
+        <dt>営業時間</dt>
+        <dd>お店の営業時間を登録できます。登録することでサイト上に表示されます。</dd>
+        <dt>定休日</dt>
+        <dd>お店の定休日を登録できます。登録することでサイト上に表示されます。</dd>
+        <dt>駐車場</dt>
+        <dd>お店の駐車場情報を登録できます。登録することでサイト上に表示されます。</dd>
+        <dt>緯度・経度</dt>
+        <dd>緯度・経度の値は住所を変更した場合、自動で変更されます。地図上に表示されるお店の位置がずれる場合は、「編集する」をクリックして、手動で緯度・経度を入力してください。</dd>
+        <dt>店舗画像</dt>
+        <dd>店舗画像のアップロードが出来ます。アップロードした画像は、「画像管理＞店舗画像管理」より確認できます。アップロードした画像を、店舗画像1～5枚目に登録することで、サイト上に表示されます。</dd>
+        <dt>店舗画像1枚目～店舗画像5枚目</dt>
+        <dd>アップロード済みの画像ファイル名を入力してください。登録することでサイト上に表示されます。</dd>
+        <dt>業種設定</dt>
+        <dd>店舗の業種設定が可能です。設定することで、エンドユーザーが業種を選択して絞り込みを行ったとき、サイト上に表示することができます。</dd>
+      </dl>
     </div>
+  </div>
+</div>
 @stop
 
 @section('footer')
@@ -527,34 +530,30 @@
 <script src="{{ asset('js/storeimg_select.js') }}" rel="stylesheet"></script>
 <script type="text/javascript">
   $('#latcheck').change(function() {
- //disabled属性の状態を取得する
- var result = $('#latitude').prop('disabled');
- 
- if(result) {
-     //disabled属性を付与する
-     $('#latitude').prop('disabled', false);
- }
- else {
-     //disabled属性を解除する
-     $('#latitude').prop('disabled', true);
- }
-})
+    //disabled属性の状態を取得する
+    var result = $('#latitude').prop('disabled');
 
-$('#lngcheck').change(function() {
- //disabled属性の状態を取得する
- var result = $('#longitude').prop('disabled');
- 
- if(result) {
-     //disabled属性を付与する
-     $('#longitude').prop('disabled', false);
- }
- else {
-     //disabled属性を解除する
-     $('#longitude').prop('disabled', true);
- }
-})
+    if (result) {
+      //disabled属性を付与する
+      $('#latitude').prop('disabled', false);
+    } else {
+      //disabled属性を解除する
+      $('#latitude').prop('disabled', true);
+    }
+  })
 
+  $('#lngcheck').change(function() {
+    //disabled属性の状態を取得する
+    var result = $('#longitude').prop('disabled');
 
+    if (result) {
+      //disabled属性を付与する
+      $('#longitude').prop('disabled', false);
+    } else {
+      //disabled属性を解除する
+      $('#longitude').prop('disabled', true);
+    }
+  })
 </script>
 <script type="text/javascript">
   Dropzone.options.imageUpload = {

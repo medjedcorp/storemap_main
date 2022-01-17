@@ -35,6 +35,14 @@
             <form method="get" action="{{ action('CategoryCsvExportController@download') }}" class="h-adr" enctype="multipart/form-data">
               @csrf
               @method('get')
+              @can('isAdmin')
+              <div class="form-group row">
+                <label class="col-sm-6 col-form-label">company_id @include('partials.required') <small class="text-red">※Adminのみの項目</small></label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="company_id" name="company_id" placeholder="company_idを入力。セグメントして出力できます" value="{{ old('company_id') }}">
+                </div>
+              </div>
+              @endcan
               <button type="submit" class="btn btn-block btn-info btn-lg"><i class="fa fa-download"></i> @lang('csv.download')</button>
             </form>
           </div>
@@ -94,6 +102,15 @@
                 </tr>
               </thead>
               <tbody>
+                @can('isAdmin')
+                <tr>
+                  <th>company_id</th>
+                  <td>company_id</td>
+                  <td><span class="text-danger">@lang('csv.required') 管理者(admin)のみの項目</span><br>company_idを指定することで、対象企業の情報を更新できます。バリデーションもしてません</td>
+                  <td>数値のみ</td>
+                  <td><span class="text-danger">※取扱注意</span></td>
+                </tr>
+                @endcan
                 <tr>
                   <th>@lang('csv.category.code')</th>
                   <td>@lang('csv.category.category_code')</td>

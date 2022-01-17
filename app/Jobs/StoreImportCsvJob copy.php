@@ -29,7 +29,7 @@ use App\Models\ItemStore;
 use Laravel\Cashier\Cashier;
 use Log;
 
-class StoreImportCsvJob implements ShouldQueue
+class StoreImportCsvJob2 implements ShouldQueue
 {
   use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -377,7 +377,7 @@ class StoreImportCsvJob implements ShouldQueue
           $store->store_name = $v['store_name'];
           // Log::debug($v);
           if (isset($v['store_kana'])) {
-            $store->store_kana = $v['store_kana'];
+            $geo->store_kana = $v['store_kana'];
           }
           $store->store_postcode = $v['store_postcode'];
           $store->prefecture = $v['prefecture'];
@@ -386,54 +386,54 @@ class StoreImportCsvJob implements ShouldQueue
           $store->store_apart = $v['store_apart'];
           $store->store_phone_number = $v['store_phone_number'];
           if (isset($v['store_fax_number'])) {
-            $store->store_fax_number = $v['store_fax_number'];
+            $geo->store_fax_number = $v['store_fax_number'];
           }
           if (isset($v['store_email'])) {
-            $store->store_email = $v['store_email'];
+            $geo->store_email = $v['store_email'];
           }
           $store->pause_flag = $v['pause_flag'];
           if (isset($v['store_img1'])) {
-            $store->store_img1 = $v['store_img1'];
+            $geo->store_img1 = $v['store_img1'];
           }
           if (isset($v['store_img2'])) {
-            $store->store_img2 = $v['store_img2'];
+            $geo->store_img2 = $v['store_img2'];
           }
           if (isset($v['store_img3'])) {
-            $store->store_img3 = $v['store_img3'];
+            $geo->store_img3 = $v['store_img3'];
           }
           if (isset($v['store_img4'])) {
-            $store->store_img4 = $v['store_img4'];
+            $geo->store_img4 = $v['store_img4'];
           }
           if (isset($v['store_img5'])) {
-            $store->store_img5 = $v['store_img5'];
+            $geo->store_img5 = $v['store_img5'];
           }
           if (isset($v['store_info'])) {
-            $store->store_info = $v['store_info'];
+            $geo->store_info = $v['store_info'];
           }
           $store->industry_id = $v['industry_id'];
           if (isset($v['store_url'])) {
-            $store->store_url = $v['store_url'];
+            $geo->store_url = $v['store_url'];
           }
           if (isset($v['flyer_img'])) {
-            $store->flyer_img = $v['flyer_img'];
+            $geo->flyer_img = $v['flyer_img'];
           }
           if (isset($v['floor_guide'])) {
-            $store->floor_guide = $v['floor_guide'];
+            $geo->floor_guide = $v['floor_guide'];
           }
           if (isset($v['pay_info'])) {
-            $store->pay_info = $v['pay_info'];
+            $geo->pay_info = $v['pay_info'];
           }
           if (isset($v['access'])) {
-            $store->access = $v['access'];
+            $geo->access = $v['access'];
           }
           if (isset($v['opening_hour'])) {
-            $store->opening_hour = $v['opening_hour'];
+            $geo->opening_hour = $v['opening_hour'];
           }
           if (isset($v['closed_day'])) {
-            $store->closed_day = $v['closed_day'];
+            $geo->closed_day = $v['closed_day'];
           }
           if (isset($v['parking'])) {
-            $store->parking = $v['parking'];
+            $geo->parking = $v['parking'];
           }
           // $store->latitude = $latitude;
           // $store->longitude = $longitude;

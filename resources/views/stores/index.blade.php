@@ -4,17 +4,17 @@
 
 @section('content_header')
 <div class="container-fluid">
-  <div class="row mb-2">
-    <div class="col-sm-7">
-      <h1 class="m-0">{{$c_name}} / @lang('store.index.title')</h1>
-    </div><!-- /.col -->
-    <div class="col-sm-5">
-      <ol class="breadcrumb float-sm-right">
-        <li class="breadcrumb-item"><a href="/home">Home</a></li>
-        <li class="breadcrumb-item active">店舗一覧</li>
-      </ol>
-    </div><!-- /.col -->
-  </div><!-- /.row -->
+    <div class="row mb-2">
+        <div class="col-sm-7">
+            <h1 class="m-0">{{$c_name}} / @lang('store.index.title')</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-5">
+            <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                <li class="breadcrumb-item active">店舗一覧</li>
+            </ol>
+        </div><!-- /.col -->
+    </div><!-- /.row -->
 </div>
 @stop
 
@@ -52,9 +52,13 @@
                         @include('partials.danger')
                         @include('partials.warning')
                         <table class="table table-bordered">
-                        <!-- <table class="table table-hover"> -->
+                            <!-- <table class="table table-hover"> -->
                             <thead>
                                 <tr>
+                                    @can('isAdmin')
+                                    <th class="text-nowrap">company_id
+                                    </th>
+                                    @endcan
                                     <th class="text-nowrap">@sortablelink('store_code', trans('store.index.store_code'))</th>
                                     <th>@sortablelink('store_name', trans('store.register.store_name'))</th>
                                     <th class="text-nowrap">@sortablelink('store_phone_number', trans('common.phone_num'))</th>
@@ -70,6 +74,9 @@
                                 @if(count($stores) > 0)
                                 @foreach($stores as $store)
                                 <tr>
+                                    @can('isAdmin')
+                                    <td>{{($store->company_id)}}</td>
+                                    @endcan
                                     <td>{{($store->store_code)}}</td>
                                     <td>{{($store->store_name)}}</td>
                                     <td class="text-nowrap">{{($store->store_phone_number)}}</td>
@@ -127,19 +134,19 @@
 @stop
 
 @section('right-sidebar')
-    <div class="os-padding text-sm">
-        <div class="os-viewport os-viewport-native-scrollbars-invisible" style="overflow-y: scroll;">
-            <div class="os-content" style="padding: 16px; height: 100%; width: 100%;">
-                <h5>店舗一覧</h5>
-                <hr class="mb-2">
-                <p>登録中の店舗情報を一覧表示できます。</p>
-                <p>店舗の削除は管理者ユーザーのみが利用可能です。管理権限の設定は、担当者管理＞担当者一覧より設定できます。</p>
-                <p>店舗コードや店舗名の項目をクリックすることで、並び替えが可能です。</p>
-                <p>検索ウィンドウに店舗名を入力するこで、登録済みの店舗が検索出来ます。</p>
-                <p>詳細を押すことで、店舗情報の詳細が閲覧できます。編集画面へは詳細画面より遷移できます。</p>
-            </div>
+<div class="os-padding text-sm">
+    <div class="os-viewport os-viewport-native-scrollbars-invisible" style="overflow-y: scroll;">
+        <div class="os-content" style="padding: 16px; height: 100%; width: 100%;">
+            <h5>店舗一覧</h5>
+            <hr class="mb-2">
+            <p>登録中の店舗情報を一覧表示できます。</p>
+            <p>店舗の削除は管理者ユーザーのみが利用可能です。管理権限の設定は、担当者管理＞担当者一覧より設定できます。</p>
+            <p>店舗コードや店舗名の項目をクリックすることで、並び替えが可能です。</p>
+            <p>検索ウィンドウに店舗名を入力するこで、登録済みの店舗が検索出来ます。</p>
+            <p>詳細を押すことで、店舗情報の詳細が閲覧できます。編集画面へは詳細画面より遷移できます。</p>
         </div>
     </div>
+</div>
 @stop
 
 @section('footer')
