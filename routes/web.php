@@ -125,12 +125,6 @@ Route::middleware('verified')->group(function () {
 
     Route::middleware('CompanyCheck')->group(function () {
 
-      // ストア一括編集
-      Route::get('/stores/data', 'ViewOnlyController@stores');
-      Route::post('/stores/data', 'StoreCsvImportController@importStoreCSV')->name('store.importStoreCSV');
-      Route::get('/stores/data/StoreTempFileDownload', 'StoreCsvExportController@StoreTempFileDownload');
-      Route::get('/stores/data/download', 'StoreCsvExportController@download');
-
       // item一括編集
       Route::get('/items/data', 'DataPageController@ItemData')->name('item.data');
       Route::get('/items/data/ItemTempFileDownload', 'ItemCsvExportController@ItemTempFileDownload');
@@ -175,17 +169,22 @@ Route::middleware('verified')->group(function () {
       // Route::resource('stores', 'StoreController', ['only' => ['create', 'store']])->middleware('AddStore');
       // Route::resource('stores', 'StoreController', ['except' => ['create', 'store']]);
 
-
-      Route::get('/stores', 'StoreController@index')->name('stores.index');
-      Route::get('/stores/{store}/edit', 'StoreController@edit')->name('stores.edit');
+      // ストア一括編集
+      Route::get('/stores/data', 'ViewOnlyController@stores');
+      Route::post('/stores/data', 'StoreCsvImportController@importStoreCSV')->name('store.importStoreCSV');
+      Route::get('/stores/data/StoreTempFileDownload', 'StoreCsvExportController@StoreTempFileDownload');
+      Route::get('/stores/data/download', 'StoreCsvExportController@download');
+      
       Route::group(['middleware' => ['auth', 'can:isFree']], function () {
         //　ストア登録と削除は管理者のみ、middlewareは課金管理
         Route::get('/stores/create', 'StoreController@create')->name('stores.create')->middleware('AddStore');
-        Route::post('/stores', 'StoreController@store')->name('stores.store')->middleware('AddStore');
         Route::DELETE('/stores/{store}', 'StoreController@destroy')->name('stores.destroy');
+        Route::post('/stores', 'StoreController@store')->name('stores.store')->middleware('AddStore');
       });
-      Route::patch('/stores/{store}', 'StoreController@update')->name('stores.update');
       Route::get('/stores/{store}', 'StoreController@show')->name('stores.show');
+      Route::get('/stores/{store}/edit', 'StoreController@edit')->name('stores.edit');
+      Route::patch('/stores/{store}', 'StoreController@update')->name('stores.update');
+      Route::get('/stores', 'StoreController@index')->name('stores.index');
 
 
       // 商品管理
@@ -351,7 +350,7 @@ Route::middleware('verified')->group(function () {
         Route::get('ajax/user_accept', 'Ajax\UserAcceptController@index');
         Route::post('ajax/user_accept/accept', 'Ajax\UserAcceptController@accept');
       });
-      
+
       // トピックスの表示のみ
       Route::get('/topics/{id}', 'TopicsController@show')->name('topics.show');
     });

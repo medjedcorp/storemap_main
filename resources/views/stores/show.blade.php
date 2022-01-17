@@ -34,8 +34,13 @@
             </h3>
           </div>
           <div class="card-body">
-          @include('partials.success')
+            @include('partials.success')
             <dl class="row company-show">
+              @can('isAdmin')
+              <dt class="col-sm-3">company_id</dt>
+              <dd class="col-sm-9">{{ $store->company_id }}</dd>
+              @endcan
+              
               <dt class="col-sm-3">@lang('store.register.store_name')</dt>
               <dd class="col-sm-9">{{ $store->store_name }}</dd>
 
@@ -60,7 +65,7 @@
               <dt class="col-sm-3">@lang('common.fax_number')</dt>
               <dd class="col-sm-9">{{ $store->store_fax_number }}</dd>
               @endif
-              
+
               <dt class="col-sm-3">@lang('common.email')</dt>
               <dd class="col-sm-9">{{ $store->store_email }}</dd>
 
@@ -75,7 +80,7 @@
               <dt class="col-sm-3">@lang('store.info')</dt>
               <dd class="col-sm-9">{{ $store->store_info }}</dd>
               @endif
-              
+
               <dt class="col-sm-3">@lang('store.industry')</dt>
               <dd class="col-sm-9">{{ $store->industry->industry_name }}</dd>
 
@@ -169,16 +174,16 @@
 @stop
 
 @section('right-sidebar')
-    <div class="os-padding text-sm">
-        <div class="os-viewport os-viewport-native-scrollbars-invisible" style="overflow-y: scroll;">
-            <div class="os-content" style="padding: 16px; height: 100%; width: 100%;">
-                <h5>店舗詳細</h5>
-                <hr class="mb-2">
-                <p>一覧より選択した店舗の情報が閲覧できます。</p>
-                <p>店舗情報を編集するボタンを押すことで、店舗情報の編集が可能です。</p>
-            </div>
-        </div>
+<div class="os-padding text-sm">
+  <div class="os-viewport os-viewport-native-scrollbars-invisible" style="overflow-y: scroll;">
+    <div class="os-content" style="padding: 16px; height: 100%; width: 100%;">
+      <h5>店舗詳細</h5>
+      <hr class="mb-2">
+      <p>一覧より選択した店舗の情報が閲覧できます。</p>
+      <p>店舗情報を編集するボタンを押すことで、店舗情報の編集が可能です。</p>
     </div>
+  </div>
+</div>
 @stop
 
 @section('footer')
@@ -189,11 +194,12 @@
 @section('css')
 <link rel="stylesheet" href="/css/admin_custom.css">
 <style type="text/css">
-    .carousel-inner:before {
+  .carousel-inner:before {
     content: "";
     display: block;
     padding-top: 75%;
   }
+
   .carousel-inner .carousel-item {
     position: absolute;
     top: 0;

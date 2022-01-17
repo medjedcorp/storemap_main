@@ -50,12 +50,16 @@
                     <div class="card-body">
                         @include('partials.success')
                         @include('partials.danger')
-                    <!-- </div>
+                        <!-- </div>
                     <div class="card-body table-responsive p-0"> -->
                         <table class="table table-bordered">
-                        <!-- <table class="table table-hover"> -->
+                            <!-- <table class="table table-hover"> -->
                             <thead>
                                 <tr>
+                                    @can('isAdmin')
+                                    <th class="text-nowrap">company_id
+                                    </th>
+                                    @endcan
                                     <th class="text-nowrap">@sortablelink('product_code', trans('item.product_code'))</th>
                                     <th>@sortablelink('product_name', trans('item.product_name'))</th>
                                     <th class="text-nowrap">@sortablelink('original_price', trans('common.original_price'))</th>
@@ -71,6 +75,9 @@
                                 @if(count($items) > 0)
                                 @foreach($items as $item)
                                 <tr>
+                                    @can('isAdmin')
+                                    <td>{{($item->company_id)}}</td>
+                                    @endcan
                                     <td>{{($item->product_code)}}</td>
                                     <td>{{($item->product_name)}}</td>
                                     <td class="text-nowrap">

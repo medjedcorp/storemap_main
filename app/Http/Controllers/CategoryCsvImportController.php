@@ -27,8 +27,7 @@ class CategoryCsvImportController extends Controller
   public function importCateCSV(Request $request)
   {
     // ジョブに渡すためのユーザ情報
-    $user = Auth::user();
-    $cid  = $user->company_id;
+    $user = Auth::user();    
 
     // アップロードファイルに対してのバリデート。Serviceの呼び出し
     $validator = $this->csv_service->validateUploadFile($request);

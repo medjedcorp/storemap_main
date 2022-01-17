@@ -58,6 +58,10 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
+                                    @can('isAdmin')
+                                    <th class="text-nowrap">company_id
+                                    </th>
+                                    @endcan
                                     <th class="text-nowrap">@sortablelink('category_code', trans('category.register.cate_code'))
                                     </th>
                                     <th>@sortablelink('category_name', trans('category.register.cate_name'))</th>
@@ -72,6 +76,9 @@
                                 @if(count($categories) > 0)
                                 @foreach($categories as $category)
                                 <tr>
+                                    @can('isAdmin')
+                                    <td>{{($category->company_id)}}</td>
+                                    @endcan
                                     <td>{{($category->category_code)}}</td>
                                     <td>{{($category->category_name)}}</td>
                                     <td class="text-nowrap">

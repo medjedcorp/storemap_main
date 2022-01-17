@@ -10,6 +10,13 @@ class CompanyPolicy
 {
     use HandlesAuthorization;
 
+    public function before(User $user)
+    {
+        if ($user->role === "admin") {
+            return true;
+        }
+    }
+    
     public function view(User $user, Company $company)
     {
         return $user->company_id === $company->id;

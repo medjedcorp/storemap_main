@@ -29,10 +29,15 @@ class StoreCsvImportController extends Controller
   {
     // ジョブに渡すためのユーザ情報
     $user = Auth::user();
-    $cid  = $user->company_id;
+
+    if ($user->role === "admin") {
+      $cid = $request->company_id;
+    } else {
+      $cid = $user->company_id;
+    }
 
     // 登録可能店舗数を取得
-    $company = Company::where('id', $user->company_id)->first();
+    $company = Company::where('id', $cid)->first();
     $stores = config('services.stripe.stores');
 
     // 有効な課金があるかチェック
@@ -44,7 +49,14 @@ class StoreCsvImportController extends Controller
     $quantity = $quantity + 1;
     } else {
       // ない場合は 1
-      $quantity = 1;
+      if ($user->role === "new") {
+        // 登録後1年以内は１０００件
+        $quantity = 1000;
+      } elseif($user->role === "admin") {
+        $quantity = 1000000;
+      } else {
+        $quantity = 1;
+      }
     }
 
     // アップロードファイルに対してのバリデート。Serviceの呼び出し
@@ -65,7 +77,7 @@ class StoreCsvImportController extends Controller
       $filename
     );
     // Queueに送信
-    StoreImportCsvJob::dispatch($upload_filename, $filename, $user, $csv_path, $quantity);
+    StoreImportCsvJob::dispatch($upload_filename, $filename, $user, $csv_path, $quantity, $cid);
     // 60分後にファイル削除
     CsvFileDeleteJob::dispatch($csv_path)->delay(now()->addMinutes(60));
 

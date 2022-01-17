@@ -489,7 +489,9 @@
             <form method="POST" action="{{route('items.update' , $item->id )}}" enctype="multipart/form-data" class="h-adr inline_form" id="item_form">
               @csrf
               @method('PATCH')
+              @can('isAdmin')
               <input form="item_form" type="hidden" name="company_id" value="{{$company->id}}">
+              @endcan
               <input form="item_form" type="hidden" name="id" value="{{$item->id}}">
               <button form="item_form" type="submit" class="btn btn-primary"><i class="fa fa-check-square"></i>
                 @lang('item.edit.submit')</button>

@@ -38,18 +38,33 @@ class ItemController extends Controller
     $c_name = Company::where('id', $cid)->pluck('company_name')->first();
     // 検索からキーワード取得
     $keyword = $request->input('keyword');
-    if (isset($keyword)) {
-      // カンパニーIDでセグメントしてから、orWhereのいずれかにあてはまったものを抽出
-      $items = Item::where('company_id', $user->company_id)->where(function ($query) use ($keyword) {
-        $query->orWhere('product_code', 'like', '%' . $keyword . '%')
-          ->orWhere('product_name', 'like', '%' . $keyword . '%')
-          ->orWhere('barcode', 'like', '%' . $keyword . '%');
-      })->paginate(30);
+
+    if ($user->role === 'admin') {
+      if (isset($keyword)) {
+        // カンパニーIDでセグメントしてから、orWhereのいずれかにあてはまったものを抽出
+        $items = Item::where(function ($query) use ($keyword) {
+          $query->orWhere('product_code', 'like', '%' . $keyword . '%')
+            ->orWhere('product_name', 'like', '%' . $keyword . '%')
+            ->orWhere('barcode', 'like', '%' . $keyword . '%');
+        })->paginate(30);
+      } else {
+        $items = Item::select(['id', 'company_id', 'display_flag', 'barcode', 'product_code', 'product_name', 'original_price'])->paginate(30); // ページ作成
+      }
+      $count = Item::count();
     } else {
-      $items = Item::select(['id', 'company_id', 'display_flag', 'barcode', 'product_code', 'product_name', 'original_price'])->where('company_id', $user->company_id)->paginate(30); // ページ作成
+      if (isset($keyword)) {
+        // カンパニーIDでセグメントしてから、orWhereのいずれかにあてはまったものを抽出
+        $items = Item::where('company_id', $user->company_id)->where(function ($query) use ($keyword) {
+          $query->orWhere('product_code', 'like', '%' . $keyword . '%')
+            ->orWhere('product_name', 'like', '%' . $keyword . '%')
+            ->orWhere('barcode', 'like', '%' . $keyword . '%');
+        })->paginate(30);
+      } else {
+        $items = Item::select(['id', 'company_id', 'display_flag', 'barcode', 'product_code', 'product_name', 'original_price'])->where('company_id', $user->company_id)->paginate(30); // ページ作成
+      }
+      $count = Item::where('company_id', $user->company_id)->count();
     }
-    // $count = Item::where('company_id', $user->company_id)->get()->count();
-    $count = Item::where('company_id', $user->company_id)->count();
+
     return view('items.index', [
       'items' => $items,
       'keyword' => $keyword,
@@ -70,7 +85,7 @@ class ItemController extends Controller
     $colors = Color::all();
     $category = Category::where('company_id', $user->company_id)->orderBy('category_name', 'asc')->get();
     $first_layer = StoremapCategory::whereIsRoot('parent_id', '=', 'null')->orderBy('smcategory_name', 'asc')->get();
-// dd($colors);
+    // dd($colors);
     return view('items.create', compact('user', 'category', 'first_layer', 'company', 'colors'));
   }
 
@@ -84,7 +99,11 @@ class ItemController extends Controller
   {
     $user = Auth::user();
     $item = new Item;
-    $item->company_id = $user->company_id;
+    if ($user->role === "admin") {
+      $item->company_id = $request->company_id;
+    } else {
+      $item->company_id = $user->company_id;
+    }
     $item->global_flag = $request->global_flag;
     $item->barcode = $request->barcode;
     $item->product_code = $request->product_code;
@@ -116,19 +135,33 @@ class ItemController extends Controller
     $item->item_img8 = $request->item_img8;
     $item->item_img9 = $request->item_img9;
     $item->item_img10 = $request->item_img10;
-
     $gc = $request->group_code;
-    $group = DB::table('group_codes')->where('company_id', $user->company_id)->where('group_code', $gc)->exists();
+
     // グループコードがテーブルに存在するかチェックして、booleanで戻す
+    if ($user->role === "admin") {
+      $group = DB::table('group_codes')->where('company_id', $request->company_id)->where('group_code', $gc)->exists();
+    } else {
+      $group = DB::table('group_codes')->where('company_id', $user->company_id)->where('group_code', $gc)->exists();
+    }
+
+
     if ($group) {
       //グループコードがDBにある場合
-      $gid = GroupCode::where('company_id', $user->company_id)->where('group_code', $gc)->first();
+      if ($user->role === "admin") {
+        $gid = GroupCode::where('company_id', $request->company_id)->where('group_code', $gc)->first();
+      } else {
+        $gid = GroupCode::where('company_id', $user->company_id)->where('group_code', $gc)->first();
+      }
       $item->group_code_id = $gid->id;
     } elseif (!$group && isset($gc)) {
       //グループコードがなくて、コードが入力されている場合の処理
       $gcd = new GroupCode;
       $gcd->group_code = $gc;
-      $gcd->company_id = $user->company_id;
+      if ($user->role === "admin") {
+        $gcd->company_id = $request->company_id;
+      } else {
+        $gcd->company_id = $user->company_id;
+      }
       $gcd->save();
       // 保存したIDを取得
       $last_insert_id = $gcd->id;
@@ -183,12 +216,14 @@ class ItemController extends Controller
 
     $user = Auth::user();
     $colors = Color::all();
-    $store = Store::where('company_id', $user->company_id)->orderBy('store_name', 'asc')->get();
+    
+    // $store = Store::where('company_id', $user->company_id)->orderBy('store_name', 'asc')->get();
+    $store = Store::where('company_id', $item->company_id)->orderBy('store_name', 'asc')->get();
     $first_layer = StoremapCategory::whereIsRoot('parent_id', '=', 'null')->orderBy('smcategory_name', 'asc')->get();
     $result = StoremapCategory::ancestorsAndSelf($item->storemap_category_id);
     $smcate = $result->implode('smcategory_name', ' > ');
     // $company = DB::table('companies')->where('id', $user->company_id)->pluck('id','maker_flag');
-    $company = Company::where('id', $user->company_id)->select('id', 'maker_flag')->first();
+    $company = Company::where('id', $item->company_id)->select('id', 'maker_flag')->first();
 
     // $img_name = Str::afterLast($item->sku_item_image, '/');
     // 価格設定
@@ -203,7 +238,7 @@ class ItemController extends Controller
     // }
 
     // $category = DB::table('categories')->where('company_id', $user->company_id)->get();
-    $category = Category::where('company_id', $user->company_id)->get();
+    $category = Category::where('company_id', $item->company_id)->get();
     if (!isset($category)) {
       $category = null;
     }
@@ -230,7 +265,12 @@ class ItemController extends Controller
     // 権限設定ポリシー。会社ID違うと見れない
     $this->authorize('update', $item);
 
-    $item->company_id = $user->company_id;
+    if ($user->role === "admin") {
+      $item->company_id = $request->company_id;
+    } else {
+      $item->company_id = $user->company_id;
+    }
+   
     $item->barcode = $request->barcode;
     $item->global_flag = $request->global_flag;
     $item->product_code = $request->product_code;
@@ -265,17 +305,31 @@ class ItemController extends Controller
     $item->item_img10 = $request->item_img10;
 
     $gc = $request->group_code;
-    $group = DB::table('group_codes')->where('company_id', $user->company_id)->where('group_code', $gc)->exists();
+
+    if ($user->role === "admin") {
+      $group = DB::table('group_codes')->where('company_id', $request->company_id)->where('group_code', $gc)->exists();
+    } else {
+      $group = DB::table('group_codes')->where('company_id', $user->company_id)->where('group_code', $gc)->exists();
+    }
 
     if ($group) {
       //グループコードがある場合
-      $gid = GroupCode::where('company_id', $user->company_id)->where('group_code', $request->group_code)->first();
+      if ($user->role === "admin") {
+        $gid = GroupCode::where('company_id', $request->company_id)->where('group_code', $request->group_code)->first();
+      } else {
+        $gid = GroupCode::where('company_id', $user->company_id)->where('group_code', $request->group_code)->first();
+      }
+
       $item->group_code_id = $gid->id;
     } elseif (!$group && isset($gc)) {
       // グループコードに登録がなくて、グループコードが入力されている場合の処理
       $gcd = new GroupCode;
       $gcd->group_code = $request->group_code;
-      $gcd->company_id = $user->company_id;
+      if ($user->role === "admin") {
+        $gcd->company_id = $request->company_id;
+      } else {
+        $gcd->company_id = $user->company_id;
+      }
       $gcd->save();
       // 保存したIDを取得
       $last_insert_id = $gcd->id;

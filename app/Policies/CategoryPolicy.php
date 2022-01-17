@@ -10,6 +10,13 @@ class CategoryPolicy
 {
     use HandlesAuthorization;
 
+    public function before(User $user)
+    {
+        if ($user->role === "admin") {
+            return true;
+        }
+    }
+
     public function update(User $user, Category $category)
     {
         return $user->company_id === $category->company_id;

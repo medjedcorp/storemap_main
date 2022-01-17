@@ -24,25 +24,39 @@ class CategoryController extends Controller
   public function index(Request $request)
   {
     $user = Auth::user();
-    $cid = $user->company_id;
-
-    $c_name = Company::where('id', $cid)->pluck('company_name')->first();
 
     // 検索からキーワード取得
     $keyword = $request->input('keyword');
-
-    if (isset($keyword)) {
-      // カンパニーIDでセグメントしてから、orWhereのいずれかにあてはまったものを抽出
-      $categories = Category::select(['id', 'category_code', 'category_name', 'display_flag'])->where('company_id', $cid)->where(function ($query) use ($keyword) {
-        $query->orWhere('category_code', 'like', '%' . $keyword . '%')
-          ->orWhere('category_name', 'like', '%' . $keyword . '%');
-      })->sortable()->paginate(20);
+    $cid = $user->company_id;
+    $c_name = Company::where('id', $cid)->pluck('company_name')->first();
+    
+    if ($user->role === 'admin') {
+      // adminの場合
+      if (isset($keyword)) {
+        // カンパニーIDでセグメントしてから、orWhereのいずれかにあてはまったものを抽出
+        $categories = Category::select(['id', 'category_code', 'category_name', 'display_flag', 'company_id'])->where(function ($query) use ($keyword) {
+          $query->orWhere('category_code', 'like', '%' . $keyword . '%')
+            ->orWhere('category_name', 'like', '%' . $keyword . '%');
+        })->sortable()->paginate(20);
+      } else {
+        $categories = Category::select(['id', 'category_code', 'category_name', 'display_flag', 'company_id'])->sortable()->paginate(20); // ページ作成
+      }
+      $count = Category::count();
     } else {
-      $categories = Category::select(['id', 'category_code', 'category_name', 'display_flag'])->where('company_id', $cid)->sortable()->paginate(20); // ページ作成
+      // admin以外の場合
+      if (isset($keyword)) {
+        // カンパニーIDでセグメントしてから、orWhereのいずれかにあてはまったものを抽出
+        $categories = Category::select(['id', 'category_code', 'category_name', 'display_flag'])->where('company_id', $cid)->where(function ($query) use ($keyword) {
+          $query->orWhere('category_code', 'like', '%' . $keyword . '%')
+            ->orWhere('category_name', 'like', '%' . $keyword . '%');
+        })->sortable()->paginate(20);
+      } else {
+        $categories = Category::select(['id', 'category_code', 'category_name', 'display_flag'])->where('company_id', $cid)->sortable()->paginate(20); // ページ作成
+      }
+      $count = Category::where('company_id', $cid)->get()->count();
     }
 
-    $count = Category::where('company_id', $cid)->get()->count();
-
+    
     return view('categories.index', [
       'categories' => $categories,
       'keyword' => $keyword,
@@ -61,7 +75,8 @@ class CategoryController extends Controller
     $user = Auth::user();
     $company_id = $user->company_id;
 
-    return view('categories.create')->with(['company_id' => $company_id]);
+    // return view('categories.create')->with(['company_id' => $company_id]);
+    return view('categories.create');
   }
 
   /**
@@ -76,7 +91,11 @@ class CategoryController extends Controller
     $user = Auth::user();
     $category->category_code = $request->category_code;
     $category->category_name = $request->category_name;
-    $category->company_id = $user->company_id;
+    if ($user->role === "admin") {
+      $category->company_id = $request->company_id;
+    } else {
+      $category->company_id = $user->company_id;
+    }
     $category->display_flag = $request->display_flag;
     $category->save();
 
@@ -106,8 +125,9 @@ class CategoryController extends Controller
     $this->authorize('update', $category); // policy
 
     $user = Auth::user();
-    $company_id = $user->company_id;
-    return view('categories.edit', compact('category', 'company_id'));
+    // $company_id = $user->company_id;
+    return view('categories.edit', compact('category'));
+    // return view('categories.edit', compact('category', 'company_id'));
   }
 
   /**
@@ -121,10 +141,14 @@ class CategoryController extends Controller
   {
     $category = Category::find($id);
     $this->authorize('update', $category); // policy
-
+    $user = Auth::user();
     $category->category_code = $request->category_code;
     $category->category_name = $request->category_name;
     $category->display_flag = $request->display_flag;
+    
+    if ($user->role === "admin") {
+      $category->company_id = $request->company_id;
+    }
     $category->save();
 
     return back()->with([

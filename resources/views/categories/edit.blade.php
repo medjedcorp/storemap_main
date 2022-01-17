@@ -73,13 +73,21 @@
                 @endif
               </div>
             </div>
+            @can('isAdmin')
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label">company_id @include('partials.required') </label>
+              <div class="col-sm-10">
+                <input form="category_form" type="text" class="form-control" id="company_id" name="company_id" placeholder="company_idを入力" value="{{ old('company_id', $category->company_id) }}">
+                <small class="text-red">※Adminのみの項目。基本触らない</small>
+              </div>
+            </div>
+            @endcan
           </div>
           <!-- /.card-body -->
           <div class="card-footer">
             <form method="POST" action="{{route('categories.update' , $category->id )}}" enctype="multipart/form-data" class="h-adr inline_form" id="category_form">
               @csrf
               @method('PATCH')
-              <input id="category_form" type="hidden" name="company_id" value="{{$company_id}}">
               <input id="category_form" type="hidden" name="id" value="{{$category->id}}">
               <button type="submit" class="btn btn-primary"><i class="fa fa-check-square"></i> @lang('category.edit.submit')</button>
             </form>

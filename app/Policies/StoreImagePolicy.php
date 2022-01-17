@@ -10,8 +10,15 @@ class StoreImagePolicy
 {
     use HandlesAuthorization;
 
-     public function delete(User $user, Storeimage $storeimage)
-     {
-         return $user->company_id === $storeimage->company_id;
-     }
+    public function before(User $user)
+    {
+        if ($user->role === "admin") {
+            return true;
+        }
+    }
+
+    public function delete(User $user, Storeimage $storeimage)
+    {
+        return $user->company_id === $storeimage->company_id;
+    }
 }

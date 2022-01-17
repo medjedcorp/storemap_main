@@ -14,6 +14,7 @@ use App\Models\Item;
 use League\Csv\Reader;
 use League\Csv\Statement;
 use App\Models\Company;
+use Carbon\Carbon;
 
 class ItemCsvImportController extends Controller
 {
@@ -29,7 +30,12 @@ class ItemCsvImportController extends Controller
   {
     // ジョブに渡すためのユーザ情報
     $user = Auth::user();
-    $cid  = $user->company_id;
+
+    if ($user->role === "admin") {
+      $cid = $request->company_id;
+    } else {
+      $cid = $user->company_id;
+    }
 
     // プランを取得
     $company = Company::where('id', $cid)->first();
@@ -43,6 +49,9 @@ class ItemCsvImportController extends Controller
     $premium_item = config('services.stripe.premium_item');
     $free_item = config('services.stripe.free_item');
 
+    $nowDateTime = new Carbon(); // 現在の日付
+    $diff_day = $company->created_at->diffInDays(Carbon::now());
+
     // 有効な課金があるかチェック
     if ($company->subscribed('main')) {
       // 有効な課金がある場合は、プランを代入
@@ -53,11 +62,21 @@ class ItemCsvImportController extends Controller
       // ない場合はnull
       $stripePlan = null;
     }
+    // 365日以内か判定。試用期間中かのチェック
+    if ($diff_day > 365) {
+      $trial_ends = 1;
+    } else {
+      $trial_ends = 0;
+    }
 
     // 登録可能な商品数を設定
     switch ($stripePlan) {
       case $light:
-        $max_item = $light_item;
+        if ($trial_ends === 0) {
+          $max_item = $basic_item;
+        } else {
+          $max_item = $light_item;
+        }
         break;
       case $basic:
         $max_item = $basic_item;
@@ -88,7 +107,7 @@ class ItemCsvImportController extends Controller
       $filename
     );
     // Queueに送信
-    ItemImportCsvJob::dispatch($upload_filename, $filename, $user, $csv_path, $max_item);
+    ItemImportCsvJob::dispatch($upload_filename, $filename, $user, $csv_path, $max_item, $company);
     // 60分後にファイル削除
     CsvFileDeleteJob::dispatch($csv_path)->delay(now()->addMinutes(60));
 

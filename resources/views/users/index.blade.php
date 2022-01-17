@@ -4,17 +4,17 @@
 
 @section('content_header')
 <div class="container-fluid">
-  <div class="row mb-2">
-    <div class="col-sm-7">
-      <h1 class="m-0">{{$c_name}} の @lang('user.index.title')</h1>
-    </div><!-- /.col -->
-    <div class="col-sm-5">
-      <ol class="breadcrumb float-sm-right">
-        <li class="breadcrumb-item"><a href="/home">Home</a></li>
-        <li class="breadcrumb-item active">@lang('user.index.title')</li>
-      </ol>
-    </div><!-- /.col -->
-  </div><!-- /.row -->
+    <div class="row mb-2">
+        <div class="col-sm-7">
+            <h1 class="m-0">{{$c_name}} の @lang('user.index.title')</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-5">
+            <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                <li class="breadcrumb-item active">@lang('user.index.title')</li>
+            </ol>
+        </div><!-- /.col -->
+    </div><!-- /.row -->
 </div>
 @stop
 
@@ -38,7 +38,6 @@
                                 <div class="input-group input-group-sm" style="width: 150px;">
                                     <input form="userSearch" type="text" name="keyword" class="form-control float-right" placeholder="Search" value="{{$keyword}}">
                                     <div class="input-group-append">
-
                                         <button type="submit" class="btn btn-default">
                                             <i class="fas fa-search"></i>
                                         </button>
@@ -51,14 +50,18 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                    <!-- <div class="card-body table-responsive p-0"> -->
+                        <!-- <div class="card-body table-responsive p-0"> -->
                         @include('partials.success')
                         @include('partials.warning')
                         @include('partials.danger')
                         <table class="table table-bordered">
-                        <!-- <table class="table table-hover"> -->
+                            <!-- <table class="table table-hover"> -->
                             <thead>
                                 <tr>
+                                    @can('isAdmin')
+                                    <th class="text-nowrap">company_id
+                                    </th>
+                                    @endcan
                                     <th>@sortablelink('name', trans('user.index.name'))</th>
                                     <th>@sortablelink('email',trans('user.index.e_mail'))</th>
                                     <th class="text-nowrap">@sortablelink('role', trans('user.index.role'))</th>
@@ -72,16 +75,25 @@
                                 @if(count($users) > 0)
                                 @foreach($users as $user)
                                 <tr>
+                                    @can('isAdmin')
+                                    <td>{{($user->company_id)}}</td>
+                                    @endcan
                                     <td>{{($user->name)}}</td>
                                     <td>{{($user->email)}}</td>
                                     <td class="text-nowrap">
-                                        @if($user->role == 'seller')
-                                        管理者
-                                        @elseif($user->role == 'staff')
-                                        担当者
-                                        @elseif($user->role == 'admin')
-                                        システム
-                                        @endif
+                                        @can('isStaff')
+                                            @if($user->role == 'seller')
+                                            管理者 @can('isAdmin') (seller) @endcan
+                                            @elseif($user->role == 'new')
+                                            管理者 @can('isAdmin') (new) @endcan
+                                            @elseif($user->role == 'free')
+                                            管理者 @can('isAdmin') (free) @endcan
+                                            @elseif($user->role == 'staff')
+                                            担当者 @can('isAdmin')(staff) @endcan
+                                            @elseif($user->role == 'admin')
+                                            admin
+                                            @endif
+                                        @endcan
                                     </td>
                                     @can('isSeller')
                                     <td class="text-nowrap">

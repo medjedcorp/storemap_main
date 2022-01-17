@@ -24,22 +24,36 @@ class UserController extends Controller
   {
     $user = Auth::user();
     $cid = $user->company_id;
-    $users = User::where('company_id', $cid)->get();
+    // $users = User::where('company_id', $cid)->get();
     $c_name = Company::where('id', $cid)->pluck('company_name')->first();
 
     // 検索からキーワード取得
     $keyword = $request->input('keyword');
 
-    if (isset($keyword)) {
-      // カンパニーIDでセグメントしてから、orWhereのいずれかにあてはまったものを抽出
-      $users = User::select(['id', 'name', 'email', 'role'])->where('company_id', $cid)->where(function ($query) use ($keyword) {
-        $query->orWhere('name', 'like', '%' . $keyword . '%')
-          ->orWhere('email', 'like', '%' . $keyword . '%');
-      })->sortable()->paginate(20);
+    if ($user->role === 'admin') {
+      if (isset($keyword)) {
+        // カンパニーIDでセグメントしてから、orWhereのいずれかにあてはまったものを抽出
+        $users = User::select(['id', 'name', 'email', 'role', 'company_id', 'role'])->where(function ($query) use ($keyword) {
+          $query->orWhere('name', 'like', '%' . $keyword . '%')
+            ->orWhere('email', 'like', '%' . $keyword . '%');
+        })->sortable()->paginate(20);
+      } else {
+        $users = User::select(['id', 'name', 'email', 'role', 'company_id', 'role'])->sortable()->paginate(20); // ページ作成
+      }
+      $count = User::count();
     } else {
-      $users = User::select(['id', 'name', 'email', 'role'])->where('company_id', $cid)->sortable()->paginate(20); // ページ作成
+      if (isset($keyword)) {
+        // カンパニーIDでセグメントしてから、orWhereのいずれかにあてはまったものを抽出
+        $users = User::select(['id', 'name', 'email', 'role'])->where('company_id', $cid)->where(function ($query) use ($keyword) {
+          $query->orWhere('name', 'like', '%' . $keyword . '%')
+            ->orWhere('email', 'like', '%' . $keyword . '%');
+        })->sortable()->paginate(20);
+      } else {
+        $users = User::select(['id', 'name', 'email', 'role'])->where('company_id', $cid)->sortable()->paginate(20); // ページ作成
+      }
+      $count = User::where('company_id', $cid)->get()->count();
     }
-    $count = User::where('company_id', $cid)->get()->count();
+
     return view('users.index', [
       'users' => $users,
       'keyword' => $keyword,
@@ -72,14 +86,14 @@ class UserController extends Controller
     $user->email = $request->email;
     // パスワードハッシュ化
     $user->password = \Hash::make($request['password']);
-    
+
     // smsupport@storemap.jpがユーザー追加したら全部テスター
-    if($cid->email === 'smsupport@storemap.jp'){
+    if ($cid->email === 'smsupport@storemap.jp') {
       $user->role = 'tester';
     } else {
       $user->role = $request->role;
     }
-    
+
     $user->company_id = $cid->company_id;
     $user->accepted = 1;
     $user->save();
@@ -112,13 +126,27 @@ class UserController extends Controller
 
   public function update(UserUpdateRequest $request, $id)
   {
+    $my = Auth::user();
     $user = User::find($id);
     $company = Company::where('id', $user->company_id)->first();
     $this->authorize('update', $company);
-
+    $myId = $my->id;
+    $userId = $user->id;
     $user->name = $request->name;
-    // $user->email = $request->email;
-    $user->role = $request->role;
+
+    if ($myId === $userId) {
+      // 自分自身の権限を変更しようとしたとき
+      if ($user->role === $request->role) {
+        // 一緒ならtrue
+        $user->role = $request->role;
+      } else {
+        // 変更しようとしたらアウト
+        return redirect('/users')->with('warning', '※自分の権限は変更できません');
+      }
+    } else {
+      $user->role = $request->role;
+    }
+
     $user->save();
     // ストアIDを中間テーブルに記入。formは配列で受け取れるようにnameに[]をつけること
     $user->store()->sync($request->store_id);
@@ -139,7 +167,7 @@ class UserController extends Controller
     Gate::authorize('isSeller'); // gate staffは削除不可
     if ($id == $myid) {
       return redirect('/users')->with('warning', '※自分は削除できません');
-    } elseif(Gate::allows('delete-user', $company)) {
+    } elseif (Gate::allows('delete-user', $company)) {
       // 現在のユーザーはこのユーザーを削除できる
       // Providers\AuthServiceProvider 参照
       $deluser->delete();
