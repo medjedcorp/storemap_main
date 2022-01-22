@@ -253,9 +253,10 @@ Route::middleware('verified')->group(function () {
       Route::get('ajax/itemimg10', 'ItemImgController@ajax10');
 
       // 画像管理
+      Route::get('/album/stores', 'AlbumStoreController@index')->name('album.store.index');
       Route::get('/album/items', 'AlbumItemController@index')->name('album.item.index');
       Route::delete('/album/items/delete', 'AlbumItemController@destroy')->name('album.item.destroy');
-      Route::get('/album/stores', 'AlbumStoreController@index')->name('album.store.index');
+      
       Route::delete('/album/stores/delete', 'AlbumStoreController@destroy')->name('album.store.destroy');
 
       // カタログ
