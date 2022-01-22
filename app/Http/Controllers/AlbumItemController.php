@@ -21,6 +21,23 @@ class AlbumItemController extends Controller
   {
     $user = Auth::user();
     $cid = $user->company_id;
+    // 検索からキーワード取得
+    $keyword = $request->input('keyword');
+    if (isset($keyword)) {
+      if ($user->role === "admin") {
+        // adminはcompany_id でのみの検索
+        $cid = $keyword;
+        $images = ItemImage::select(['id', 'filename', 'size', 'width', 'height', 'updated_at'])->where('company_id', $cid)->sortable()->paginate(20);
+      } else {
+        // カンパニーIDでセグメントしてから、orWhereのいずれかにあてはまったものを抽出
+        $images = ItemImage::select(['id', 'filename', 'size', 'width', 'height', 'updated_at'])->where('company_id', $cid)->where('filename', 'like', '%' . $keyword . '%')->sortable()->paginate(20);
+      }
+    } else {
+      $images = ItemImage::select(['id', 'filename', 'size', 'width', 'height', 'updated_at'])->where('company_id', $cid)->sortable()->paginate(20); // ページ作成
+
+    }
+
+
     $c_name = Company::where('id', $cid)->pluck('company_name')->first();
 
     $path_as = $cid . '/items/';
@@ -32,14 +49,14 @@ class AlbumItemController extends Controller
     $total_gbytes = number_format($total_bytes_value / 1073741824, 2) . ' GB';
 
     // 検索からキーワード取得
-    $keyword = $request->input('keyword');
-    if (isset($keyword)) {
-      // カンパニーIDでセグメントしてから、orWhereのいずれかにあてはまったものを抽出
-      $images = ItemImage::select(['id', 'filename', 'size', 'width', 'height', 'updated_at'])->where('company_id', $cid)->where('filename', 'like', '%' . $keyword . '%')->sortable()->paginate(20);
-    } else {
-      $images = ItemImage::select(['id', 'filename', 'size', 'width', 'height', 'updated_at'])->where('company_id', $cid)->sortable()->paginate(20); // ページ作成
+    // $keyword = $request->input('keyword');
+    // if (isset($keyword)) {
+    //   // カンパニーIDでセグメントしてから、orWhereのいずれかにあてはまったものを抽出
+    //   $images = ItemImage::select(['id', 'filename', 'size', 'width', 'height', 'updated_at'])->where('company_id', $cid)->where('filename', 'like', '%' . $keyword . '%')->sortable()->paginate(20);
+    // } else {
+    //   $images = ItemImage::select(['id', 'filename', 'size', 'width', 'height', 'updated_at'])->where('company_id', $cid)->sortable()->paginate(20); // ページ作成
 
-    }
+    // }
 
     // $img_path = Storage::disk('public')->files($path_as); // フォルダ内の画像のすべてのパス取得
     // $img_list = [];
@@ -120,8 +137,13 @@ class AlbumItemController extends Controller
     $img_id = $request->img_id;
 
     foreach ($img_id as $img) {
-      $itemimage = ItemImage::where('company_id', $cid)->where('id', $img)->first();
-
+      if ($user->role === "admin") {
+        $itemimage = ItemImage::where('id', $img)->first();
+        $cid = $itemimage->company_id;
+      } else {
+        $itemimage = ItemImage::where('company_id', $cid)->where('id', $img)->first();
+      }
+      
       // 権限設定ポリシー。会社ID違うと削除不可
       $this->authorize('delete', $itemimage);
 

@@ -26,7 +26,11 @@ class ItemImgController extends Controller
   {
     // アップロードがあったときの処理
     $user = Auth::user();
-    $cid = $user->company_id;
+    if ($user->role === "admin") {
+      $cid = $request->company_id;
+    } else {
+      $cid = $user->company_id;
+    }
     // Log::debug($request);
     $max_size = maxImgCap($user);
     // Log::debug($max_size);
@@ -42,7 +46,7 @@ class ItemImgController extends Controller
       $total_size = $item_size + $store_size;
 
       if ($max_size <= $total_size) {
-        return response()->json(['error' => '容量オーバーのため中止しました'],400);
+        return response()->json(['error' => '容量オーバーのため中止しました'], 400);
       }
 
       $file_name = $file->getClientOriginalName(); // ファイル名はアップロードされたのをそのまま使用

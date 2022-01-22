@@ -31,7 +31,7 @@
               <i class="fas fa-images"></i> @lang('album.store.card_title')
             </h3>
             <div class="card-tools">
-              <form id="itemAlbumSearch" action="/album/items" class="" method="GET">
+              <form id="itemAlbumSearch" action="/album/stores" class="" method="GET">
                 @csrf
                 @method('get')
                 <div class="input-group input-group-sm" style="width: 150px;">
@@ -49,11 +49,17 @@
 
           <div class="card-body">
             @include('partials.danger')
+
+
             <div class="row">
+              @can('isAdmin')
+              <div class="col-12 text-right mb-2">Adminはcompany_idでのみ検索ができます</div>
+              @endcan
               <div class="col-sm-4">
                 <h1 class="h3 mt-2 mb-2">@lang('album.store.title')</h1>
                 <p class="btn btn-default btn-xs">@lang('album.total_size'):
-                  <strong>{{ $total_gbytes }}</strong> / @lang('album.total_img'):<strong>{{ $count }}枚</strong></p>
+                  <strong>{{ $total_gbytes }}</strong> / @lang('album.total_img'):<strong>{{ $count }}枚</strong>
+                </p>
               </div>
               <div class="col-sm-8 text-right">
                 <button type="button" class="btn btn-success btn-lg" onclick="$('#modalImg').modal('show')" data-toggle="modal" data-target="#exampleModalCenter">
@@ -61,9 +67,6 @@
                 </button>
               </div>
             </div>
-
-
-
             <table id="imgIndexTable" class="table table-borderless table-sm table-striped-2span">
               <thead>
                 <tr>
@@ -142,6 +145,15 @@
               <form method="POST" action="/img/store/upload" class="dropzone" id="imageUpload" enctype="multipart/form-data">
                 @csrf
                 @method('POST')
+                @can('isAdmin')
+                <div class="form-group row">
+                  <label class="col-sm-2 col-form-label">company_id @include('partials.required') </label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="company_id" name="company_id" placeholder="company_idを入力">
+                    <small class="text-red">※Adminのみの項目。基本触らない</small>
+                  </div>
+                </div>
+                @endcan
               </form>
             </div>
           </div>
@@ -179,18 +191,27 @@
     resizeWidth: 750,
     resizeHeight: 750,
     resizeQuality: .9,
-    timeout: 10000, /*milliseconds*/
+    timeout: 10000,
+    /*milliseconds*/
     maxFiles: 500, // アップできる枚数
     acceptedFiles: '.jpg, .jpeg, .gif, .png',
     headers: {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     },
+    @can('isAdmin')
+    init: function() {
+      this.on("sending", function(file, xhr, formData) {
+        var id = document.getElementById('company_id');
+        formData.append("company_id", id);
+        //formData.append('task_name', jQuery('#task_name').val());
+      });
+    },
+    @endcan
     success: function(file, response) {
       // var $message = response.errors.file;
       file.previewElement.classList.add("dz-success");
       $(file.previewElement).find('.dz-success-mark').show();
       $(file.previewElement).find('[data-dz-name]').text(response.success);
-
       // console.log(response.success);
     },
     error: function(file, response) {

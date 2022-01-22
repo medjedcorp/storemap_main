@@ -25,8 +25,13 @@ class StoreImgController extends Controller
   public function postUpload(Request $request)
   {
     $user = Auth::user();
-    $cid = $user->company_id;
+    
     // Log::debug($request);
+    if ($user->role === "admin") {
+      $cid = $request->company_id;
+    } else {
+      $cid = $user->company_id;
+    }
     $max_size = maxImgCap($user);
 
     $files = $request->file();
