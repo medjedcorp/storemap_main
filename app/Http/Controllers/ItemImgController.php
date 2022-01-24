@@ -93,8 +93,10 @@ class ItemImgController extends Controller
     $cid = $user->company_id;
 
     $query = \App\Models\ItemImage::query();
-    $query->where('company_id', $cid);
-
+    // $query->where('company_id', $cid);
+    if (!$user->role === "admin") {
+      $query->where('company_id', $cid);
+    }
     if ($request->filled('q')) {
       $keywords = explode(' ', trim(mb_convert_kana($request->q, 's')));
       foreach ($keywords as $keyword) {
@@ -111,8 +113,10 @@ class ItemImgController extends Controller
     $cid = $user->company_id;
 
     $query = \App\Models\ItemImage::query();
-    $query->where('company_id', $cid);
-
+    // $query->where('company_id', $cid);
+    if (!$user->role === "admin") {
+      $query->where('company_id', $cid);
+    }
     if ($request->filled('q')) {
       $keywords = explode(' ', trim(mb_convert_kana($request->q, 's')));
       foreach ($keywords as $keyword) {
@@ -129,8 +133,10 @@ class ItemImgController extends Controller
     $cid = $user->company_id;
 
     $query = \App\Models\ItemImage::query();
-    $query->where('company_id', $cid);
-
+    // $query->where('company_id', $cid);
+    if (!$user->role === "admin") {
+      $query->where('company_id', $cid);
+    }
     if ($request->filled('q')) {
       $keywords = explode(' ', trim(mb_convert_kana($request->q, 's')));
       foreach ($keywords as $keyword) {
@@ -147,8 +153,10 @@ class ItemImgController extends Controller
     $cid = $user->company_id;
 
     $query = \App\Models\ItemImage::query();
-    $query->where('company_id', $cid);
-
+    // $query->where('company_id', $cid);
+    if (!$user->role === "admin") {
+      $query->where('company_id', $cid);
+    }
     if ($request->filled('q')) {
       $keywords = explode(' ', trim(mb_convert_kana($request->q, 's')));
       foreach ($keywords as $keyword) {
@@ -165,8 +173,10 @@ class ItemImgController extends Controller
     $cid = $user->company_id;
 
     $query = \App\Models\ItemImage::query();
-    $query->where('company_id', $cid);
-
+    // $query->where('company_id', $cid);
+    if (!$user->role === "admin") {
+      $query->where('company_id', $cid);
+    }
     if ($request->filled('q')) {
       $keywords = explode(' ', trim(mb_convert_kana($request->q, 's')));
       foreach ($keywords as $keyword) {
@@ -183,8 +193,10 @@ class ItemImgController extends Controller
     $cid = $user->company_id;
 
     $query = \App\Models\ItemImage::query();
-    $query->where('company_id', $cid);
-
+    // $query->where('company_id', $cid);
+    if (!$user->role === "admin") {
+      $query->where('company_id', $cid);
+    }
     if ($request->filled('q')) {
       $keywords = explode(' ', trim(mb_convert_kana($request->q, 's')));
       foreach ($keywords as $keyword) {
@@ -201,8 +213,10 @@ class ItemImgController extends Controller
     $cid = $user->company_id;
 
     $query = \App\Models\ItemImage::query();
-    $query->where('company_id', $cid);
-
+    // $query->where('company_id', $cid);
+    if (!$user->role === "admin") {
+      $query->where('company_id', $cid);
+    }
     if ($request->filled('q')) {
       $keywords = explode(' ', trim(mb_convert_kana($request->q, 's')));
       foreach ($keywords as $keyword) {
@@ -219,8 +233,10 @@ class ItemImgController extends Controller
     $cid = $user->company_id;
 
     $query = \App\Models\ItemImage::query();
-    $query->where('company_id', $cid);
-
+    // $query->where('company_id', $cid);
+    if (!$user->role === "admin") {
+      $query->where('company_id', $cid);
+    }
     if ($request->filled('q')) {
       $keywords = explode(' ', trim(mb_convert_kana($request->q, 's')));
       foreach ($keywords as $keyword) {
@@ -237,8 +253,10 @@ class ItemImgController extends Controller
     $cid = $user->company_id;
 
     $query = \App\Models\ItemImage::query();
-    $query->where('company_id', $cid);
-
+    // $query->where('company_id', $cid);
+    if (!$user->role === "admin") {
+      $query->where('company_id', $cid);
+    }
     if ($request->filled('q')) {
       $keywords = explode(' ', trim(mb_convert_kana($request->q, 's')));
       foreach ($keywords as $keyword) {
@@ -255,8 +273,10 @@ class ItemImgController extends Controller
     $cid = $user->company_id;
 
     $query = \App\Models\ItemImage::query();
-    $query->where('company_id', $cid);
-
+    // $query->where('company_id', $cid);
+    if (!$user->role === "admin") {
+      $query->where('company_id', $cid);
+    }
     if ($request->filled('q')) {
       $keywords = explode(' ', trim(mb_convert_kana($request->q, 's')));
       foreach ($keywords as $keyword) {
