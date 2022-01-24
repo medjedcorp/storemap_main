@@ -93,7 +93,10 @@ class StoreImgController extends Controller
     $cid = $user->company_id;
 
     $query = \App\Models\StoreImage::query();
-    $query->where('company_id', $cid);
+    
+    if (!$user->role === "admin") {
+      $query->where('company_id', $cid);
+    }
 
     if ($request->filled('q')) {
       $keywords = explode(' ', trim(mb_convert_kana($request->q, 's')));
@@ -111,7 +114,10 @@ class StoreImgController extends Controller
     $cid = $user->company_id;
 
     $query = \App\Models\StoreImage::query();
-    $query->where('company_id', $cid);
+
+    if (!$user->role === "admin") {
+      $query->where('company_id', $cid);
+    }
 
     if ($request->filled('q')) {
       $keywords = explode(' ', trim(mb_convert_kana($request->q, 's')));
@@ -129,8 +135,11 @@ class StoreImgController extends Controller
     $cid = $user->company_id;
 
     $query = \App\Models\StoreImage::query();
-    $query->where('company_id', $cid);
 
+    if (!$user->role === "admin") {
+      $query->where('company_id', $cid);
+    }
+    
     if ($request->filled('q')) {
       $keywords = explode(' ', trim(mb_convert_kana($request->q, 's')));
       foreach ($keywords as $keyword) {
@@ -147,7 +156,10 @@ class StoreImgController extends Controller
     $cid = $user->company_id;
 
     $query = \App\Models\StoreImage::query();
-    $query->where('company_id', $cid);
+
+    if (!$user->role === "admin") {
+      $query->where('company_id', $cid);
+    }
 
     if ($request->filled('q')) {
       $keywords = explode(' ', trim(mb_convert_kana($request->q, 's')));
@@ -165,8 +177,9 @@ class StoreImgController extends Controller
     $cid = $user->company_id;
 
     $query = \App\Models\StoreImage::query();
-    $query->where('company_id', $cid);
-
+    if (!$user->role === "admin") {
+      $query->where('company_id', $cid);
+    }
     if ($request->filled('q')) {
       $keywords = explode(' ', trim(mb_convert_kana($request->q, 's')));
       foreach ($keywords as $keyword) {
