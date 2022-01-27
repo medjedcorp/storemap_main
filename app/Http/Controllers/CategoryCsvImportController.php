@@ -29,6 +29,12 @@ class CategoryCsvImportController extends Controller
     // ジョブに渡すためのユーザ情報
     $user = Auth::user();    
 
+    if ($user->role === "admin") {
+      $cid = $request->company_id;
+    } else {
+      $cid = $user->company_id;
+    }
+
     // アップロードファイルに対してのバリデート。Serviceの呼び出し
     $validator = $this->csv_service->validateUploadFile($request);
 
