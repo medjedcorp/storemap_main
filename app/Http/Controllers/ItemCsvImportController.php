@@ -64,8 +64,10 @@ class ItemCsvImportController extends Controller
     }
     // 365日以内か判定。試用期間中かのチェック
     if ($diff_day > 365) {
+      // トライアル終了
       $trial_ends = 1;
     } else {
+      // トライアル中(roleがnew)
       $trial_ends = 0;
     }
 
@@ -85,7 +87,12 @@ class ItemCsvImportController extends Controller
         $max_item = $premium_item;
         break;
       default:
-        $max_item = $free_item;
+        if ($trial_ends === 0) {
+          $max_item = $basic_item;
+        } else {
+          $max_item = $free_item;
+        }
+        break;
     }
 
 
