@@ -81,6 +81,7 @@ class ItemImportCsvJob implements ShouldQueue
     $to   = $this->user->email;
     $max_item = $this->max_item;
     $company = $this->company;
+    // Log::debug($company->id);
 
     $messages = [
       'barcode.regex' => 'barcodeは英数字で入力してください',
@@ -92,7 +93,7 @@ class ItemImportCsvJob implements ShouldQueue
       'product_name.required' => 'product_nameを入力してください',
       'product_name.max' => 'product_nameは255文字内で入力してください',
       'brand_name.max' => 'brand_nameは100文字内で入力してください',
-      'category_code.exists' =>  'category_codeが部門に登録されていません',
+      'category_code.exists' =>  'category_codeが登録されていません',
       'category_code.max' =>  'category_codeは30文字内で入力してください',
       'category_code.regex' => 'category_codeは半角英数とハイフンのみ使用可能です',
       'original_price.integer' => 'original_priceは整数で入力してください',
@@ -171,7 +172,7 @@ class ItemImportCsvJob implements ShouldQueue
         'group_code' => 'nullable|string|max:40',
         'category_code' =>  [
           'sometimes', 'nullable', 'regex:/^[-a-zA-Z0-9]+$/', 'max:30',
-          Rule::exists('categories')->where(function ($query) {
+          Rule::exists('categories')->where(function ($query){
             $query->where('company_id',  $this->company->id); // カテゴリコードが登録されてるか確認
           }),
         ],
@@ -194,7 +195,7 @@ class ItemImportCsvJob implements ShouldQueue
       ];
 
       $validator = Validator::make($row, $rules, $messages);
-
+      
       // 追加バリデーション バリデーション前に起動します
       $validator->after(function ($validator) use ($row) {
         // $company = DB::table('companies')->where('id', $this->company->id)->first();
