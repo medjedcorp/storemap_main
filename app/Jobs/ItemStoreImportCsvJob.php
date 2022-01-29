@@ -42,19 +42,21 @@ class ItemStoreImportCsvJob implements ShouldQueue
     protected $filename;
     // protected $csv_service;
     protected $csv_path;
+    protected $cid;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($upload_filename, $filename, $user, $csv_path)
+    public function __construct($upload_filename, $filename, $user, $csv_path, $cid)
     {
         // $this->csv_service = new ItemStoreCsvImportService();
         $this->upload_filename = $upload_filename;
         $this->filename = $filename;
         $this->user = $user;
         $this->csv_path = $csv_path;
+        $this->cid = $cid;
     }
 
     /**
@@ -65,7 +67,7 @@ class ItemStoreImportCsvJob implements ShouldQueue
     public function handle(Request $request)
     {
       // user情報取得
-      $cid  = $this->user->company_id;
+      $cid  = $this->cid;
       $name = $this->user->name;
       $to   = $this->user->email;
 
@@ -124,13 +126,13 @@ class ItemStoreImportCsvJob implements ShouldQueue
           // 商品コードが登録されてるか確認
           'product_code' =>  ['required','regex:/^[-a-zA-Z0-9]+$/','max:40',
           Rule::exists('items')->where(function ($query) use ($pcode) {
-            $query->where('company_id',  $this->user->company_id)->where('product_code', $pcode);
+            $query->where('company_id',  $this->cid)->where('product_code', $pcode);
             // $query->where('company_id',  $this->user->company_id)->where('product_code',  $row['product_code']);
           }),
           ],
           'store_code' =>  ['required','regex:/^[a-zA-Z0-9]+$/','max:50',
           Rule::exists('stores')->where(function ($query) use ($scode)  {
-            $query->where('company_id',  $this->user->company_id)->where('store_code', $scode);
+            $query->where('company_id',  $this->cid)->where('store_code', $scode);
             // $query->where('company_id',  $this->user->company_id)->where('store_code',  $row['store_code']);
           }),
           ],
@@ -195,59 +197,17 @@ class ItemStoreImportCsvJob implements ShouldQueue
         // 成功時の処理
       foreach($csv as $row_data => $v) {
         // item_id取得。pluck('id')で取得しちゃうと、値がない場合エラーになる
-          $iid = Item::where('company_id',  $this->user->company_id)->where('product_code', '=', $v['product_code'])->first();
+          $iid = Item::where('company_id',  $this->cid)->where('product_code', '=', $v['product_code'])->first();
           // $iid = Item::where('company_id',  $this->user->company_id)->where('product_code', '=', $v['product_code'])->pluck('id');
 
         // store_id取得
-          $sid = Store::where('company_id',  $this->user->company_id)->where('store_code', '=', $v['store_code'])->first();
+          $sid = Store::where('company_id',  $this->cid)->where('store_code', '=', $v['store_code'])->first();
           // $sid = Store::where('company_id',  $this->user->company_id)->where('store_code', '=', $v['store_code'])->pluck('id');
 
           if (!$iid || !$sid) {
             // 登録がないときは処理をスキップ
             continue;
           } 
-
-          // 以下入力のない場合は、nullを入力する必要あり
-          // if($v['sort_num']){
-          //   $snum = $v['sort_num'];
-          // } else {
-          //   $snum = null;
-          // }
-          // if($v['value']){
-          //   $value = $v['value'];
-          // } else {
-          //   $value = null;
-          // }
-          // if($v['price']){
-          //   $price = $v['price'];
-          // } else {
-          //   $price = null;
-          // }
-          // if($v['catch_copy']){
-          //   $copy = $v['catch_copy'];
-          // } else {
-          //   $copy = null;
-          // }
-          // if($v['shelf_number']){
-          //   $shelf = $v['shelf_number'];
-          // } else {
-          //   $shelf = null;
-          // }
-          // if($v['stock_amount']){
-          //   $copy = $v['stock_amount'];
-          // } else {
-          //   $copy = null;
-          // }
-          // if($v['start_date']){
-          //   $sdate = date('Y-m-d H:i:s', strtotime($v['start_date'] .':00' ));
-          // } else {
-          //   $sdate = null;
-          // }
-          // if($v['end_date']){
-          //   $edate = date('Y-m-d H:i:s', strtotime($v['end_date'] .':00' ));
-          // } else {
-          //   $edate = null;
-          // }
 
           // 保存処理。saveで対応。
           $itemstore = ItemStore::where('item_id', $iid->id)->where('store_id', $sid->id)->first();

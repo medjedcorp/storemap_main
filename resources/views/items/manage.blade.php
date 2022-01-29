@@ -35,6 +35,14 @@
             <form method="get" action="{{ action('ItemStoreCsvExportController@download') }}" class="h-adr" enctype="multipart/form-data">
               @csrf
               @method('get')
+              @can('isAdmin')
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">company_id @include('partials.required') <small class="text-red">※Adminのみの項目</small></label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="company_id" name="company_id" placeholder="company_idを入力。セグメントして出力できます" value="{{ old('company_id') }}">
+                </div>
+              </div>
+              @endcan
               <button type="submit" class="btn btn-block btn-info btn-lg"><i class="fa fa-download"></i> @lang('csv.download')</button>
             </form>
           </div>
@@ -55,6 +63,14 @@
             <form method="post" action="{{ route('IS.importISCSV') }}" class="h-adr" enctype="multipart/form-data">
               @csrf
               @method('post')
+              @can('isAdmin')
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">company_id @include('partials.required')</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="company_id" name="company_id" placeholder="company_idを入力" value="{{ old('company_id') }}"><small class="text-red">※Adminのみの項目</small>
+                </div>
+              </div>
+              @endcan
               <div class="custom-file">
                 <input type="file" class="custom-file-input" id="file" name="file">
                 <label class="custom-file-label" for="file">@lang('item.manage.upload_label')</label>
@@ -93,6 +109,15 @@
                 </tr>
               </thead>
               <tbody>
+              @can('isAdmin')
+                <tr>
+                  <th>company_id</th>
+                  <td>company_id</td>
+                  <td><span class="text-danger">@lang('csv.required') 管理者(admin)のみの項目</span><br>company_idを指定することで、対象企業の情報を更新できます。バリデーションしてません</td>
+                  <td>数値のみ</td>
+                  <td><span class="text-danger">※取扱注意</span></td>
+                </tr>
+                @endcan
                 <tr>
                   <th>@lang('csv.item.code')</th>
                   <td>@lang('csv.item.product_code')</td>
