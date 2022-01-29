@@ -28,7 +28,12 @@ class ItemStoreCsvImportController extends Controller
   {
     // ジョブに渡すためのユーザ情報
     $user = Auth::user();
-    $cid  = $user->company_id;
+
+    if ($user->role === "admin") {
+      $cid = $request->company_id;
+    } else {
+      $cid = $user->company_id;
+    }
 
     // アップロードファイルに対してのバリデート。Serviceの呼び出し
     $validator = $this->csv_service->validateUploadFile($request);
@@ -48,7 +53,7 @@ class ItemStoreCsvImportController extends Controller
       $filename
     );
     // Queueに送信
-    ItemStoreImportCsvJob::dispatch($upload_filename, $filename, $user, $csv_path);
+    ItemStoreImportCsvJob::dispatch($upload_filename, $filename, $user, $csv_path, $cid);
     // 60分後にファイル削除
     CsvFileDeleteJob::dispatch($csv_path)->delay(now()->addMinutes(60));
 

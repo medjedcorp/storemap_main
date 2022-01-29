@@ -18,24 +18,34 @@ use Illuminate\Support\Facades\Storage; //ファイルアクセス
 class ItemStoreCsvExportController extends Controller
 {
 
-  public function download()
+  public function download(Request $request)
   {
     // カテゴリDBからデータを選別
     $user = Auth::user();
-    $cid = $user->company_id;
+    if ($user->role === "admin") {
+      $cid = $request->company_id;
+    } else {
+      $cid = $user->company_id;
+    }
 
-    // 取得する列を選択
-    // $item_store = DB::table('item_store')
-    $item_store = ItemStore::leftJoin('items', 'items.id', '=', 'item_store.item_id')
-      // ->leftJoin('items','items.id','=','item_store.item_id')
-      ->leftJoin('stores', 'stores.id', '=', 'item_store.store_id')
-      ->where('items.company_id', '=', $cid)
-      ->select(['items.product_code', 'stores.store_code', 'price_type', 'price', 'value', 'start_date', 'end_date', 'sort_num', 'stock_amount', 'stock_set', 'catch_copy', 'shelf_number', 'selling_flag'])->get();
-    // dd($item_store);
-    // 文字コード変換
+    if ($user->role === "admin") {
+      // 取得する列を選択
+      $item_store = ItemStore::leftJoin('items', 'items.id', '=', 'item_store.item_id')
+        // ->leftJoin('items','items.id','=','item_store.item_id')
+        ->leftJoin('stores', 'stores.id', '=', 'item_store.store_id')
+        ->where('items.company_id', '=', $cid)
+        ->select(['items.company_id', 'items.product_code', 'stores.store_code', 'price_type', 'price', 'value', 'start_date', 'end_date', 'sort_num', 'stock_amount', 'stock_set', 'catch_copy', 'shelf_number', 'selling_flag'])->get();
+    } else {
+      // 取得する列を選択
+      $item_store = ItemStore::leftJoin('items', 'items.id', '=', 'item_store.item_id')
+        // ->leftJoin('items','items.id','=','item_store.item_id')
+        ->leftJoin('stores', 'stores.id', '=', 'item_store.store_id')
+        ->where('items.company_id', '=', $cid)
+        ->select(['items.product_code', 'stores.store_code', 'price_type', 'price', 'value', 'start_date', 'end_date', 'sort_num', 'stock_amount', 'stock_set', 'catch_copy', 'shelf_number', 'selling_flag'])->get();
+    }
 
     $count = count($item_store);
-
+    // 文字コード変換
     if ($count === 0) {
       return Storage::disk('local')->download('csv_template/management_template.csv');
     } else {
