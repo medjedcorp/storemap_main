@@ -22,7 +22,6 @@ function keyCateItemSet($store_data, $keyword, $smids){
             });
         })->first();
 
-
       // 件数もカウント
       $count_item = ItemStore::where('store_id', $store->id)->ActiveStock()->ItemSort()->with('item')
         ->whereIn('item_store.item_id', function ($query) use ($keyword, $smids) {

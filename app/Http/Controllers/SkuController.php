@@ -127,60 +127,6 @@ class SkuController extends Controller
             $iVal = collect($iList);
             $iVal->put('price_set', $priceSet);
             $item_lists[] = $iVal;
-            // dd($itemList);
-            
-            // $itemList->push($iList);
-            // if (isset($itemList->start_date) and isset($itemList->end_date)) {
-            //     $start_date = new Carbon($itemList->start_date); // セール開始時刻を取得
-            //     $end_date = new Carbon($itemList->end_date); // セール終了時刻を取得
-            //   } else {
-            //     // startdate 代入するとき外に出す必要ある…
-            //     $start_date = NULL;
-            //     $end_date = NULL;
-            //   }
-            
-            //   $now = Carbon::now(); // 現在時刻を取得
-              
-            //   if (Carbon::parse($now)->between($start_date, $end_date) and isset($itemList->value)) {
-            //     // 開始時刻と終了時刻の間に現在時刻があり、セール価格に登録がある場合
-            //     $price_num = number_format($itemList->value); //３桁区切り
-            //     switch ($itemList->price_type) {
-            //         // セール価格を出力
-            //       case '0':
-            //         $price = 'SALE:<span class="price">' . $price_num . '</span>円';
-            //         break;
-            //       case '1':
-            //         $price = 'SALE:～<span class="price">' . $price_num . '</span>円';
-            //         break;
-            //       case '2':
-            //         $price = 'SALE:<span class="price">' . $price_num . '</span>円～';
-            //         break;
-            //     }
-            //   } else {
-            //     //　それ以外の場合
-            //     if (isset($itemList->price)) {
-            //       // 通常価格が設定されている場合
-            //       $price_num = number_format($itemList->price); //３桁区切り
-            //       switch ($itemList->price_type) {
-            //         case '0':
-            //           $price = '価格:<span class="price">' . $price_num . '</span>円';
-            //           break;
-            //         case '1':
-            //           $price = '価格:～<span class="price">' . $price_num . '</span>円';
-            //           break;
-            //         case '2':
-            //           $price = '価格:<span class="price">' . $price_num . '</span>円～';
-            //           break;
-            //       }
-            //     } elseif (isset($itemList->item->original_price)) {
-            //       //　通常価格に設定がない場合、定価を出力
-            //       $price_num = number_format($itemList->item->original_price); //３桁区切り
-            //       $price = '定価:<span class="price">' . $price_num . '</span>円';
-            //     } else {
-            //       // 定価の設定も空欄の場合
-            //       $price = 'オープン価格';
-            //     }
-            //   }
         }
         // dd($item_lists);
 

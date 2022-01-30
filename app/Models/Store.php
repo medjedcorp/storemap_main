@@ -106,27 +106,19 @@ class Store extends Model
 
     public function scopeActiveStore($query)
     {
+        $display_company = Company::where('display_flag', 1)->pluck('id');
+        return $query->whereIn('stores.company_id', $display_company)
+        ->where('stores.pause_flag', '=', '1');
     
         // stripeのstatusがactiveか、trialingの場合取得
-        $status = ['active', 'trialing'];
-        $subscriptions = Subscription::whereIn('stripe_status', $status)->pluck('company_id');
-        // 公開状態の会社ID
-        $display_company = Company::where('display_flag', 1)->pluck('id');
-        // dd($subscriptions);
-        return $query->whereIn('stores.company_id', $subscriptions)
-        ->whereIn('stores.company_id', $display_company)
-        ->where('stores.pause_flag', '=', '1');
-        // return $query->where('stores.pause_flag', '=', '1');
-        // return $query->whereIn('stores.company_id', $clist)->where('stores.pause_flag', '=', '1');
-        // dd($query);
-        // $company = Company::get();
-        // $company = Company::all();
-        // $company = Company::where('id', 1)->first();
-        // dd($company);
-        // $subscriptions = $company->subscription('main')->first();
-        // $subscriptions = $company->subscription('main')->get();
-        // dd($subscriptions);
-        // return $query->whereIn('stores.company_id', $subscriptions->company_id)->where('stores.pause_flag', '=', '1');
+        // $status = ['active', 'trialing'];
+        // $subscriptions = Subscription::whereIn('stripe_status', $status)->pluck('company_id');
+        // // 公開状態の会社ID
+        // $display_company = Company::where('display_flag', 1)->pluck('id');
+        // // dd($subscriptions);
+        // return $query->whereIn('stores.company_id', $subscriptions)
+        // ->whereIn('stores.company_id', $display_company)
+        // ->where('stores.pause_flag', '=', '1');
     }
 
     // 店舗表示設定。ディスプレイフラグが０は表示するor在庫が0の場は非表示

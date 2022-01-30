@@ -109,7 +109,7 @@
             </thead>
             <tbody>
               @foreach($valiations as $val)
-              <tr data-href="/item/{{$val->company_id}}/{{$val->product_code}}">
+              <tr data-href="/item/{{$val->store_id}}/{{$val->product_code}}">
                 <td>{{$loop->iteration}}.</td>
                 <td class="text-truncate">
                   {{-- @dd($val) --}}
