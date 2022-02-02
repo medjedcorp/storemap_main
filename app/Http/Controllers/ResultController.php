@@ -15,6 +15,7 @@ use App\Models\StoremapCategory;
 use App\Models\Prefecture;
 use Carbon\Carbon;
 use DB;
+use Illuminate\Support\Facades\Log;
 
 // https://github.com/lazychaser/laravel-nestedsetを使ってます
 
@@ -32,7 +33,7 @@ class ResultController extends Controller
     $req_pref = $request->pref;
     $req_city = $request->city;
     $req_ward = $request->ward;
-
+    $limitStores = config('services.limit_stores');
     // dd($req_pref, $lat ,$lng);
 
     // 位置情報を拒否した場合、latとlngがない。
@@ -102,7 +103,7 @@ class ResultController extends Controller
         ->selectRaw("id,store_name,store_img1,store_postcode,prefecture,store_city,store_adnum,store_apart,store_phone_number,store_email,store_info,ST_X( location ) As latitude, ST_Y( location ) As longitude, ROUND(ST_LENGTH(ST_GEOMFROMTEXT( CONCAT('LineString( " . $lat . " " . $lng . " , ' , ST_X( location ),' ', ST_Y( location ),')'))) * 112.12 * 1000 ) AS distance") // 距離を計測。distanceに距離を代入
         ->orderByRaw('distance IS NULL ASC') // Nullは最後尾に
         ->orderBy('distance', 'ASC') //遠い順、近い順
-        ->limit(200)
+        ->limit($limitStores)
         ->get();
     } elseif ($req_pref && $req_city && !$req_ward) {
       // 市役所位置設定
@@ -123,7 +124,7 @@ class ResultController extends Controller
           ->selectRaw("id,store_name,store_img1,store_postcode,prefecture,store_city,store_adnum,store_apart,store_phone_number,store_email,store_info,ST_X( location ) As latitude, ST_Y( location ) As longitude, ROUND(ST_LENGTH(ST_GEOMFROMTEXT( CONCAT('LineString( " . $lat . " " . $lng . " , ' , ST_X( location ),' ', ST_Y( location ),')'))) * 112.12 * 1000 ) AS distance") // 距離を計測。distanceに距離を代入
           ->orderByRaw('distance IS NULL ASC') // Nullは最後尾に
           ->orderBy('distance', 'ASC') //遠い順、近い順
-          ->limit(200)
+          ->limit($limitStores)
           ->get();
       } else {
         $req_city = $first_place->city;
@@ -134,7 +135,7 @@ class ResultController extends Controller
           ->selectRaw("id,store_name,store_img1,store_postcode,prefecture,store_city,store_adnum,store_apart,store_phone_number,store_email,store_info,ST_X( location ) As latitude, ST_Y( location ) As longitude, ROUND(ST_LENGTH(ST_GEOMFROMTEXT( CONCAT('LineString( " . $lat . " " . $lng . " , ' , ST_X( location ),' ', ST_Y( location ),')'))) * 112.12 * 1000 ) AS distance") // 距離を計測。distanceに距離を代入
           ->orderByRaw('distance IS NULL ASC') // Nullは最後尾に
           ->orderBy('distance', 'ASC') //遠い順、近い順
-          ->limit(200)
+          ->limit($limitStores)
           ->get();
       }
     } elseif ($req_pref && !$req_city && !$req_ward) {
@@ -161,7 +162,7 @@ class ResultController extends Controller
           ->selectRaw("id,store_name,store_img1,store_postcode,prefecture,store_city,store_adnum,store_apart,store_phone_number,store_email,store_info,ST_X( location ) As latitude, ST_Y( location ) As longitude, ROUND(ST_LENGTH(ST_GEOMFROMTEXT( CONCAT('LineString( " . $lat . " " . $lng . " , ' , ST_X( location ),' ', ST_Y( location ),')'))) * 112.12 * 1000 ) AS distance") // 距離を計測。distanceに距離を代入
           ->orderByRaw('distance IS NULL ASC') // Nullは最後尾に
           ->orderBy('distance', 'ASC') //遠い順、近い順
-          ->limit(200)
+          ->limit($limitStores)
           ->get();
       } else {
         $req_city = $first_place->city;
@@ -174,7 +175,7 @@ class ResultController extends Controller
           ->selectRaw("id,store_name,store_img1,store_postcode,prefecture,store_city,store_adnum,store_apart,store_phone_number,store_email,store_info,ST_X( location ) As latitude, ST_Y( location ) As longitude, ROUND(ST_LENGTH(ST_GEOMFROMTEXT( CONCAT('LineString( " . $lat . " " . $lng . " , ' , ST_X( location ),' ', ST_Y( location ),')'))) * 112.12 * 1000 ) AS distance") // 距離を計測。distanceに距離を代入
           ->orderByRaw('distance IS NULL ASC') // Nullは最後尾に
           ->orderBy('distance', 'ASC') //遠い順、近い順
-          ->limit(200)
+          ->limit($limitStores)
           ->get();
 
         // $store_data = Store::where('prefecture', $first_place->region)
@@ -207,11 +208,12 @@ class ResultController extends Controller
       // ->get();
 
       // 自分の位置から、近いお店を２００件取得
+      
       $store_data = Store::ActiveStore()
         ->selectRaw("id,store_name,store_img1,store_postcode,prefecture,store_city,store_adnum,store_apart,store_phone_number,store_email,store_info,ST_X( location ) As latitude, ST_Y( location ) As longitude, ROUND(ST_LENGTH(ST_GEOMFROMTEXT( CONCAT('LineString( " . $lat . " " . $lng . " , ' , ST_X( location ),' ', ST_Y( location ),')'))) * 112.12 * 1000 ) AS distance") // 距離を計測。distanceに距離を代入
         ->orderByRaw('distance IS NULL ASC') // Nullは最後尾に
         ->orderBy('distance', 'ASC') //遠い順、近い順
-        ->limit(200)
+        ->limit($limitStores)
         ->get();
 
 
@@ -243,13 +245,17 @@ class ResultController extends Controller
     } elseif (!$smid && $keyword) {
       $store_items = keywordItemSet($store_data, $keyword);
       // dd($store_items, $store_data, $keyword);
+      // dd($store_items);
     } elseif ($smid && !$keyword) {
       $store_items = smCateItemSet($store_data, $smids);
     } else {
       $store_items = itemSet($store_data);
+      // Log::debug($store_items);
     }
 
+    // Log::debug($store_items);
     $store_items = collect($store_items); // 配列をコレクションに変換
+    // Log::debug($store_items);
     // dd($store_items);
     // dd($store_items,$low_cates,$keyword, $smid, $lat, $lng, $sm_name, $psmid, $prefectures, $req_pref, $req_city, $req_ward);
     return view('result', compact('store_items', 'low_cates', 'keyword', 'smid', 'lat', 'lng', 'sm_name', 'psmid', 'prefectures', 'req_pref', 'req_city', 'req_ward'));
