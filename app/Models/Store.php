@@ -108,7 +108,7 @@ class Store extends Model
     {
         $display_company = Company::where('display_flag', 1)->pluck('id');
         return $query->whereIn('stores.company_id', $display_company)
-        ->where('stores.pause_flag', '=', '1');
+        ->where('stores.pause_flag', 1);
     
         // stripeのstatusがactiveか、trialingの場合取得
         // $status = ['active', 'trialing'];

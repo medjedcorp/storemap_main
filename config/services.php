@@ -14,6 +14,9 @@ return [
     |
     */
 
+    // 検索時に取得する店舗数。増やすとアップ
+    'limit_stores' => 200,
+
     'email' => [
         'master' => 'master@storemap.jp',
         'support' => 'smsupport@storemap.jp',

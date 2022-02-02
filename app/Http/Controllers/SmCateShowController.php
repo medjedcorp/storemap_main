@@ -12,6 +12,7 @@ use App\Models\ItemStore;
 use App\Models\StoremapCategory;
 use Carbon\Carbon;
 use DB;
+use Illuminate\Support\Facades\Log;
 
 // https://github.com/lazychaser/laravel-nestedsetを使ってます
 
@@ -228,6 +229,7 @@ class SmCateShowController extends Controller
       }
     }
     $store_items = collect($store_items); // 配列をコレクションに変換
+
     // dd($low_cates);
     // dd($items,$count_item);
     // dd($items,$count_item,$count_item2 );
