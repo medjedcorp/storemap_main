@@ -66,13 +66,10 @@ class AjaxSmcateController extends Controller
       $store_items = keyCateItemSet($store_data, $keyword, $smids);
     } elseif (!$smid && $keyword) {
       $store_items = keywordItemSet($store_data, $keyword);
-      // dd($store_items, $store_data, $keyword);
-      // dd($store_items);
     } elseif ($smid && !$keyword) {
       $store_items = smCateItemSet($store_data, $smids);
     } else {
       $store_items = itemSet($store_data);
-      // Log::debug($store_items);
     }
 
     // Log::debug($store_items);

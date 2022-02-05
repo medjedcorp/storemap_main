@@ -174,7 +174,7 @@ Route::middleware('verified')->group(function () {
       Route::post('/stores/data', 'StoreCsvImportController@importStoreCSV')->name('store.importStoreCSV');
       Route::get('/stores/data/StoreTempFileDownload', 'StoreCsvExportController@StoreTempFileDownload');
       Route::get('/stores/data/download', 'StoreCsvExportController@download');
-      
+
       Route::group(['middleware' => ['auth', 'can:isFree']], function () {
         //　ストア登録と削除は管理者のみ、middlewareは課金管理
         Route::get('/stores/create', 'StoreController@create')->name('stores.create')->middleware('AddStore');
@@ -256,7 +256,7 @@ Route::middleware('verified')->group(function () {
       Route::get('/album/stores', 'AlbumStoreController@index')->name('album.store.index');
       Route::get('/album/items', 'AlbumItemController@index')->name('album.item.index');
       Route::delete('/album/items/delete', 'AlbumItemController@destroy')->name('album.item.destroy');
-      
+
       Route::delete('/album/stores/delete', 'AlbumStoreController@destroy')->name('album.store.destroy');
 
       // カタログ
@@ -300,27 +300,27 @@ Route::middleware('verified')->group(function () {
       Route::get('/home', 'HomeController@index')->name('home');
 
       // ベーシックプラン以上利用可能
-      Route::group(['middleware' => ['auth', 'can:basic']], function () {
-        Route::group(['middleware' => ['auth', 'can:isSeller']], function () {
-          // スマレジ在庫価格更新API
-          Route::get('/config/sr-update', 'SmaregiUpdateController@show')->name('sr.product_ref');
-          Route::post('/config/sr-update/data', 'SmarejiCsvImportController@importCSV')->name('sr.importCSV');
-          Route::get('/config/sr-update/stfdownload', 'SmaregiUpdateController@SmarejiTempFileDownload');
+      // Route::group(['middleware' => ['auth', 'can:basic']], function () {
+      Route::group(['middleware' => ['auth', 'can:isApiUser']], function () {
+        // スマレジ在庫価格更新API
+        Route::get('/config/sr-update', 'SmaregiUpdateController@show')->name('sr.product_ref');
+        Route::post('/config/sr-update/data', 'SmarejiCsvImportController@importCSV')->name('sr.importCSV');
+        Route::get('/config/sr-update/stfdownload', 'SmaregiUpdateController@SmarejiTempFileDownload');
 
-          // スマレジ商品情報取り込みAPI
-          Route::get('/config/sr-import', 'SmaregiImportController@show')->name('sr.product_import');
-          Route::post('/config/sr-import/store', 'SmaregiImportController@store')->name('sr.tokensave');
-          Route::post('/config/sr-import/product', 'SmaregiImportController@productStore')->name('sr.productStore');
-          Route::post('/config/sr-import/allproduct', 'SmaregiImportController@productAllStore')->name('sr.productAllStore');
-          // Route::post('/config/sr-import/stores_id', 'SmaregiImportController@storesId')->name('sr.storeSave');
+        // スマレジ商品情報取り込みAPI
+        Route::get('/config/sr-import', 'SmaregiImportController@show')->name('sr.product_import');
+        Route::post('/config/sr-import/store', 'SmaregiImportController@store')->name('sr.tokensave');
+        Route::post('/config/sr-import/product', 'SmaregiImportController@productStore')->name('sr.productStore');
+        Route::post('/config/sr-import/allproduct', 'SmaregiImportController@productAllStore')->name('sr.productAllStore');
+        // Route::post('/config/sr-import/stores_id', 'SmaregiImportController@storesId')->name('sr.storeSave');
 
-          // 汎用API
-          Route::get('/config/import', 'CommonApiShowController@show');
-          Route::post('/config/import/store', 'CommonApiShowController@store')->name('sm.useApi');
-          Route::post('/config/import/generate', 'CommonApiShowController@generateApiKey')->name('sm.generate');
-          Route::post('/config/import/delete', 'CommonApiShowController@destroy')->name('sm.apiDel');
-        });
+        // 汎用API
+        Route::get('/config/import', 'CommonApiShowController@show');
+        Route::post('/config/import/store', 'CommonApiShowController@store')->name('sm.useApi');
+        Route::post('/config/import/generate', 'CommonApiShowController@generateApiKey')->name('sm.generate');
+        Route::post('/config/import/delete', 'CommonApiShowController@destroy')->name('sm.apiDel');
       });
+      // });
 
       // システム アドミンのみ
       Route::group(['middleware' => ['auth', 'can:isAdmin']], function () {
