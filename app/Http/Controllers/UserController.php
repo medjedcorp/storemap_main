@@ -33,12 +33,12 @@ class UserController extends Controller
     if ($user->role === 'admin') {
       if (isset($keyword)) {
         // カンパニーIDでセグメントしてから、orWhereのいずれかにあてはまったものを抽出
-        $users = User::select(['id', 'name', 'email', 'role', 'company_id', 'role'])->where(function ($query) use ($keyword) {
+        $users = User::select(['id', 'name', 'email', 'role', 'company_id'])->where(function ($query) use ($keyword) {
           $query->orWhere('name', 'like', '%' . $keyword . '%')
             ->orWhere('email', 'like', '%' . $keyword . '%');
         })->sortable()->paginate(20);
       } else {
-        $users = User::select(['id', 'name', 'email', 'role', 'company_id', 'role'])->sortable()->paginate(20); // ページ作成
+        $users = User::select(['id', 'name', 'email', 'role', 'company_id'])->sortable()->paginate(20); // ページ作成
       }
       $count = User::count();
     } else {

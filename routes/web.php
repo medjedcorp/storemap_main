@@ -49,6 +49,7 @@ Route::post('regicom/thanks', 'RegistCompnayController@confirm')->name('regicom.
 // Route::post('regicom/thanks', 'ContactController@thanks')->name('regicom.thanks');
 
 Route::get('/result', 'ResultController@show');
+Route::get('/sp-result', 'ResultController@show');
 // Route::get('/result/{pref}', 'ResultController@pref');
 
 Route::get('ajax/smcate', 'Ajax\AjaxSmcateController@index');

@@ -51,10 +51,12 @@
         <div class="card">
           <div class="card-body">
             <div class="row">
+              <div class="col-md-12">
+                <a href="/regicom" class="btn btn-block bg-gradient-danger btn-lg mb-3" style="line-height: 3.5rem;"><span class="h2 font-weight-bold" style="vertical-align: middle;"><i class="fas fa-file-signature"></i> 掲載店新規登録はこちら</span></a>
+              </div>
               <div class="post">
                 <h1 class="card-title col-12 mb-5"><img src="{{ asset('img/keisai.gif') }}" alt="ストアマップ[storemap]に掲載して、あなたのお店の商品をPRしませんか？" style="max-width:100%;""></h1>
               </div>
-
               <div class=" post">
                   <h2 class=" text-center col-12 text-danger mb-4"><strong>お店で販売中の商品を、地図上に掲載しませんか？</strong></h2>
                   <div class="row">
@@ -261,7 +263,7 @@
               </div>
             </div>
             <div class="col-md-12">
-              <a href="/regicom" class="btn btn-block bg-gradient-danger btn-lg mb-3" style="line-height: 3.5rem;"><span class="h2 font-weight-bold" style="vertical-align: middle;"><i class="fas fa-file-signature"></i> 新規登録はこちら</span></a>
+              <a href="/regicom" class="btn btn-block bg-gradient-danger btn-lg mb-3" style="line-height: 3.5rem;"><span class="h2 font-weight-bold" style="vertical-align: middle;"><i class="fas fa-file-signature"></i> 掲載店新規登録はこちら</span></a>
             </div>
             <div class="col-md-12">
               <a href="/contact" class="btn btn-block btn-primary btn-lg mb-3"><i class="far fa-envelope"></i> お問い合わせ</a>
@@ -311,10 +313,6 @@
         </div>
         <!-- /.card -->
       </div>
-
-      <div class="col-12">
-        @include('partials.footerlink')
-      </div>
     </div>
   </div>
 
@@ -323,8 +321,10 @@
 @stop
 
 @section('footer')
-<div class="float-right d-none d-sm-block">{!! config('const.manage.version') !!}</div>
-{!! config('const.manage.footer') !!}
+<div class="footer-area">
+  <div class="float-right d-none d-sm-block">{!! config('const.manage.version') !!}</div>
+  {!! config('const.manage.footer') !!}
+</div>
 @stop
 
 @section('css')

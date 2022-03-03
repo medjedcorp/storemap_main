@@ -87,10 +87,6 @@
         </div>
         <!-- /.card -->
       </div>
-
-      <div class="col-12">
-        @include('partials.footerlink')
-      </div>
       <!-- /.row -->
     </div>
   </div><!-- /.container-fluid -->
@@ -99,8 +95,10 @@
 @stop
 
 @section('footer')
-<div class="float-right d-none d-sm-block">{!! config('const.manage.version') !!}</div>
-{!! config('const.manage.footer') !!}
+<div class="footer-area">
+  <div class="float-right d-none d-sm-block">{!! config('const.manage.version') !!}</div>
+  {!! config('const.manage.footer') !!}
+</div>
 @stop
 
 @section('css')

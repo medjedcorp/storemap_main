@@ -34,23 +34,17 @@ class ResultController extends Controller
     $req_city = $request->city;
     $req_ward = $request->ward;
     $limitStores = config('services.limit_stores');
-    // dd($req_pref, $lat ,$lng);
 
-    // 位置情報を拒否した場合、latとlngがない。
-    if ($req_pref === null and $lat === null and $lng === null) {
-      // if ($req_pref === "" and $lat === "" and $lng === "") {
-      // var_dump($req_pref, $lat, $lng);
-      return view("/result")->with([
-        'warning' => '※位置情報の取得に失敗しました。',
-      ]);
+    //端末判断
+    $user_agent = $request->header('User-Agent');
+    if ((strpos($user_agent, 'iPhone') !== false)
+      || (strpos($user_agent, 'iPod') !== false)
+      || (strpos($user_agent, 'Android') !== false)
+    ) {
+      $terminal = 'sp';
+    } else {
+      $terminal = 'pc';
     }
-    // if (empty($req_pref) and empty($lat) and empty($lng)) {
-    //   var_dump($req_pref, $lat, $lng);
-    //   return redirect("/result")->with([
-    //     'warning' => '※位置情報の取得に失敗しました。error_015',
-    //   ]);
-    // }
-    // dd($req_pref);
 
     // SMカテ作成
     if ($smid) {
@@ -87,6 +81,47 @@ class ResultController extends Controller
       $prefectures = $pref->groupBy('region')->transform(function ($pref) {
         return $pref->groupBy('city');
       });
+    }
+
+    // 位置情報を拒否した場合、latとlngがない。
+    if ($req_pref === null and $lat === null and $lng === null) {
+      if ($terminal === 'pc') {
+        // pc 端末用
+        return view("/result")->with([
+          'warning' => '※位置情報の取得に失敗しました。',
+          'store_items' => null,
+          'low_cates' => $low_cates,
+          'sm_name' => $sm_name,
+          'psmid' => $psmid,
+          'keyword' => null,
+          'req_pref' => $req_pref,
+          'req_city' => $req_city,
+          'req_ward' => $req_ward,
+          'req_ward' => $req_ward,
+          'lat' => null,
+          'lng' => null,
+          'prefectures' => $prefectures,
+          'smid' => null
+        ]);
+      } else {
+        // sp 端末用
+         return view("/sp-result")->with([
+          'warning' => '※位置情報の取得に失敗しました。',
+          'store_items' => null,
+          'low_cates' => $low_cates,
+          'sm_name' => $sm_name,
+          'psmid' => $psmid,
+          'keyword' => null,
+          'req_pref' => $req_pref,
+          'req_city' => $req_city,
+          'req_ward' => $req_ward,
+          'req_ward' => $req_ward,
+          'lat' => null,
+          'lng' => null,
+          'prefectures' => $prefectures,
+          'smid' => null
+        ]);
+      }
     }
 
     if ($req_pref && $req_city && $req_ward) {
@@ -142,9 +177,41 @@ class ResultController extends Controller
       $first_place = Prefecture::where('region', $req_pref)->selectRaw("id,code,region,city,ward,ST_X( location ) As latitude, ST_Y( location ) As longitude ")->first();
 
       if (empty($first_place->latitude)) {
-        return redirect("/result")->with([
-          'warning' => '※位置情報の取得に失敗しました。',
-        ]);
+        if ($terminal === 'pc') {
+          return view("/result")->with([
+            'warning' => '※位置情報の取得に失敗しました。',
+            'store_items' => null,
+            'low_cates' => $low_cates,
+            'sm_name' => $sm_name,
+            'psmid' => $psmid,
+            'keyword' => null,
+            'req_pref' => $req_pref,
+            'req_city' => $req_city,
+            'req_ward' => $req_ward,
+            'req_ward' => $req_ward,
+            'lat' => null,
+            'lng' => null,
+            'prefectures' => $prefectures,
+            'smid' => null
+          ]);
+        } else {
+          return view("/sp-result")->with([
+            'warning' => '※位置情報の取得に失敗しました。',
+            'store_items' => null,
+            'low_cates' => $low_cates,
+            'sm_name' => $sm_name,
+            'psmid' => $psmid,
+            'keyword' => null,
+            'req_pref' => $req_pref,
+            'req_city' => $req_city,
+            'req_ward' => $req_ward,
+            'req_ward' => $req_ward,
+            'lat' => null,
+            'lng' => null,
+            'prefectures' => $prefectures,
+            'smid' => null
+          ]);
+        }
       } else {
         $lat = $first_place->latitude;
         $lng = $first_place->longitude;
@@ -177,15 +244,6 @@ class ResultController extends Controller
           ->orderBy('distance', 'ASC') //遠い順、近い順
           ->limit($limitStores)
           ->get();
-
-        // $store_data = Store::where('prefecture', $first_place->region)
-        //   ->where('store_city', 'like', '%' . $first_place->city . '%')
-        //   ->ActiveStore()
-        //   ->selectRaw("id,store_name,store_img1,store_postcode,prefecture,store_city,store_adnum,store_apart,store_phone_number,store_email,store_info,ST_X( location ) As latitude, ST_Y( location ) As longitude, ROUND(ST_LENGTH(ST_GEOMFROMTEXT( CONCAT('LineString( " . $lat . " " . $lng . " , ' , ST_X( location ),' ', ST_Y( location ),')'))) * 112.12 * 1000 ) AS distance") // 距離を計測。distanceに距離を代入
-        //   ->orderByRaw('distance IS NULL ASC') // Nullは最後尾に
-        //   ->orderBy('distance', 'ASC') //遠い順、近い順
-        //   ->limit(200)
-        //   ->get();
       }
     } else {
       // 近隣のお店２００件取得
@@ -208,36 +266,13 @@ class ResultController extends Controller
       // ->get();
 
       // 自分の位置から、近いお店を２００件取得
-      
+
       $store_data = Store::ActiveStore()
         ->selectRaw("id,store_name,store_img1,store_postcode,prefecture,store_city,store_adnum,store_apart,store_phone_number,store_email,store_info,ST_X( location ) As latitude, ST_Y( location ) As longitude, ROUND(ST_LENGTH(ST_GEOMFROMTEXT( CONCAT('LineString( " . $lat . " " . $lng . " , ' , ST_X( location ),' ', ST_Y( location ),')'))) * 112.12 * 1000 ) AS distance") // 距離を計測。distanceに距離を代入
         ->orderByRaw('distance IS NULL ASC') // Nullは最後尾に
         ->orderBy('distance', 'ASC') //遠い順、近い順
         ->limit($limitStores)
         ->get();
-
-
-
-      // var_dump($lat, $lng, $sql);
-
-
-      // $store_data = Store::ActiveStore()
-      //   ->selectRaw("id,store_name,store_img1,store_postcode,prefecture,store_city,store_adnum,store_apart,store_phone_number,store_email,store_info,ST_X( location ) As latitude, ST_Y( location ) As longitude, ROUND(ST_LENGTH(ST_GEOMFROMTEXT( CONCAT( 'LINESTRING( {$lat} {$lng} , ', ST_X( location ) ,  ' ', ST_Y( location ) , ')' ))) * 112.12 * 1000 ) AS distance") // 距離を計測。distanceに距離を代入
-      //   ->orderByRaw('distance IS NULL ASC') // Nullは最後尾に
-      //   ->orderBy('distance', 'ASC') //遠い順、近い順
-      //   ->limit(200)
-      //   ->get();
-
-
-
-      // $store_data = Store::ActiveStore()
-      //   ->selectRaw("id,store_name,store_img1,store_postcode,prefecture,store_city,store_adnum,store_apart,store_phone_number,store_email,store_info,ST_X( location ) As latitude, ST_Y( location ) As longitude, ROUND(ST_LENGTH(ST_GEOMFROMTEXT( CONCAT( 'LINESTRING( " . $lat . " " . $lng . " , ', ST_X( location ) ,  ' ', ST_Y( location ) , ')' ))) * 112.12 * 1000 ) AS distance") // 距離を計測。distanceに距離を代入
-      //   ->orderByRaw('distance IS NULL ASC') // Nullは最後尾に
-      //   ->orderBy('distance', 'ASC') //遠い順、近い順
-      //   ->limit(200)
-      //   ->get();
-
-      // dd($store_data , $lat ,$lng);
     }
 
     if ($smid && $keyword) {
@@ -255,9 +290,11 @@ class ResultController extends Controller
 
     // Log::debug($store_items);
     $store_items = collect($store_items); // 配列をコレクションに変換
-    // Log::debug($store_items);
-    // dd($store_items);
-    // dd($store_items,$low_cates,$keyword, $smid, $lat, $lng, $sm_name, $psmid, $prefectures, $req_pref, $req_city, $req_ward);
-    return view('result', compact('store_items', 'low_cates', 'keyword', 'smid', 'lat', 'lng', 'sm_name', 'psmid', 'prefectures', 'req_pref', 'req_city', 'req_ward'));
+
+    if ($terminal === 'pc') {
+    return view('/result', compact('store_items', 'low_cates', 'keyword', 'smid', 'lat', 'lng', 'sm_name', 'psmid', 'prefectures', 'req_pref', 'req_city', 'req_ward'));
+    } else {
+      return view('/sp-result', compact('store_items', 'low_cates', 'keyword', 'smid', 'lat', 'lng', 'sm_name', 'psmid', 'prefectures', 'req_pref', 'req_city', 'req_ward'));
+    }
   }
 }
