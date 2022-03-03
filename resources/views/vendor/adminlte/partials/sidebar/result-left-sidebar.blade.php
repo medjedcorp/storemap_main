@@ -51,6 +51,7 @@
                     </a>
                 </li>
                 @endisset
+                @isset($low_cates)
                 @foreach($low_cates as $low_cate)
                 <li class="nav-item no-wrap mw-100">
                     <a class="nav-link" href="javascript:form1[{{$loop->index}}].submit()">
@@ -69,7 +70,7 @@
                     </a>
                 </li>
                 @endforeach
-
+                @endisset
                 <li class="nav-header mw-100">都道府県を選択</li>
                 @foreach($prefectures as $pref=>$cities)
                 <li class="nav-item has-treeview mw-100 @isset($req_pref) @if($pref == $req_pref) menu-open @endif @endisset">

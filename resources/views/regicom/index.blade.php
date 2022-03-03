@@ -271,9 +271,6 @@
         </div>
         <!-- /.card -->
       </div>
-      <div class="col-12">
-        @include('partials.footerlink')
-      </div>
       <!-- /.row -->
     </div>
   </div><!-- /.container-fluid -->
@@ -282,9 +279,12 @@
 @stop
 
 @section('footer')
-<div class="float-right d-none d-sm-block">{!! config('const.manage.version') !!}</div>
-{!! config('const.manage.footer') !!}
+<div class="footer-area">
+  <div class="float-right d-none d-sm-block">{!! config('const.manage.version') !!}</div>
+  {!! config('const.manage.footer') !!}
+</div>
 @stop
+
 
 @section('css')
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">

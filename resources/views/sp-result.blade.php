@@ -2,9 +2,9 @@
 
 @section('title', 'Storemap：ストアマップでの検索結果')
 
-{{-- @section('content_header')
-<h1>Dashboard</h1>
-@stop --}}
+@section('content_header')
+{{-- <h1>Dashboard</h1> --}}
+@stop
 
 @section('content')
 
@@ -15,14 +15,20 @@
     </div>
 </div>
 
-
-  <div id="target" ></div>
-
 <section class="content">
-  <div class="container-fluid mr-1 mt-2">
-      <div id="sidebox">
-        <!-- ここまでPCにする -->
-        <div class="card card-outline" id="pcitems">
+  <div class="container-fluid">
+
+    @isset($warning)
+    <div class="alert alert-warning alert-dismissible">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+      <h5><i class="icon fas fa-exclamation-triangle"></i> {{ $warning }}</h5>
+      位置情報を許可する
+    </div>
+    @endisset
+    
+    <div class="row">
+      <div id="sidebox" class="col-xl-5 col-12">
+        <div class="card card-secondary card-outline">
           <div class="card-header ui-sortable-handle" style="cursor: move;">
             <h3 class="card-title">
               <i class="fas fa-shopping-cart"></i>
@@ -43,42 +49,36 @@
               </ul>
             </div>
           </div>
+
           <div class="card-body item-scroll">
-            @isset($warning)
-            <div class="alert alert-warning alert-dismissible">
-              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-              <h5><i class="icon fas fa-exclamation-triangle"></i> {{ $warning }}</h5>
-              位置情報を許可してください
-            </div>
-            @endisset
             <div class="tab-content p-0">
               <!-- Morris chart - Sales -->
               <div class="tab-pane active " id="list-area">
                 <ul id="sidebar" class="products-list product-list-in-card pl-2 pr-2">
                   @isset($store_items)
-                    @forelse($store_items as $store_item)
-                      <li class="item">
-                        <div class="product-img">
-                          <img src="{{ asset('img/no_image.png') }}" data-src="/storage/{{$store_item['company_id']}}/items/{{$store_item['item_img1']}}" alt="{{$store_item['store_name']}} / {{$store_item['product_name']}}" class="img-size-64 lazyload" decoding="async" onerror="this.src='{{ asset('img/no_image.png') }}';">
+                  @forelse($store_items as $store_item)
+                  <li class="item">
+                    <div class="product-img">
+                      <img src="{{ asset('img/no_image.png') }}" data-src="/storage/{{$store_item['company_id']}}/items/{{$store_item['item_img1']}}" alt="{{$store_item['store_name']}} / {{$store_item['product_name']}}" class="img-size-64 lazyload" decoding="async" onerror="this.src='{{ asset('img/no_image.png') }}';">
+                    </div>
+                    <div class="product-info">
+                      <a href="#target" onclick="myclick({{@$loop->index}})" id="event{{@$loop->index}}" class="product-title">
+                        {{$store_item['product_name']}}
+                        <div class="float-right">
+                          <h6 class="text-right"><span class="badge badge-danger">{!! $store_item['price'] !!}</span></h6>
+                          <h6 class="text-right"><span class="badge badge-success" style="display:block;"> 距離:約{{$store_item['distance']}}</span></h6>
+                          <h6 class="text-right"><span class="badge badge-warning" style="display:block;">{{ $store_item['stocks'] }}</span></h6>
                         </div>
-                        <div class="product-info">
-                          <a href="javascript:void(0)" onclick="myclick({{@$loop->index}})" id="event{{@$loop->index}}" class="product-title">
-                            {{$store_item['product_name']}}
-                            <div class="float-right">
-                              <h6 class="text-right"><span class="badge badge-danger">{!! $store_item['price'] !!}</span></h6>
-                              <h6 class="text-right"><span class="badge badge-success" style="display:block;"> 距離:約{{$store_item['distance']}}</span></h6>
-                              <h6 class="text-right"><span class="badge badge-warning" style="display:block;">{{ $store_item['stocks'] }}</span></h6>
-                            </div>
-                            <span class="product-description">
-                              <i class="fas fa-store"></i>&nbsp;{{$store_item['store_name']}}
-                            </span>
-                            <small class="text-muted">Last updated&nbsp;{{$store_item['updated_at']}}<br>他{{$store_item['count']}}件のHit</small>
-                          </a>
-                        </div>
-                      </li>
-                    @empty
-                      <li class="item">※検索結果はありませんでした</li>
-                    @endforelse
+                        <span class="product-description">
+                          <i class="fas fa-store"></i>&nbsp;{{$store_item['store_name']}}
+                        </span>
+                        <small class="text-muted">Last updated&nbsp;{{$store_item['updated_at']}}<br>他{{$store_item['count']}}件のHit</small></a>
+                    </div>
+                  </li>
+                  @empty
+                  <li class="item">※検索結果はありませんでした
+                  </li>
+                  @endforelse
                   @endisset
                   <!-- /.item -->
                 </ul>
@@ -88,17 +88,37 @@
               </div>
             </div>
           </div>
-          <div class="card-footer">※在庫や価格を保証するものではありません。商品情報の詳細は店舗へ直接お問い合わせください</div>
+          <div class="card-footer">
+            <small>※在庫や価格を保証するものではありません。商品情報の詳細は店舗へ直接お問い合わせください。
+            </small>
+          </div>
           <div class="overlay dark loading none">
             <i class="fas fa-3x fa-sync-alt fa-spin"></i>
           </div>
         </div>
-        <!-- ここまでPC -->
       </div>
+            <!-- left column -->
+            <div class="col-xl-7 col-12">
+              <div class="card card-secondary card-outline">
+                <div class="card-header border-0 ui-sortable-handle" style="cursor: move;">
+                  <h3 class="card-title">
+                    <i class="fas fa-map-marker-alt mr-1"></i>
+                    お店の位置 <small class="d-none d-md-inline">※MAPをクリックすると、クリックした箇所から近いお店が表示されます。</small>
+                  </h3>
+                </div>
+                <div class="card-body p-0">
+                  <div class="gmap">
+                    <div id="target"></div>
+                  </div>
+                </div>
+                <!-- /.card-body-->
+      
+              </div>
+            </div>
+      <!-- /.row -->
+    </div>
   </div><!-- /.container-fluid -->
 </section>
-
-
 @stop
 
 @section('footer')
@@ -114,7 +134,7 @@
   .gmap {
     height: 0;
     overflow: hidden;
-    /* padding-bottom: 56.25%; */
+    padding-bottom: 56.25%;
     position: relative;
   }
 
@@ -227,31 +247,21 @@
     background-color: #fff;
   }
 
+  /* .map-store .card-title{
+      font-size: .7rem;
+  }
+  .map-store .card-text{
+      font-size: .6rem;
+  }
+  .map-store .card-body{
+      padding: .5rem;
+  } */
   .gm-style img {
     max-width: 100%;
   }
   .gmpopup{
     margin: 0;
   }
-  .badge{
-    font-size: 90%;
-  }
-  .product-info h6{
-    margin-bottom: 5px;
-  }
-  #sidebox {
-    position: absolute;
-    bottom:10px;
-  }
-
-  #pcitems{
-      width:250px;
-      display:block;
-  }
-  .item-scroll {
-    height: 60vh;
-  }
-
   @media (min-width: 576px) {
     #countArea,
     #item-list-btn,
@@ -266,29 +276,21 @@
     #store-list-btn {
       font-size: 0.95rem;
     }
-    #sidebox {
-      position: absolute;
-      right: 10px;
-      top: 10px;
-    }
   }
 
   @media (min-width: 992px) {
-    #pcitems{
-      width:300px;
-    }
+    /* .map-store .card-body{
+      padding: 1rem;
+  } */
+
   }
 
   @media (min-width: 1200px) {
     .gmap{
-      /* padding-bottom: 75vh; */
-      display: flex;
-      justify-content:flex-end;
-      align-items: bottom;
+      padding-bottom: 75vh;
     }
-
-    #pcitems{
-      width:400px;
+    .item-scroll {
+    height: 75vh;
     }
     /* .map-store .card-body{
       padding: 1.25rem;
@@ -482,7 +484,6 @@
   })
 
   $(function() {
-    
     // DB情報の取得(ajax)
     $('#search-form').submit(function() {
         // HTMLでの送信をキャンセル
@@ -541,12 +542,6 @@
     var infoWindow = [];
     var noimg = "'{{ asset('img/no_image.png') }}'";
 
-    function markerEvent(i) {
-      marker[i].addListener('click', function() {
-        myclick(i);
-      });
-    }
-    
     function setMarker(markerData) {
 
       // console.log(markerData);
@@ -631,6 +626,12 @@
     }
 
     var openWindow;
+
+    function markerEvent(i) {
+      marker[i].addListener('click', function() {
+        myclick(i);
+      });
+    }
 
     function myclick(i) {
       // console.log(i);

@@ -19,20 +19,14 @@
 <section class="content">
 
   <div class="container">
-    <div class="alert alert-success alert-dismissible">
-      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-      <h5><i class="icon fas fa-check"></i> ストアマップのアルファ版を公開致しました</h5>
-      ストアマップは位置情報を利用して、近隣店舗で販売中の商品や価格を検索できるように設計されたサービスです。掲載を希望される場合は加盟店登録して頂き、商品の在庫や価格情報の登録が必要となります。在庫システムやPOSとの連携を広げることで、更新の手間を省けるように機能を拡張していく予定です。現在掲載店登録キャンペーン実施中で1年間無料でご利用いただけます。
-    </div>
-
-    <div class="row mb-3">
+    <div class="row mb-4">
       <div class="col-12"><a href="/publish"><img src="{{ asset('img/kameiten.gif') }}" style="max-width: 100%;"></a></div>
     </div>
 
     <div class="row">
       <!-- left column -->
       <div class="col-12">
-        <div class="card card-info">
+        <div class="card card-info mb-4">
           <div class="card-header">
             <h3 class="d-none d-md-block card-title">
               <i class="fas fa-map-marked-alt"></i> 商品名 / サービス名 / JANコードから検索
@@ -91,7 +85,7 @@
       <!-- left column -->
       <div class="col-12">
 
-        <div class="card card-info">
+        <div class="card card-info mb-4">
           <div class="card-header">
             <h3 class="card-title">
               <i class="fas fa-th-large"></i> カテゴリ別で探す
@@ -489,7 +483,7 @@
       <!-- left column -->
       <div class="col-12">
 
-        <div class="card card-info">
+        <div class="card card-info mb-5">
           <div class="card-header">
             <h3 class="card-title">
               <i class="fas fa-map"></i> 地域から選ぶ
@@ -557,9 +551,9 @@
       </div>
       <!-- /.row -->
 
-      <div class="col-12">
+      {{-- <div class="col-12">
         @include('partials.footerlink')
-      </div>
+      </div> --}}
 
     </div>
   </div><!-- /.container-fluid -->
@@ -568,8 +562,7 @@
 @stop
 
 @section('footer')
-<div class="float-right d-none d-sm-block">{!! config('const.manage.version') !!}</div>
-{!! config('const.manage.footer') !!}
+@include('partials.footerlink')
 @stop
 
 @section('css')

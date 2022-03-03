@@ -1,4 +1,5 @@
 @charset "UTF-8";
+
 html {
     font-size: 15px;
 }
@@ -9,12 +10,13 @@ body {
 
 h1 {
     font-weight: bold;
-    font-size:1.6rem;
+    font-size: 1.6rem;
 }
 
-.badge-danger{
+.badge-danger {
     vertical-align: text-bottom;
 }
+
 .custom-select-sm {
     font-size: 90%;
 }
@@ -58,7 +60,9 @@ h1 {
     font-weight: bold;
 }
 
-.cal-primary:hover, .cal-primary:focus, .cal-primary:active {
+.cal-primary:hover,
+.cal-primary:focus,
+.cal-primary:active {
     background: linear-gradient(#000000, #000000);
     background-color: #007bff;
     /* !important; */
@@ -80,7 +84,9 @@ h1 {
     font-weight: bold;
 }
 
-.cal-success:hover, .cal-success:focus, .cal-success:active {
+.cal-success:hover,
+.cal-success:focus,
+.cal-success:active {
     background: linear-gradient(#000000, #000000);
     background-color: #28a745;
     /* !important; */
@@ -191,7 +197,8 @@ ul#fast-color-chooser li input:checked+label {
     max-height: 100px;
 }
 
-.table-striped-2span tbody tr:nth-of-type(4n+1), .table-striped-2span tbody tr:nth-of-type(4n+2) {
+.table-striped-2span tbody tr:nth-of-type(4n+1),
+.table-striped-2span tbody tr:nth-of-type(4n+2) {
     background-color: #ecf0f1;
 }
 
@@ -228,4 +235,20 @@ ul#fast-color-chooser li input:checked+label {
 #payment_plan .bc_checked {
     background-color: #17a2b8;
     color: #fff;
+}
+
+.main-footer {
+    margin: 0;
+    padding: 0;
+}
+
+.page-footer {
+    background-color: #9FA5AA
+}
+
+.footer-link a {
+    color: #ffffff;
+}
+.footer-area {
+    padding:1rem;
 }

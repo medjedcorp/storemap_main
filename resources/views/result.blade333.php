@@ -94,6 +94,48 @@
           </div>
         </div>
         <!-- ここまでPC -->
+
+        <!-- ここからSP -->
+        <div id="spitems" class="container">
+          <ul class="slick01">
+            @isset($store_items)
+            @forelse($store_items as $store_item)
+              <li>
+                <div class="card mb-3" style="max-width: 540px">
+                  <div class="row no-gutters">
+                    <div class="col-md-4 my-auto">
+                      <div>
+                        <img class="card-img lazyload" src="{{ asset('img/no_image.png') }}" data-src="/storage/{{$store_item['company_id']}}/items/{{$store_item['item_img1']}}" alt="{{$store_item['store_name']}} / {{$store_item['product_name']}}" decoding="async" onerror="this.src='{{ asset('img/no_image.png') }}';">
+                      </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                              <h5 class="card-title">{{$store_item['product_name']}}</h5>
+                            <p class="card-text">
+                              <span class="product-description">
+                              <i class="fas fa-store"></i>&nbsp;{{$store_item['store_name']}}
+                              </span>
+                            </p>
+                            <a href="javascript:void(0)" onclick="myclick({{@$loop->index}})" id="event{{@$loop->index}}" class="btn btn-primary">詳細</a>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                      <div style="text-align: center;">
+                      <span class="h6" style="margin: 0"><span class="badge badge-danger">{!! $store_item['price'] !!}</span></span>
+                      <span class="h6" style="margin: 0"><span class="badge badge-success"> 距離:約{{$store_item['distance']}}</span></span>
+                      <span class="h6" style="margin: 0"><span class="badge badge-warning">{{ $store_item['stocks'] }}</span></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            @empty
+              <li class="item">※検索結果はありませんでした</li>
+            @endforelse
+            @endisset
+          </ul>
+        </div>
+        <!-- ここまでSP -->
       </div>
   </div><!-- /.container-fluid -->
 </section>
@@ -109,6 +151,8 @@
 @stop
 
 @section('css')
+<link rel="stylesheet" href="{{ asset('css/slick.css') }}">
+<link rel="stylesheet" href="{{ asset('css/slick-theme.css') }}">
 <link rel="stylesheet" href="/css/admin_custom.css">
 <style>
   .gmap {
@@ -243,15 +287,13 @@
     position: absolute;
     bottom:10px;
   }
-
-  #pcitems{
-      width:250px;
-      display:block;
-  }
-  .item-scroll {
-    height: 60vh;
+  #spitems{
+    display: block;
   }
 
+  /* カルーセル */
+
+ /* カルーセル */
   @media (min-width: 576px) {
     #countArea,
     #item-list-btn,
@@ -266,17 +308,24 @@
     #store-list-btn {
       font-size: 0.95rem;
     }
+    #pcitems{
+      display: none;
+    }
+  }
+
+  @media (min-width: 992px) {
     #sidebox {
       position: absolute;
       right: 10px;
       top: 10px;
     }
-  }
-
-  @media (min-width: 992px) {
     #pcitems{
       width:300px;
+      display:block;
     }
+    #spitems{
+    display: none;
+  }
   }
 
   @media (min-width: 1200px) {
@@ -286,7 +335,9 @@
       justify-content:flex-end;
       align-items: bottom;
     }
-
+    .item-scroll {
+      height: 60vh;
+    }
     #pcitems{
       width:400px;
     }
@@ -303,6 +354,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="{{ asset('js/moment.min.js') }}"></script>
 <script src="{{ asset('js/lazysizes.min.js') }}" async=""></script>
+<script src="{{ asset('js/slick.min.js') }}"></script>
 <script>
   'use strict';
 
@@ -482,7 +534,6 @@
   })
 
   $(function() {
-    
     // DB情報の取得(ajax)
     $('#search-form').submit(function() {
         // HTMLでの送信をキャンセル
@@ -541,12 +592,6 @@
     var infoWindow = [];
     var noimg = "'{{ asset('img/no_image.png') }}'";
 
-    function markerEvent(i) {
-      marker[i].addListener('click', function() {
-        myclick(i);
-      });
-    }
-    
     function setMarker(markerData) {
 
       // console.log(markerData);
@@ -631,6 +676,12 @@
     }
 
     var openWindow;
+
+    function markerEvent(i) {
+      marker[i].addListener('click', function() {
+        myclick(i);
+      });
+    }
 
     function myclick(i) {
       // console.log(i);
@@ -726,4 +777,11 @@
     }
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?language=ja&region=JP&key={{ config('const.map_key') }}&callback=initMap" defer></script>
+<script>
+  $('.slick01').slick({ //{}を入れる
+    infinite: true,
+    slidesToShow: 2,
+    slidesToScroll: 2
+  });
+</script>
 @stop
